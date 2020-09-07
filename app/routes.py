@@ -1,6 +1,7 @@
 from flask import render_template, url_for, jsonify, request, redirect, flash
+from datetime import date
 from app import app
-from app.forms import StudentAttendanceForm, ClassAttendanceForm
+from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
 from app.models import Fake, Group, Student, Schedule, Course, Period
 
 test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
@@ -56,39 +57,56 @@ def udpate_attendance():
 @app.route('/schedule/<dow>')
 def schedule(dow):
     title = ''
-    if dow == 'A_Mon':
+    if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
         title = 'Monday (A)'
-    elif dow == 'A_Tues':
+    elif dow == 'A_T':
          schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='A').order_by(Schedule.sort).all()
          title = 'Tuesday (A)'
-    elif dow == 'A_Wed':
+    elif dow == 'A_W':
         schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='A').order_by(Schedule.sort).all()         
         title = 'Wednesday (A)'
-    elif dow == 'A_Thurs':
+    elif dow == 'A_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='A').order_by(Schedule.sort).all()         
         title = 'Thursday (A)'
-    elif dow == 'B_Mon':
+    elif dow == 'B_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()
         title = 'Monday (B)'
-    elif dow == 'B_Tues':
+    elif dow == 'B_T':
          schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='B').order_by(Schedule.sort).all()
          title = 'Tuesday (B)'
-    elif dow == 'B_Wed':
+    elif dow == 'B_W':
         schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='B').order_by(Schedule.sort).all()         
         title = 'Wednesday (B)'
-    elif dow == 'B_Thurs':
+    elif dow == 'B_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
         title = 'Thursday (B)'
     
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('schedule.html', schedule = schedule, title = title)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow)
     
-@app.route('/today')
-def today():
-    return render_template('today.html')    
+@app.route('/today/<classname>/<dow>/<per>')
+def today(classname, dow, per):
+    form = TodayForm(request.form)
+    day = dow[2:4]
+    if day=='M':
+        day = 'Monday'
+    elif day=='T':
+        day = 'Tuesday'
+    elif day =='W':
+        day = 'Wednesday'
+    else:
+        day = 'Thursday'
+    form.today_dow.data = day
+    form.today_date.data = date.today()
+    form.today_week.data = dow[0:1]
+    form.today_period.data = per
+    title = 'Attendance '+ dow + per
+    schedid = dow+per
+    students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
+    return render_template('today.html', students=students, form=form, title=title, schedid = schedid)    
     
 @app.route('/classes')
 def classes():

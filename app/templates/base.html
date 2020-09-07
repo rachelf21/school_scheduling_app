@@ -60,10 +60,31 @@
         </div>
         <div class="col-md-3">
           <div class="content-section">
-            <h3>My Classes</h3>
-            <p class='text-muted'>Add all tables here.
+            <h3>My Schedule</h3>
+            <p class='text-muted'>&nbsp;
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light"><a href="{{ url_for('classes') }}">Classes</a></li>
+                <li class="list-group-item ">Week A</li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/A_M">Monday</a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/A_T">Tuesday </a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/A_W">Wednesday</a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Th">Thursday </a></li>
+                <li class="list-group-item ">Week B</li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/B_M">Monday</a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/B_T">Tuesday </a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/B_W">Wednesday</a></li>
+                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Th">Thursday </a></li>
+                <li class="list-group-item "><a href="/today">Today</a></li>
+
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="content-section">
+            <h3>My Classes</h3>
+            <p class='text-muted'>&nbsp;
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light"><a href="{{ url_for('classes') }}">All Classes</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/get_students/7-101">7-101</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/get_students/7-102">7-102</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/get_students/7-103">7-103</a></li>
@@ -86,27 +107,7 @@
             </p>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="content-section">
-            <h3>My Schedule</h3>
-            <p class='text-muted'>Add all tables here.
-              <ul class="list-group">
-                <li class="list-group-item ">Week A</li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Mon">Monday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Tues">Tuesday </a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Wed">Wednesday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Thurs">Thursday </a></li>
-                <li class="list-group-item ">Week B</li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Mon">Monday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Tues">Tuesday </a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Wed">Wednesday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Thurs">Thursday </a></li>
-                <li class="list-group-item "><a href="/today">Today</a></li>
 
-              </ul>
-            </p>
-          </div>
-        </div>
 
       </div>
     </main>

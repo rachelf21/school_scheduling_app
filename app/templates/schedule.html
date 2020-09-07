@@ -10,48 +10,59 @@
     <th>Period</th>
     <th>Start</th>
     <th>End</th>
-    <th>Class</th>
     <th>Subject</th>
+    <th>Class</th>
   </thead>
   <tbody>
     {% for schedule in schedule %}
     <script>
-      var per = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      var dow = "{{dow}}";
+      var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
       //var per = parseInt({{ schedule.sort}})
     </script>
     <tr>
       <td>
         <script>
-          if (per[{{loop.index}}] < 6) document.write(per[{{loop.index}}]);
-          else if (per[{{loop.index}}] > 6) document.write(per[{{loop.index}}] - 1);
-          if (per[{{loop.index}}] == 6) document.write("Lunch");
+          if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
+          else document.write("Lunch");
         </script>
       </td>
       <td>{{ schedule.period.start_time}}</td>
       <td>{{ schedule.period.end_time}}</td>
-      <td>
+      <!-- <td>
         <script>
           if ("{{ schedule.course.classid}}" == "0-0") {
             document.write("");
           } else
           {
             var c = "{{ schedule.course.classid}}";
-            console.log(c);
             var t = '<a href="/get_students/'+c+'">'+c+'</a>';
-            console.log(t);
             document.write(t);
           }
-          if (per[{{loop.index}}] == 6) document.write("L");
-          if (per[{{loop.index}}] == 9) document.write("R");
+          if (per[{{loop.index}}] == -1) document.write("L");
+          if (per[{{loop.index}}] == 8) document.write("R");
         </script>
-      </td>
+      </td> -->
       <td>
         <script>
           if ("{{ schedule.course.subject}}" == "0") {
             document.write("");
           } else document.write("{{ schedule.course.subject}}");
-          if (per[{{loop.index}}] == 6) document.write("Lunch");
-          if (per[{{loop.index}}] == 9) document.write("Recess");
+          if (per[{{loop.index}}] == -1) document.write("Lunch");
+          if (per[{{loop.index}}] == 8) document.write("Recess");
+        </script>
+      </td>
+      <td>
+        <script>
+          var p = per[{{loop.index}}];
+          var c = "{{ schedule.course.classid}}";
+          var t = '<a href="/today/' + c + '/' +dow + '/' +p + '">' + c + "</a>";
+          console.log(t);
+          if ("{{ schedule.course.subject}}" == "0") {
+            document.write("");
+          } else document.write(t);
+          if (per[{{loop.index}}] == -1) document.write("L");
+          if (per[{{loop.index}}] == 8) document.write("R");
         </script>
       </td>
     </tr>
