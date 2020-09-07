@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block content %}
+
+<h1 class="mt-4 pt-4">{{title}}</h1>
+<table
+  id="myTable"
+  class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive text-center mt-4 pt-4"
+  style="border: 0px red solid"
+>
+  <thead>
+    <th>Period</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Class</th>
+    <th>Subject</th>
+  </thead>
+  <tbody>
+    {% for schedule in schedule %}
+    <script>
+      var per = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      //var per = parseInt({{ schedule.sort}})
+    </script>
+    <tr>
+      <td>
+        <script>
+          if (per[{{loop.index}}] < 6) document.write(per[{{loop.index}}]);
+          else if (per[{{loop.index}}] > 6) document.write(per[{{loop.index}}] - 1);
+          if (per[{{loop.index}}] == 6) document.write("Lunch");
+        </script>
+      </td>
+      <td>{{ schedule.period.start_time}}</td>
+      <td>{{ schedule.period.end_time}}</td>
+      <td>
+        <script>
+          if ("{{ schedule.course.classid}}" == "0-0") {
+            document.write("");
+          } else
+          {
+            var c = "{{ schedule.course.classid}}";
+            console.log(c);
+            var t = '<a href="/get_students/'+c+'">'+c+'</a>';
+            console.log(t);
+            document.write(t);
+          }
+          if (per[{{loop.index}}] == 6) document.write("L");
+          if (per[{{loop.index}}] == 9) document.write("R");
+        </script>
+      </td>
+      <td>
+        <script>
+          if ("{{ schedule.course.subject}}" == "0") {
+            document.write("");
+          } else document.write("{{ schedule.course.subject}}");
+          if (per[{{loop.index}}] == 6) document.write("Lunch");
+          if (per[{{loop.index}}] == 9) document.write("Recess");
+        </script>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+<script>
+  $("#myTable").DataTable({
+    //pageLength: 20,
+    paging: false,
+    //filter: true,
+    deferRender: true,
+    //scrollY: 1200,
+    //scrollCollapse: true,
+    //scroller: true,
+    ordering: false,
+    select: true,
+    bSort: false,
+    dom: "lrtip",
+  });
+</script>
+
+<!-- <script>
+  $(document).ready(function () {
+    $("#myTable").DataTable();
+  });
+</script> -->
+
+{% endblock content %}

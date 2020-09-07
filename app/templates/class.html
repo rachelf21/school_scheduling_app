@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>Classes</h1>
+<table
+  id="myTable"
+  class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive text-center"
+  style="border: 0px red solid"
+>
+  <thead>
+    <th>Class ID</th>
+    <th>Grade</th>
+    <th>Gender</th>
+    <th>Level</th>
+    <th>Room</th>
+    <th>Amount</th>
+  </thead>
+  <tbody>
+    {% for group in group %}
+    <tr>
+      <td>{{ group.classid}}</td>
+      <td>{{ group.grade}}</td>
+      <td>{{ group.gender}}</td>
+      <td>{{ group.level}}</td>
+      <td>{{ group.room}}</td>
+      <td>{{ group.amount}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+<script>
+  $("#myTable").DataTable({
+    pageLength: 20,
+    filter: true,
+    deferRender: true,
+    //scrollY: 1200,
+    scrollCollapse: true,
+    scroller: true,
+    ordering: true,
+    select: true,
+    bSort: false,
+  });
+</script>
+
+<!-- <script>
+  $(document).ready(function () {
+    $("#myTable").DataTable();
+  });
+</script> -->
+
+{% endblock content %}
