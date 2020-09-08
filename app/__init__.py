@@ -14,9 +14,15 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 #POSTGRES_URL='127.0.0.1:5432'
 #DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user="postgres",pw="postgres",url=POSTGRES_URL,db="mdy")
 
-DB_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432/mdy'
+# DB_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432/mdy'
+# app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+
+DB_URL = 'postgres+psycopg2://svntfyhoqoirng:12ad9ca372500c43ce02a1c50fd43928d34d6c9269516873e76143df0151715f@ec2-50-16-221-180.compute-1.amazonaws.com:5432/dbivbhrtqmb565'
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+
+
 db = SQLAlchemy(app)
 
 from app import routes

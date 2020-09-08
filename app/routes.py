@@ -2,10 +2,10 @@ from flask import render_template, url_for, jsonify, request, redirect, flash
 from datetime import date
 from app import app
 from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
-from app.models import Fake, Group, Student, Schedule, Course, Period
+from app.models import Group, Student, Schedule, Course, Period
 import json
 
-test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
+#test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
 def retrieve_students(info):
     emails = []
     names = []
@@ -29,8 +29,8 @@ def form():
         student_form.email = s.email
         student_form.student = s.name
         student_form.comment = ""
-        temp_student = Fake(s.email, s.name, "P","")
-        class_att_records.append(temp_student)
+        #temp_student = Fake(s.email, s.name, "P","")
+        #class_att_records.append(temp_student)
         att_form.students.append_entry(student_form)        
     # if att_form.validate():
     #     print("form validated")

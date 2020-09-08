@@ -3,22 +3,22 @@ from app import db
 from sqlalchemy.exc import IntegrityError
 
 #%%
-class Fake(db.Model):
-    __tablename__ = "fake"
-    __table_args__ = {'extend_existing': True}     
-    email = db.Column(db.String(50), nullable=False, primary_key=True)
-    student = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(50), nullable=False)
-    comment = db.Column(db.String(50), nullable=False)
+# class Fake(db.Model):
+#     __tablename__ = "fake"
+#     __table_args__ = {'extend_existing': True}     
+#     email = db.Column(db.String(50), nullable=False, primary_key=True)
+#     student = db.Column(db.String(50), nullable=False)
+#     status = db.Column(db.String(50), nullable=False)
+#     comment = db.Column(db.String(50), nullable=False)
     
-    def __init__(self,email, student,status, comment):
-        self.email = email
-        self.student = student
-        self.status = status
-        self.comment = comment
+#     def __init__(self,email, student,status, comment):
+#         self.email = email
+#         self.student = student
+#         self.status = status
+#         self.comment = comment
     
-    def __repr__(self):
-        return f"Fake('{self.student}', '{self.status}', '{self.comment}')"
+#     def __repr__(self):
+#         return f"Fake('{self.student}', '{self.status}', '{self.comment}')"
 
  #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
 class Group(db.Model):
