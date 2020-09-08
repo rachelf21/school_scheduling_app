@@ -1,5 +1,8 @@
 {% extends "base.html" %} {% block content %}
-
+<script>
+  var schedule = "{{schedule.courseid}}";
+  console.log(schedule);
+</script>
 <h1>Classes</h1>
 <table
   id="myTable"
@@ -8,14 +11,14 @@
 >
   <thead>
     <th>Class ID</th>
-    <th>Grade</th>
+    <th>Gr</th>
     <th>Gender</th>
     <th>Level</th>
     <th>Room</th>
     <th>Amount</th>
   </thead>
   <tbody>
-    {% for group in group %}
+    {% for group in group %} {%if group.classid != '0-0' %}
     <tr>
       <td>{{ group.classid}}</td>
       <td>{{ group.grade}}</td>
@@ -24,7 +27,7 @@
       <td>{{ group.room}}</td>
       <td>{{ group.amount}}</td>
     </tr>
-    {%endfor%}
+    {%endif%} {%endfor%}
   </tbody>
 </table>
 

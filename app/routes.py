@@ -3,9 +3,9 @@ from datetime import date
 from app import app
 from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
 from app.models import Fake, Group, Student, Schedule, Course, Period
+import json
 
 test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
-
 def retrieve_students(info):
     emails = []
     names = []
@@ -111,7 +111,8 @@ def today(classname, dow, per):
 @app.route('/classes')
 def classes():
     group = Group.query.all()
-    return render_template('class.html', group = group)
+    schedule = Schedule.query.all()
+    return render_template('class.html', group = group, schedule=schedule)
 
 @app.route('/get_students/<classname>')
 def get_students(classname):
