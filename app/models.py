@@ -75,12 +75,15 @@ class Course(db.Model):
     #classcode = db.relationship("Group", backref='classcode', lazy=True)
     subject = db.Column(db.String(25))
     teacher = db.Column(db.String(25))
+    room = db.Column(db.Integer, nullable=False) #this is a bad idea! should get room from related class table! but i cant seem to create the relationship, so doing it manually. how sad.
     
-    def __init__(self,courseid, classid, subject, teacher):
+    
+    def __init__(self,courseid, classid, subject, teacher, room):
         self.courseid = courseid
         self.classid = classid
         self.subject = subject
         self.teacher = teacher
+        self.room = room  
     
     def __repr__(self):
         return f"Course('{self.courseid}', '{self.classid}', '{self.subject}', '{self.teacher}')"

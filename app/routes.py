@@ -56,6 +56,7 @@ def udpate_attendance():
 
 @app.route('/schedule/<dow>')
 def schedule(dow):
+    #x = Course.query.join(Group, Course.classid == Group.classid)
     title = ''
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
@@ -112,6 +113,8 @@ def today(classname, dow, per):
 def classes():
     group = Group.query.all()
     schedule = Schedule.query.all()
+    #room = Group.query(Group.room).filter_by(classid='7-101')
+    #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
     return render_template('class.html', group = group, schedule=schedule)
 
 @app.route('/get_students/<classname>')
