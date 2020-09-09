@@ -27,9 +27,11 @@
 {% for schedule in schedule %}
 <script>
   var schedid = "{{schedid}}";
-  console.log("schedid = " + schedid);
-  console.log("schedule.scheduleid={{schedule.scheduleid}}");
-  if (schedid == "{{schedule.scheduleid}}") var subject = "{{schedule.courseid}}";
+  if (schedid == "{{schedule.scheduleid}}") {
+    var subject = "{{schedule.courseid}}";
+    var start = "{{schedule.period.start_time}}"; //string. need to convert to time to display proper format
+    var stop = "{{schedule.period.end_time}}"; //string. need to convert to time to display proper format
+  }
 </script>
 {%endfor%} "
 <form action="">
@@ -44,10 +46,19 @@
     </legend>
 
     <div class="row">
-      <div class="col-2">{{ form.today_week.label(class="form-control-label") }} {{ form.today_week(class="form-control") }}</div>
-      <div class="col-3">{{ form.today_date.label(class="form-control-label") }} {{ form.today_date(class="form-control") }}</div>
-      <div class="col-3">{{ form.today_dow.label(class="form-control-label") }} {{ form.today_dow(class="form-control") }}</div>
-      <div class="col-2">{{ form.today_period.label(class="form-control-label") }} {{ form.today_period(class="form-control") }}</div>
+      <div class="col-2">
+        {{ form.today_week.label(class="form-control-label form-control-sm font-weight-bold") }} {{ form.today_week(class="form-control") }}
+      </div>
+      <div class="col-3">
+        {{ form.today_date.label(class="form-control-label form-control-sm font-weight-bold") }} {{ form.today_date(class="form-control") }}
+      </div>
+      <div class="col-3">
+        {{ form.today_dow.label(class="form-control-label form-control-sm font-weight-bold") }} {{ form.today_dow(class="form-control") }}
+      </div>
+      <div class="col-2">
+        {{ form.today_period.label(class="form-control-label form-control-sm font-weight-bold") }} {{
+        form.today_period(class="form-control") }}
+      </div>
       <!-- <div class = "col-2 d-flex flex-column justify-content-end"> {{ form.today_submit(class="btn btn-outline-info  form-control-lg") }} </div>-->
     </div>
   </div>
@@ -63,7 +74,7 @@
     <th style="display: none">CourseId</th>
     <th style="display: none">Email</th>
     <th>Name</th>
-    <th>Status</th>
+    <th style="text-align: center">Status</th>
     <th>Comment</th>
   </thead>
   <tbody>
@@ -75,7 +86,7 @@
       <td style="display: none"></td>
       <td style="display: none">{{ students.email}}</td>
       <td>{{ students.name}}</td>
-      <td name="status" contenteditable="true"></td>
+      <td name="status" contenteditable="true" style="text-align: center"></td>
       <!-- <td name="statusx" class="dropdown form-control">
         <form action="" name="FILTER">
           <select name="status">

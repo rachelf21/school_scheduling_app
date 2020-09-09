@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 
+    <!-- <style>
+    table {
+      margin: 0 auto;
+      width: 75% !important;
+    }
+  </style> -->
+
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -50,7 +57,7 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-9" style="border: 0px solid red;">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -67,23 +74,24 @@
             <h3>My Schedule</h3>
             <p class='text-muted'>&nbsp;
               <ul class="list-group">
-                <li class="list-group-item ">Week A</li>
+                <li class="list-group-item font-weight-bold"">Week A</li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/A_M">Monday</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/A_T">Tuesday </a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/A_W">Wednesday</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/A_Th">Thursday </a></li>
-                <li class="list-group-item ">Week B</li>
+                <li class="list-group-item font-weight-bold"">Week B</li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_M">Monday</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_T">Tuesday </a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_W">Wednesday</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_Th">Thursday </a></li>
+                <li class="list-group-item list-group-item-light font-weight-bold"><a href="{{ url_for('classes') }}">All Classes</a></li>
                 <li class="list-group-item "><a href="/today">Today</a></li>
 
               </ul>
             </p>
           </div>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="content-section">
             <h3>My Classes</h3>
             <p class='text-muted'>&nbsp;
@@ -110,7 +118,7 @@
               </ul>
             </p>
           </div>
-        </div>
+        </div> -->
 
 
       </div>
