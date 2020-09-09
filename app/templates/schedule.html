@@ -13,6 +13,7 @@
     <th>Subject</th>
     <th>Class</th>
     <th>Room</th>
+    <th>Lessons</th>
   </thead>
   <tbody>
     {% for schedule in schedule %}
@@ -69,6 +70,7 @@
           else document.write("{{ schedule.course.room}}");
         </script>
       </td>
+      <td>Link</td>
     </tr>
     {%endfor%}
   </tbody>

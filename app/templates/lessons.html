@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>{{title}}</h1>
+<table id="myTable" class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive" style="border: 0px red solid; margin: 0 auto; width: 75% !important"">
+  <thead>
+    <th>Date</th>
+    <th>SchedID</th>
+    <th>Content</th>
+  </thead>
+  <tbody>
+    {% for lesson in lessons %}
+    <tr>
+      <td>{{ lesson.lessondate}}</td>
+      <td>{{ lesson.scheduleid}}</td>
+      <td>{{ lesson.content}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+<script>
+  $("#myTable").DataTable({
+    pageLength: 20,
+    filter: true,
+    deferRender: true,
+    //scrollY: 1200,
+    scrollCollapse: true,
+    scroller: true,
+    //ordering: true,
+    select: true,
+    bSort: false,
+    //order: [[2, "asc"]],
+  });
+</script>
+
+<!-- <script>
+  $(document).ready(function () {
+    $("#myTable").DataTable();
+  });
+</script> -->
+
+{% endblock content %}

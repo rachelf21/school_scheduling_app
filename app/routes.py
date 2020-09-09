@@ -1,8 +1,8 @@
-from flask import render_template, url_for, jsonify, request, redirect, flash
+from flask import render_template, url_for, jsonify, request, redirect, flash, send_file
 from datetime import date
 from app import app
 from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
-from app.models import Group, Student, Schedule, Course, Period
+from app.models import Group, Student, Schedule, Course, Period, Lessons
 import json
 
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
@@ -141,4 +141,12 @@ def index():
 def about():
     return render_template('about.html')  
 
+@app.route('/lessons')
+def lessons():
+    title = "Lessons"
+    lessons = Lessons.query.all()
+    return render_template('lessons.html', title = title, lessons = lessons)  
 
+@app.route('/lunch_menu') 
+def lunch_menu():     
+    return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')

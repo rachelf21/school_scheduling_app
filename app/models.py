@@ -88,32 +88,6 @@ class Schedule(db.Model):
         return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid}')"
     
 #%%
-class Attendance(db.Model):
-    __tablename__ = "attendance"
-    __table_args__ = {'extend_existing': True}
-    attid = db.Column(db.Integer, nullable = False, primary_key=True)  
-    att_date =db.Column(db.Date) #double check if right date field
-    scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
-    #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
-    courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
-    email = db.Column(db.String(255), nullable=False,)
-    status = db.Column(db.String(1), nullable=False)
-    comment = db.Column(db.String(255), nullable=False)
-    
-    def __init__(self, attid, att_date, classid, courseid, email, status, comment):
-        self.attid = attid
-        self.att_date = att_date
-        self.classid = classid
-        self.courseid = courseid
-        self.email = email        
-        self.status = status
-        self.comment = comment
-    
-    def __repr__(self):
-        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.classid}', '{self.email}','{self.status}', '{self.comment}')"
-
-
-#%%
 class Student(db.Model):
     __tablename__ = "students"
     __table_args__ = {'extend_existing': True} 
@@ -136,6 +110,64 @@ class Student(db.Model):
     def __repr__(self):
         return f"Student('{self.name}', '{self.classid}')"
         
+  
+#%%
+class Attendance(db.Model):
+    __tablename__ = "attendance"
+    __table_args__ = {'extend_existing': True}
+    attid = db.Column(db.Integer, nullable = False, primary_key=True)  
+    att_date =db.Column(db.Date) #double check if right date field
+    scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
+    #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
+    courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
+    email = db.Column(db.String(255), db.ForeignKey(Student.email))
+    status = db.Column(db.String(1), nullable=False)
+    comment = db.Column(db.String(255), nullable=False)
+    
+    def __init__(self, attid, att_date, classid, courseid, email, status, comment):
+        self.attid = attid
+        self.att_date = att_date
+        self.classid = classid
+        self.courseid = courseid
+        self.email = email        
+        self.status = status
+        self.comment = comment
+    
+    def __repr__(self):
+        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.classid}', '{self.email}','{self.status}', '{self.comment}')"
+
+#%%
+
+class Lessons(db.Model):
+    __tablename__ = "lessons"
+    __table_args__ = {'extend_existing': True}
+    lessonid = db.Column(db.Integer, nullable = False, primary_key=True)  
+    lessondate = db.Column(db.Date)
+    scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
+    periodid = db.Column(db.String(8), db.ForeignKey(Period.periodid))
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)   
+    subject = db.Column(db.String(25))
+    room = db.Column(db.Integer)
+    grade = db.Column(db.Integer)
+    classid = db.Column(db.String(5))
+    courseid = db.Column(db.String(25))
+    total = db.Column(db.Integer)
+    content = db.Column(db.String(1000))
+    
+    def __init__(self,lessondate, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content):
+        self.lessondate = lessondate, 
+        self.scheduleid = scheduleid, 
+        self.periodid = periodid, 
+        self.start_time = start_time, 
+        self.end_time = end_time, 
+        self.subject = subject, 
+        self.room = room, 
+        self.grade = grade, 
+        self.classid = classid, 
+        self.courseid = courseid, 
+        self.total = total, 
+        self.content = content
 
 
 
