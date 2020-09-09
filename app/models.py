@@ -2,24 +2,6 @@ from datetime import datetime
 from app import db
 from sqlalchemy.exc import IntegrityError
 
-#%%
-# class Fake(db.Model):
-#     __tablename__ = "fake"
-#     __table_args__ = {'extend_existing': True}     
-#     email = db.Column(db.String(50), nullable=False, primary_key=True)
-#     student = db.Column(db.String(50), nullable=False)
-#     status = db.Column(db.String(50), nullable=False)
-#     comment = db.Column(db.String(50), nullable=False)
-    
-#     def __init__(self,email, student,status, comment):
-#         self.email = email
-#         self.student = student
-#         self.status = status
-#         self.comment = comment
-    
-#     def __repr__(self):
-#         return f"Fake('{self.student}', '{self.status}', '{self.comment}')"
-
  #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
 class Group(db.Model):
     __tablename__ = "class"
@@ -43,29 +25,6 @@ class Group(db.Model):
         return f"Class('{self.classid}', '{self.room}', '{self.amount}')"
     
 #%%
-class Student(db.Model):
-    __tablename__ = "students"
-    __table_args__ = {'extend_existing': True} 
-    email = db.Column(db.String(255), primary_key=True)
-    classid = db.Column(db.String(8), db.ForeignKey(Group.classid), nullable=False)
-    class_code = db.relationship("Group", backref='class_code', lazy=True)
-    name = db.Column(db.String(255), nullable=False)
-    parent1 = db.Column(db.String(255))
-    parent2 = db.Column(db.String(255))
-    parent3 = db.Column(db.String(255))
-    
-    def __init__(self,email, classid, name, parent1, parent2, parent3):
-        self.email = email
-        self.classid = classid
-        self.name = name
-        self.parent1 = parent1
-        self.parent2 = parent2
-        self.parent3 = parent3
-    
-    def __repr__(self):
-        return f"Student('{self.name}', '{self.classid}')"
-        
-#%%
 class Course(db.Model):
     __tablename__ = "course"
     __table_args__ = {'extend_existing': True} 
@@ -88,7 +47,6 @@ class Course(db.Model):
     def __repr__(self):
         return f"Course('{self.courseid}', '{self.classid}', '{self.subject}', '{self.teacher}')"
 
-
 #%%
 class Period(db.Model):
     __tablename__ = "period"
@@ -106,6 +64,7 @@ class Period(db.Model):
     
     def __repr__(self):
         return f"Period('{self.periodid}', '{self.day}', '{self.start_time}', '{self.end_time}')"
+
 
 #%%
 class Schedule(db.Model):
@@ -127,6 +86,57 @@ class Schedule(db.Model):
     
     def __repr__(self):
         return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid}')"
+    
+#%%
+class Attendance(db.Model):
+    __tablename__ = "attendance"
+    __table_args__ = {'extend_existing': True}
+    attid = db.Column(db.Integer, nullable = False, primary_key=True)  
+    att_date =db.Column(db.Date) #double check if right date field
+    scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
+    #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
+    courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
+    email = db.Column(db.String(255), nullable=False,)
+    status = db.Column(db.String(1), nullable=False)
+    comment = db.Column(db.String(255), nullable=False)
+    
+    def __init__(self, attid, att_date, classid, courseid, email, status, comment):
+        self.attid = attid
+        self.att_date = att_date
+        self.classid = classid
+        self.courseid = courseid
+        self.email = email        
+        self.status = status
+        self.comment = comment
+    
+    def __repr__(self):
+        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.classid}', '{self.email}','{self.status}', '{self.comment}')"
+
+
+#%%
+class Student(db.Model):
+    __tablename__ = "students"
+    __table_args__ = {'extend_existing': True} 
+    email = db.Column(db.String(255), primary_key=True)
+    classid = db.Column(db.String(8), db.ForeignKey(Group.classid), nullable=False)
+    class_code = db.relationship("Group", backref='class_code', lazy=True)
+    name = db.Column(db.String(255), nullable=False)
+    parent1 = db.Column(db.String(255))
+    parent2 = db.Column(db.String(255))
+    parent3 = db.Column(db.String(255))
+    
+    def __init__(self,email, classid, name, parent1, parent2, parent3):
+        self.email = email
+        self.classid = classid
+        self.name = name
+        self.parent1 = parent1
+        self.parent2 = parent2
+        self.parent3 = parent3
+    
+    def __repr__(self):
+        return f"Student('{self.name}', '{self.classid}')"
+        
+
 
 
 #%%

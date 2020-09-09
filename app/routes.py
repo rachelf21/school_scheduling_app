@@ -105,9 +105,15 @@ def today(classname, dow, per):
     form.today_week.data = dow[0:1]
     form.today_period.data = per
     title = 'Attendance '+ dow + per
-    schedid = dow+per
+    if per == "-1":
+        schedid = dow+"L"
+        print(schedid)
+    else:
+        schedid = dow+per
+    print(per)
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
-    return render_template('today.html', students=students, form=form, title=title, schedid = schedid)    
+    schedule = Schedule.query.all()
+    return render_template('today.html', students=students, form=form, title=title, schedid = schedid, schedule = schedule)    
     
 @app.route('/classes')
 def classes():

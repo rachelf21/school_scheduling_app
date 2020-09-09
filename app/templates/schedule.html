@@ -7,7 +7,7 @@
   style="border: 0px red solid"
 >
   <thead>
-    <th>Period</th>
+    <th>Per</th>
     <th>Start</th>
     <th>End</th>
     <th>Subject</th>
@@ -25,7 +25,7 @@
       <td>
         <script>
           if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
-          else document.write("Lunch");
+          else document.write("L");
         </script>
       </td>
       <td>{{ schedule.period.start_time}}</td>
