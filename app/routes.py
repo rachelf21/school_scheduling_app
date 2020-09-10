@@ -5,6 +5,8 @@ from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
 from app.models import Group, Student, Schedule, Course, Period, Lessons
 import json
 
+schedule = ''
+title = ''
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
 def retrieve_students(info):
     emails = []
@@ -53,11 +55,13 @@ def udpate_attendance():
     return "<h1>attendance has been entered</h1>"
 
 #%%
-
 @app.route('/schedule/<dow>')
-def schedule(dow):
+def display_schedule(dow):
+    global schedule
     #x = Course.query.join(Group, Course.classid == Group.classid)
+    global title
     title = ''
+    
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
         title = 'Monday (A)'
@@ -132,6 +136,33 @@ def get_students(classname):
 @app.route('/attendance')
 def attendance():
     return render_template('attendance.html')
+
+@app.route('/weekly_schedule/<wk>')
+def get_week(wk):
+    global schedule
+    global title
+    today = date.today().weekday()
+    if wk == 'A':
+        if today == 0:
+            dow = 'A_M'
+        elif today == 1:
+            dow = 'A_T'
+        elif today == 2:
+            dow = 'A_W'
+        else:
+            dow = 'A_Th'
+    else:
+        if today == 0:
+            dow = 'B_M'
+        elif today == 1:
+            dow = 'B_T'
+        elif today == 2:
+            dow = 'B_W'
+        else:
+            dow = 'B_Th'
+    print("dow", dow)
+    display_schedule(dow)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow)
 
 @app.route('/')
 def index():
