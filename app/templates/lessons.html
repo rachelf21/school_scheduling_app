@@ -1,17 +1,30 @@
 {% extends "base.html" %} {% block content %}
 
 <h1>{{title}}</h1>
-<table id="myTable" class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive" style="border: 0px red solid; margin: 0 auto; width: 75% !important"">
+<table
+  id="myTable"
+  class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+  style="border: 0px red solid; width: 100%"
+>
   <thead>
     <th>Date</th>
-    <th>SchedID</th>
+    <th>Per</th>
+    <th>Class</th>
     <th>Content</th>
   </thead>
   <tbody>
     {% for lesson in lessons %}
     <tr>
-      <td>{{ lesson.lessondate}}</td>
+      <td>
+        <script>
+          var ld = "{{ lesson.lessondate}}";
+          console.log("ld=" + ld);
+          lessondate = ld.slice(-5);
+          document.write(lessondate);
+        </script>
+      </td>
       <td>{{ lesson.scheduleid}}</td>
+      <td>{{ lesson.courseid}}</td>
       <td>{{ lesson.content}}</td>
     </tr>
     {%endfor%}

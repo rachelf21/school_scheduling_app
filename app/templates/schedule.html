@@ -14,6 +14,7 @@
     <th>Class</th>
     <th>Room</th>
     <th>Lessons</th>
+    <th>Add </th>
   </thead>
   <tbody>
     {% for schedule in schedule %}
@@ -54,10 +55,10 @@
       </td>
       <td>
         <script>
+          var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var p = per[{{loop.index}}];
           var c = "{{ schedule.course.classid}}";
           var t = '<a href="/today/' + c + '/' +dow + '/' +p + '">' + c + "</a>";
-          console.log(t);
           if ("{{ schedule.course.subject}}" == "0") {
             document.write("");
           } else document.write(t);
@@ -70,32 +71,46 @@
           else document.write("{{ schedule.course.room}}");
         </script>
       </td>
-      <td>Link</td>
-    </tr>
-    {%endfor%}
-  </tbody>
-</table>
+      <td>
+        <script>
+          var s = "{{ schedule.course.subject}}" ;
+          if (s == "Computers" || s == "STEM") {
+            var x = "/lessons/"+course;
+                    print(x);
+                    document.write('<a href="' + x + '">View</a>');
+                  }
+        </script>
+               </td>
+               <td> Add </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
 
-<script>
-  $("#myTable").DataTable({
-    //pageLength: 20,
-    paging: false,
-    //filter: true,
-    deferRender: true,
-    //scrollY: 1200,
-    //scrollCollapse: true,
-    //scroller: true,
-    ordering: false,
-    select: true,
-    bSort: false,
-    dom: "lrtip",
-  });
-</script>
+          <script>
+            $("#myTable").DataTable({
+              //pageLength: 20,
+              paging: false,
+              //filter: true,
+              deferRender: true,
+              //scrollY: 1200,
+              //scrollCollapse: true,
+              //scroller: true,
+              ordering: false,
+              select: true,
+              bSort: false,
+              dom: "lrtip",
+            });
+        </script>
 
-<!-- <script>
+        <!-- <script>
   $(document).ready(function () {
     $("#myTable").DataTable();
   });
 </script> -->
 
-{% endblock content %}
+        {% endblock content %}
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -141,10 +141,13 @@ def index():
 def about():
     return render_template('about.html')  
 
-@app.route('/lessons')
-def lessons():
+@app.route('/lessons/<day>')
+def lessons(day):
     title = "Lessons"
-    lessons = Lessons.query.all()
+    if day=='all':
+        lessons = Lessons.query.all()
+    else:
+        lessons = Lessons.query.filter_by(courseid=day)
     return render_template('lessons.html', title = title, lessons = lessons)  
 
 @app.route('/lunch_menu') 
