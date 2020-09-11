@@ -7,6 +7,8 @@ import time
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import create_engine
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -24,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation w
 
 
 db = SQLAlchemy(app)
-
+engine = create_engine(DB_URL)
 from app import routes
 
 # try:

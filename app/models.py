@@ -115,7 +115,7 @@ class Student(db.Model):
 class Attendance(db.Model):
     __tablename__ = "attendance"
     __table_args__ = {'extend_existing': True}
-    attid = db.Column(db.Integer, nullable = False, primary_key=True)  
+    attid = db.Column(db.Integer, primary_key=True)  
     att_date =db.Column(db.Date) #double check if right date field
     scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
     #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
@@ -124,9 +124,9 @@ class Attendance(db.Model):
     status = db.Column(db.String(1), nullable=False)
     comment = db.Column(db.String(255), nullable=False)
     
-    def __init__(self, attid, att_date, classid, courseid, email, status, comment):
-        self.attid = attid
+    def __init__(self, att_date, scheduleid, classid, courseid, email, status, comment):
         self.att_date = att_date
+        self.scheduleid = scheduleid
         self.classid = classid
         self.courseid = courseid
         self.email = email        
@@ -172,6 +172,10 @@ class Lessons(db.Model):
 
 
 #%%
+def create_att_record(att_date, scheduleid, classid, courseid, email, status, comment):
+    test1 = Attendance(datetime.strptime(att_date,'%Y-%m-%d'),scheduleid, classid, courseid, email, status, comment )
+    test2 = Attendance(datetime.strptime('2020-09-08', '%Y-%m-%d'),'A_M3', '7-101','7-101-Computers','rfriedman@mdyschool.org', 'P','' )
+    #attid, att_date, classid, courseid, email, status, comment
 
 def add_to_database(test):
 #with app.app_context():

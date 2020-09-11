@@ -1,9 +1,14 @@
 from flask import render_template, url_for, jsonify, request, redirect, flash, send_file
+import datetime
 from datetime import date
 from app import app
 from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
-from app.models import Group, Student, Schedule, Course, Period, Lessons
+from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance
 import json
+import pandas as pd
+from app import db, engine
+from sqlalchemy.exc import IntegrityError
+
 
 schedule = ''
 title = ''
@@ -102,8 +107,10 @@ def today(classname, dow, per):
         day = 'Tuesday'
     elif day =='W':
         day = 'Wednesday'
-    else:
+    elif day == 'Th':
         day = 'Thursday'
+    else:
+        day = 'Monday'
     form.today_dow.data = day
     form.today_date.data = date.today()
     form.today_week.data = dow[0:1]
@@ -119,6 +126,32 @@ def today(classname, dow, per):
     schedule = Schedule.query.all()
     return render_template('today.html', students=students, form=form, title=title, schedid = schedid, schedule = schedule)    
     
+@app.route('/confirmation/<filename>')
+def confirmation(filename):
+    print(filename)
+    df = pd.read_csv(filename, header=0, index_col=4)
+    df.fillna('', inplace=True)
+    print(df)
+    print("filename =" , filename)
+    df.to_sql('attendance', engine, if_exists="append")
+    
+    #turn each column into a list
+    #loop to go through all lists at once, create object by combining items in each list
+    # test2 = Attendance(datetime.datetime.strptime('2020-09-08', '%Y-%m-%d'),'A_M3', '7-101','7-101-Computers','gfeldman576@stu.mdyschool.org', 'P','' )
+    # try:
+    #     db.session.add(test2)
+    #     print("attempting to add")
+    #     db.session.commit()
+    # except IntegrityError as e:
+    #     print("NOT ADDED. ERROR:", e)
+    
+    #dict = df.to_dict('records')
+    # Attendance.insert().values([dict(att_date=datetime.strptime('2020-09-08', '%Y-%m-%d'), classid='7-101', courseid='7-101-Computers',email='rfriedman@mdyschool.org',status='P', comment='')])
+    #    test2 = Attendance(datetime.strptime('2020-09-08', '%Y-%m-%d'),'7-101','7-101-Computers','rfriedman@mdyschool.org', 'P','' )
+    #att_date, classid, courseid, email, status, comment
+    print(df)
+    return render_template("confirmation.html")
+
 @app.route('/classes')
 def classes():
     group = Group.query.all()
@@ -149,8 +182,10 @@ def get_week(wk):
             dow = 'A_T'
         elif today == 2:
             dow = 'A_W'
-        else:
+        elif today == 3:
             dow = 'A_Th'
+        else: 
+            dow = 'A_M'
     else:
         if today == 0:
             dow = 'B_M'
@@ -158,8 +193,10 @@ def get_week(wk):
             dow = 'B_T'
         elif today == 2:
             dow = 'B_W'
-        else:
+        elif today == 3:
             dow = 'B_Th'
+        else:
+            dow = 'B_M'
     print("dow", dow)
     display_schedule(dow)
     return render_template('schedule.html', schedule = schedule, title = title, dow=dow)
