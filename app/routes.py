@@ -341,7 +341,7 @@ def lessons(day):
     if day=='all':
         lessons = Lessons.query.all()
     else:
-        lessons = Lessons.query.filter_by(courseid=day)
+        lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessonid.desc())
     return render_template('lessons.html', title = title, lessons = lessons)  
 
 @app.route('/lunch_menu') 
