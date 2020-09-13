@@ -15,9 +15,9 @@
 - [x] upload and run from heroku - where does the database reside???
 - [x] default entry for Status = P
 - [x] format time to display in more user friendly format
-- [ ] add ability to retrieve attendance records for specific class
-- [ ] add ability to retrieve attendance records for specific student
-- [ ] add ability to retrieve attendance records for specific day
+- [x] add ability to retrieve attendance records for specific class
+- [x] add ability to retrieve attendance records for specific student
+- [x] add ability to retrieve attendance records for specific day
 
 ### HTML PAGES
 
