@@ -14,7 +14,7 @@
   year = today.getFullYear();
   var date = year + "-" + month + "-" + day;
 </script>
-<div id="top_of_form">
+<div id="top_of_form" >
 <form action="/update_attendance" method="post" name="att_form">
   {{ att_form.hidden_tag() }}
   <h1>Attendance</h1>
@@ -24,22 +24,22 @@
     </script>
     <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mb-4 mt-0 form-control-lg") }}</div>
   </legend>
-  <div class="row">
-    <div class="col">
+  <div class="row" style="border:0px solid red; width:100%">
+    <div class="col-md-4">
       {{ att_form.date.label(class="form-control-label") }} {{ att_form.date(class="form-control form-control-md") }}
       <script>
         document.getElementById("date").value = date;
       </script>
     </div>
 
-    <div class="col">
+    <div class="col-sm-2">
       {{ att_form.scheduleid.label(class="form-control-label") }} {{ att_form.scheduleid(class="form-control form-control-md") }}
       <script>
         document.getElementById("scheduleid").value = scheduleid;
       </script>
     </div>
 
-    <div class="col">
+    <div class="col-sm-2">
       {{ att_form.classid.label(class="form-control-label") }} {{ att_form.classid(class="form-control form-control-md") }}
       <script>
         document.getElementById("classid").value = classid;

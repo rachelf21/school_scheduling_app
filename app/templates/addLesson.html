@@ -14,31 +14,40 @@
   {{ form.hidden_tag() }}
   <h1>{{ form.title}}</h1>
   <br />
-  {{ form.content.label(class="form-control-label") }} {{ form.content(class="form-control form-control-lg") }} {{ form.save(class="btn
-  btn-primary btn-md mb-2 mt-2 form-control-lg") }}
+  {{ form.content.label(class="form-control-label") }} {{ form.content(class="form-control form-control-md") }} {{ form.save(class="btn
+  btn-primary btn-md mb-2 mt-2 form-control-md") }}
   <br />
 
-  <div class="row">
-    <div class="col">
-      {{ form.date.label(class="form-control-label") }} {{ form.date(class="form-control form-control-lg") }}
+  <div class="row mt-4">
+    <div class="col-sm-4">
+      {{ form.date.label(class="form-control-label") }} {{ form.date(class="form-control form-control-md") }}
       <script>
         document.getElementById("date").value = date;
       </script>
     </div>
-    <div class="col">
-      {{ form.scheduleid.label(class="form-control-label") }} {{ form.scheduleid(class="form-control form-control-lg") }}
+    <div class="col-sm-2">
+      {{ form.scheduleid.label(class="form-control-label") }} {{ form.scheduleid(class="form-control form-control-md") }}
     </div>
-    <div class="col">{{ form.periodid.label(class="form-control-label") }} {{ form.periodid(class="form-control form-control-lg") }}</div>
-    <div class="col">
-      {{ form.start_time.label(class="form-control-label") }} {{ form.start_time(class="form-control form-control-lg") }}
+    <div class="col-sm-2">
+      {{ form.periodid.label(class="form-control-label") }} {{ form.periodid(class="form-control form-control-md") }}
     </div>
-    <div class="col">{{ form.end_time.label(class="form-control-label") }} {{ form.end_time(class="form-control form-control-lg") }}</div>
+    <div class="col-sm-2">
+      {{ form.start_time.label(class="form-control-label") }} {{ form.start_time(class="form-control form-control-md") }}
+    </div>
+    <div class="col-sm-2">
+      {{ form.end_time.label(class="form-control-label") }} {{ form.end_time(class="form-control form-control-md") }}
+    </div>
   </div>
-  <div class="row">
-    <div class="col">{{ form.room.label(class="form-control-label") }} {{ form.room(class="form-control form-control-lg") }}</div>
-    <div class="col">{{ form.classid.label(class="form-control-label") }} {{ form.classid(class="form-control form-control-lg") }}</div>
-    <div class="col">{{ form.courseid.label(class="form-control-label") }} {{ form.courseid(class="form-control form-control-lg") }}</div>
-    <div class="col">{{ form.total.label(class="form-control-label") }} {{ form.total(class="form-control form-control-lg") }}</div>
+
+  <div class="row mt-4 mb-4">
+    <div class="col-sm-2">{{ form.room.label(class="form-control-label") }} {{ form.room(class="form-control form-control-md") }}</div>
+    <div class="col-sm-3">
+      {{ form.classid.label(class="form-control-label") }} {{ form.classid(class="form-control form-control-md") }}
+    </div>
+    <div class="col-sm-5">
+      {{ form.courseid.label(class="form-control-label") }} {{ form.courseid(class="form-control form-control-md") }}
+    </div>
+    <div class="col-sm-2">{{ form.total.label(class="form-control-label") }} {{ form.total(class="form-control form-control-md") }}</div>
   </div>
 </form>
 {% endblock content %}
