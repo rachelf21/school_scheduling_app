@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from flask_admin.model import BaseModelView
 from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from app.models import Course, Student
@@ -14,19 +13,6 @@ class StudentAttendanceForm(FlaskForm):
                       coerce=str)
     comment = StringField(u"Comment", render_kw={'class': 'form-control', 'cols': 100})
     save = SubmitField('Save')
-
-class StudentAttendanceView(BaseModelView):
-    form_base_class = StudentAttendanceForm
-    form_widget_args = {
-        'comment': {
-            'rows': 10,
-            'style': 'color: blue'
-        },
-        'other_field': {
-            'disabled': True
-        }
-    }
-    
 
 class ClassAttendanceForm(FlaskForm):
     title = StringField('title')
@@ -80,6 +66,6 @@ class AttendanceRecordForm(FlaskForm):
         options.append([s.email, s.name])
         student_list = SelectField('Select', 
                   choices=options)
-    date = DateField('Date', format='%Y-%m-%d')
+    date = DateField('DatePicker', format='%Y-%m-%d')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     save = SubmitField('Submit')

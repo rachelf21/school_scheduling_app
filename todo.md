@@ -26,7 +26,7 @@
 - [x] dropdown for status A/P
 - [ ] add time to daily attendance sheet
 - [x] class in All Classes list should link to that class
-- [ ] scheduleid's should be listed for each clas
+- [ ] scheduleid's should be listed for each class
 - [x] remove my classes sidebar, make first col biger
 - [x] show room number on class list
 - [ ] change mdy logo to white
