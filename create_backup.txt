@@ -1,0 +1,16 @@
+Export tables from postgres database
+
+
+\copy (SELECT * FROM class) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\class.csv' with csv header;
+
+\copy (SELECT * FROM course) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\course.csv' with csv header;
+
+\copy (SELECT * FROM period) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\period.csv' with csv header;
+
+\copy (SELECT * FROM schedule) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\schedule.csv' with csv header;
+
+\copy (SELECT * FROM students) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\students.csv' with csv header;
+
+\copy (SELECT * FROM lessons) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\lessons.csv' with csv header;
+
+\copy (SELECT * FROM attendance) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\attendance.csv' with csv header;
