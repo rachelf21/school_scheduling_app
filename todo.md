@@ -18,6 +18,7 @@
 - [x] add ability to retrieve attendance records for specific class
 - [x] add ability to retrieve attendance records for specific student
 - [x] add ability to retrieve attendance records for specific day
+- [ ] adjust display on phone
 
 ### HTML PAGES
 
