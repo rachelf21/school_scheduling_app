@@ -1,3 +1,117 @@
-{% extends "base.html" %} {% block content %}
-<h1>Attendance</h1>
-{% endblock content %}
+{% extends "base.html" %} {%block title%} Attendance Form {%endblock%} {%block content%}
+
+<script>
+  var students = [];
+  var classid = "{{classid}}";
+  var dow = "{{dow}}";
+  var scheduleid = dow + "{{per}}";
+  var courseid = "{{courseid}}";
+
+  var today = new Date();
+  //var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  month = ("0" + (today.getMonth() + 1)).slice(-2);
+  day = ("0" + today.getDate()).slice(-2);
+  year = today.getFullYear();
+  var date = year + "-" + month + "-" + day;
+</script>
+<div id="top_of_form">
+<form action="/update_attendance" method="post" name="att_form">
+  {{ att_form.hidden_tag() }}
+  <h1>Attendance</h1>
+  <legend class="border-bottom mb-4">
+    <script>
+      document.write(courseid);
+    </script>
+    <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mb-4 mt-0 form-control-lg") }}</div>
+  </legend>
+  <div class="row">
+    <div class="col">
+      {{ att_form.date.label(class="form-control-label") }} {{ att_form.date(class="form-control form-control-md") }}
+      <script>
+        document.getElementById("date").value = date;
+      </script>
+    </div>
+
+    <div class="col">
+      {{ att_form.scheduleid.label(class="form-control-label") }} {{ att_form.scheduleid(class="form-control form-control-md") }}
+      <script>
+        document.getElementById("scheduleid").value = scheduleid;
+      </script>
+    </div>
+
+    <div class="col">
+      {{ att_form.classid.label(class="form-control-label") }} {{ att_form.classid(class="form-control form-control-md") }}
+      <script>
+        document.getElementById("classid").value = classid;
+      </script>
+    </div>
+
+    <div class="col">
+      {{ att_form.courseid.label(class="form-control-label") }} {{ att_form.courseid(class="form-control form-control-md") }}
+      <script>
+        document.getElementById("courseid").value = courseid;
+      </script>
+    </div>
+  </div>
+</div>
+  <div class="mt-4">
+    <table
+      id="myTable"
+      class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+      style="border: 0px red solid; margin: 0 auto; width: 75% !important"
+    >
+      <tr>
+        <th style="display: none">Email</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Comment</th>
+      </tr>
+      {% for student in att_form.students %}
+      <tr>
+        <td style="display: none">{{ student.email}}</td>
+        <td>{{ student.student_name}}</td>
+        <td>{{ student.status}}</td>
+        <td>{{ student.comment(length=300)|safe}}</td>
+      </tr>
+      <script>
+        var newStudent = "student" + "{{loop.index}}";
+        var newEmail = "{{ student.email.data }}";
+        var newName = "{{ student.student_name.data }}";
+        var newStatus = "{{ student.status.value }}";
+        var newComment = "{{ student.comment.data }}";
+        var jsonData = {};
+        jsonData["email"] = newEmail;
+        jsonData["name"] = newName;
+        jsonData["status"] = newStatus;
+        jsonData["comment"] = newComment;
+        students.push(jsonData);
+      </script>
+      {% endfor %}
+      <script>
+        document.getElementsByName("data").value = students;
+        console.log(students);
+      </script>
+
+      <script>
+        $("#myTable").DataTable({
+          pageLength: 20,
+          paging: false,
+          dom: "lrtip",
+          filter: true,
+          deferRender: true,
+          //scrollY: 1200,
+          scrollCollapse: true,
+          scroller: true,
+          select: true,
+          bSort: false,
+        });
+        document.onload = function () {
+          console.log("is it working " + classid);
+          document.getElementById("classid").value = classid;
+        };
+      </script>
+    </table>
+  </div>
+</form>
+
+{%endblock%}

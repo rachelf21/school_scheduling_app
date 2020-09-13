@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block content %}
+<script>
+  var today = new Date();
+  //var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  month = ("0" + (today.getMonth() + 1)).slice(-2);
+  day = ("0" + today.getDate()).slice(-2);
+  year = today.getFullYear();
+  var date = year + "-" + month + "-" + day;
+</script>
+
+<h1 class="mb-4 text-center">Add Lesson</h1>
+<hr />
+<form action="/update_lessons" method="post" name="lesson_form">
+  {{ form.hidden_tag() }}
+  <h1>{{ form.title}}</h1>
+  <br />
+  {{ form.content.label(class="form-control-label") }} {{ form.content(class="form-control form-control-lg") }} {{ form.save(class="btn
+  btn-primary btn-md mb-2 mt-2 form-control-lg") }}
+  <br />
+
+  <div class="row">
+    <div class="col">
+      {{ form.date.label(class="form-control-label") }} {{ form.date(class="form-control form-control-lg") }}
+      <script>
+        document.getElementById("date").value = date;
+      </script>
+    </div>
+    <div class="col">
+      {{ form.scheduleid.label(class="form-control-label") }} {{ form.scheduleid(class="form-control form-control-lg") }}
+    </div>
+    <div class="col">{{ form.periodid.label(class="form-control-label") }} {{ form.periodid(class="form-control form-control-lg") }}</div>
+    <div class="col">
+      {{ form.start_time.label(class="form-control-label") }} {{ form.start_time(class="form-control form-control-lg") }}
+    </div>
+    <div class="col">{{ form.end_time.label(class="form-control-label") }} {{ form.end_time(class="form-control form-control-lg") }}</div>
+  </div>
+  <div class="row">
+    <div class="col">{{ form.room.label(class="form-control-label") }} {{ form.room(class="form-control form-control-lg") }}</div>
+    <div class="col">{{ form.classid.label(class="form-control-label") }} {{ form.classid(class="form-control form-control-lg") }}</div>
+    <div class="col">{{ form.courseid.label(class="form-control-label") }} {{ form.courseid(class="form-control form-control-lg") }}</div>
+    <div class="col">{{ form.total.label(class="form-control-label") }} {{ form.total(class="form-control form-control-lg") }}</div>
+  </div>
+</form>
+{% endblock content %}

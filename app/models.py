@@ -121,6 +121,7 @@ class Attendance(db.Model):
     #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
     email = db.Column(db.String(255), db.ForeignKey(Student.email))
+    name = db.Column(db.String(65))    
     status = db.Column(db.String(1), nullable=False)
     comment = db.Column(db.String(255), nullable=False)
     

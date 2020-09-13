@@ -42,9 +42,11 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{{ url_for('index') }}">Home</a>
-              <a class="nav-item nav-link" href="{{ url_for('form') }}">Take Attendance</a>
-              <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+              <a class="nav-item nav-link mr-2" href="{{ url_for('index') }}">Home</a>
+              <a class="nav-item nav-link mr-2" href="/weekly_schedule/A">Week A</a>
+              <a class="nav-item nav-link mr-2" href="/weekly_schedule/B">Week B</a>
+              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}"> All Classes</a>
+              <a class="nav-item nav-link mr-2" href="/records"> Attendance Records</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
@@ -55,7 +57,7 @@
         </div>
       </nav>
     </header>
-    <main role="main" class="container">
+    <main role="main" class="container-fluid" style="margin: 0 auto; width: 75% !important">
       <div class="row">
         <div class="col-md-9" style="border: 0px solid red;">
           {% with messages = get_flashed_messages(with_categories=true) %}
@@ -84,43 +86,13 @@
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_T">Tuesday </a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_W">Wednesday</a></li>
                 <li class="list-group-item list-group-item-light"><a href="/schedule/B_Th">Thursday </a></li>
-                <li class="list-group-item list-group-item-light font-weight-bold"><a href="{{ url_for('classes') }}">All Classes</a></li>
                 <li class="list-group-item list-group-item-light font-weight-bold"><a href="/lessons/all">Lessons</a></li>
                 <li class="list-group-item "><a href="{{ url_for('lunch_menu') }}">Lunch Menu</a></li>               
-                <li class="list-group-item "><a href="/today">Today</a></li>
 
               </ul>
             </p>
           </div>
         </div>
-        <!-- <div class="col-md-3">
-          <div class="content-section">
-            <h3>My Classes</h3>
-            <p class='text-muted'>&nbsp;
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light"><a href="{{ url_for('classes') }}">All Classes</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-101">7-101</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-102">7-102</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-103">7-103</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-111">7-111</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-201">7-201</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-202">7-202</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-203">7-203</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/7-211">7-211</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-101">8-101</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-102">8-102</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-103">8-103</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-111">8-111</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-201">8-201</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-202">8-202</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-203">8-203</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/get_students/8-211">8-211</a></li>
-                <li class="list-group-item list-group-item-light"><a href="{{ url_for('attendance') }}">Attendance</a></li>
-
-              </ul>
-            </p>
-          </div>
-        </div> -->
 
 
       </div>

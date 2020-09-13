@@ -2,7 +2,7 @@ from flask import render_template, url_for, jsonify, request, redirect, flash, s
 import datetime
 from datetime import date
 from app import app
-from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm
+from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm, AddLessonForm, AttendanceRecordForm
 from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance
 import json
 import pandas as pd
@@ -24,17 +24,68 @@ def retrieve_students(info):
   
 
 #%%
-#This populated a form, but I couldn't figure out how to retrieve the data from here, since it was a form within a form.
-@app.route('/form', methods=['GET', 'POST'])
-def form():
+
+
+@app.route('/addLesson/<classid>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
+def addLesson(classid, courseid, dow, per):
+    
+    classinfo = Group.query.all()
+
+    
+    form = AddLessonForm()
+    form.title = "Add Lesson for " + courseid
+    schedid = dow+per
+    form.scheduleid.data = schedid
+    form.periodid.data = schedid[2:]
+    form.start_time.data = Period.query.filter_by(periodid=schedid[2:]).first().start_time
+    form.end_time.data = Period.query.filter_by(periodid=schedid[2:]).first().end_time
+    form.subject.data = courseid[6:]
+    form.room.data =  Group.query.filter_by(classid=classid).first().room
+    form.grade.data = classid[0:1]
+    form.classid.data = classid
+    form.courseid.data = courseid
+    form.total.data = Group.query.filter_by(classid=classid).first().amount
+    form.content.data = ''
+    return render_template("addLesson.html", form = form)
+
+@app.route('/update_lessons', methods=['GET', 'POST'])
+def udpate_lessons():
+    date = request.form['date']
+    scheduleid =  request.form['scheduleid']
+    periodid = request.form['periodid']
+    start_time = request.form['start_time']
+    end_time = request.form['end_time']
+    subject = request.form['courseid'][6:]
+    room = request.form['room']
+    grade = request.form['classid'][0:1]
+    classid = request.form['classid']
+    courseid = request.form['courseid']
+    total = request.form['total']
+    content = request.form['content']
+    topic = "lesson"
+        
+    df = pd.DataFrame(columns = ['lessondate','scheduleid', 'periodid', 'start_time', 'end_time', 'subject', 'room', 'grade', 'classid', 'courseid', 'total', 'content'])
+    entry = pd.Series([date, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content], index=df.columns)
+    df = df.append(entry, ignore_index=True)
+    df = df.set_index('periodid')
+    df.fillna('', inplace=True)
+    print(df) 
+    df.to_sql('lessons', engine, if_exists="append")    
+    return render_template("confirmation.html" , topic=topic)
+#%%
+
+
+@app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
+def attendance(classname, courseid, dow, per): 
     att_form = ClassAttendanceForm(request.form)
-    att_form.title.data = "Attendance Class 801"
+    att_form.title.data = "Attendance " + classname
+    title = "Attendance " + classname
     class_att_records=[]
-    students = Student.query.filter_by(classid='8-101').all()
+    students = Student.query.filter_by(classid=classname).all()
     for s in students:
         student_form = StudentAttendanceForm()
         student_form.email = s.email
-        student_form.student = s.name
+        student_form.student_name = s.name
         student_form.comment = ""
         #temp_student = Fake(s.email, s.name, "P","")
         #class_att_records.append(temp_student)
@@ -49,15 +100,58 @@ def form():
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('form.html', att_form=att_form)
+        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title)
 
-#this does NOT update the attendance, doesn't add anything to the database. couldn't figure out how to retrieve the data
+#https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
+
 @app.route('/update_attendance', methods=['GET', 'POST'])
 def udpate_attendance():
+    att_date = request.form['date']
+    scheduleid = request.form['scheduleid']
+    classid = request.form['classid']
+    courseid = request.form['courseid']
+    email = ''
+    status = ''
+    comment = ''
+    emails = []
+    names = []
+    statuses = []
+    comments = []
+    
     print("form has been validated")
-    results = request.form['data']
-    print("results", results)
-    return "<h1>attendance has been entered</h1>"
+    df = pd.DataFrame(columns = ['att_date','scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
+    # entry = pd.Series([att_date, scheduleid, classid, courseid, 'rfriedman@mdyschool.org', 'P', 'present'],index=df.columns)   
+    # df = df.append(entry, ignore_index=True)
+    # df = df.set_index('email')
+
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            #print(key, value )
+            if "email" in key:
+                email = value
+                emails.append(email)
+            if "name" in key:
+                n = value
+                names.append(n)
+            if "status" in key:
+                status = value
+                statuses.append(status)
+            if "comment" in key:
+                comment = value
+                comments.append(comment)
+    
+    i = 0
+    for x in emails:
+        entry = pd.Series([att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]], index=df.columns)
+        df = df.append(entry, ignore_index=True)
+        i+=1
+    df = df.set_index('email')
+    df.fillna('', inplace=True)
+    print(df) 
+    df.to_sql('attendance', engine, if_exists="append")
+    topic = "attendance"
+    return render_template("confirmation.html", topic = topic)
 
 #%%
 @app.route('/schedule/<dow>')
@@ -99,6 +193,7 @@ def display_schedule(dow):
     
 @app.route('/today/<classname>/<dow>/<per>')
 def today(classname, dow, per):
+    
     form = TodayForm(request.form)
     day = dow[2:4]
     if day=='M':
@@ -125,6 +220,10 @@ def today(classname, dow, per):
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     schedule = Schedule.query.all()
     return render_template('today.html', students=students, form=form, title=title, schedid = schedid, schedule = schedule)    
+
+@app.route('/results')
+def results():
+    return render_template('results.html')
     
 @app.route('/confirmation/<filename>')
 def confirmation(filename):
@@ -156,9 +255,10 @@ def confirmation(filename):
 def classes():
     group = Group.query.all()
     schedule = Schedule.query.all()
+    attendance = Attendance.query.all()
     #room = Group.query(Group.room).filter_by(classid='7-101')
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
-    return render_template('class.html', group = group, schedule=schedule)
+    return render_template('class.html', group = group, schedule=schedule, attendance=attendance)
 
 @app.route('/get_students/<classname>')
 def get_students(classname):
@@ -166,10 +266,36 @@ def get_students(classname):
     title = classname
     return render_template('students.html', students=students, title=title)
 
-@app.route('/attendance')
-def attendance():
-    return render_template('attendance.html')
+#%%
+@app.route('/records', methods=["GET" , "POST"])
+def records():
+    title = 'Attendance Records'
+    classes = Course.query.all()
+    form = AttendanceRecordForm()
+    return render_template('records.html', title=title, classes=classes, form=form)
 
+
+@app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
+def track_attendance(category):
+    courseid = ''
+    student = ''
+    date = ''
+
+    if category == 'class':
+        courseid = request.form['courseid']
+        attendance = Attendance.query.filter_by(courseid = courseid).all()
+    
+    elif category == 'student':
+        student = request.form['student_list']
+        attendance = Attendance.query.filter_by(email = student).all() 
+        
+    elif category == 'date':
+        date = request.form['date']
+        attendance = Attendance.query.filter_by(att_date = date).all()   
+    else:
+        return "<H1> Please make a selection </H1>"
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, date=date, category=category)
+#%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
     global schedule
@@ -211,7 +337,7 @@ def about():
 
 @app.route('/lessons/<day>')
 def lessons(day):
-    title = "Lessons"
+    title = "My Lessons"
     if day=='all':
         lessons = Lessons.query.all()
     else:
