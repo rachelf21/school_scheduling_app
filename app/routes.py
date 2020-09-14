@@ -81,7 +81,7 @@ def attendance(classname, courseid, dow, per):
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
     class_att_records=[]
-    students = Student.query.filter_by(classid=classname).order_by(Student.email).all()
+    students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     for s in students:
         student_form = StudentAttendanceForm()
         student_form.email = s.email
