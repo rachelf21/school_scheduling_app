@@ -62,6 +62,7 @@
     >
       <tr>
         <th style="display: none">Email</th>
+        <th>I</th>
         <th>Name</th>
         <th>Status</th>
         <th>Comment</th>
@@ -69,6 +70,7 @@
       {% for student in att_form.students %}
       <tr>
         <td style="display: none">{{ student.email}}</td>
+        <td><a href="/track_attendance/{{ student.email.data}}">i</a></td> 
         <td>{{ student.student_name}}</td>
         <td>{{ student.status}}</td>
         <td>{{ student.comment(length=300)|safe}}</td>

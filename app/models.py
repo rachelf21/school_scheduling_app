@@ -98,14 +98,16 @@ class Student(db.Model):
     parent1 = db.Column(db.String(255))
     parent2 = db.Column(db.String(255))
     parent3 = db.Column(db.String(255))
+    notes = db.Column(db.String(500))
     
-    def __init__(self,email, classid, name, parent1, parent2, parent3):
+    def __init__(self,email, classid, name, parent1, parent2, parent3, notes):
         self.email = email
         self.classid = classid
         self.name = name
         self.parent1 = parent1
         self.parent2 = parent2
         self.parent3 = parent3
+        self.notes = notes
     
     def __repr__(self):
         return f"Student('{self.name}', '{self.classid}')"

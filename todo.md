@@ -18,6 +18,9 @@
 - [x] add ability to retrieve attendance records for specific class
 - [x] add ability to retrieve attendance records for specific student
 - [x] add ability to retrieve attendance records for specific day
+- [ ] attendance records to display latest dates first
+- [ ] add student detail when click on student
+- [x] add ability to click on student when taking attendance to bring up past attendance
 - [ ] adjust display on phone
 
 ### HTML PAGES

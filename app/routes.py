@@ -81,7 +81,7 @@ def attendance(classname, courseid, dow, per):
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
     class_att_records=[]
-    students = Student.query.filter_by(classid=classname).all()
+    students = Student.query.filter_by(classid=classname).order_by(Student.email).all()
     for s in students:
         student_form = StudentAttendanceForm()
         student_form.email = s.email
@@ -283,17 +283,20 @@ def track_attendance(category):
 
     if category == 'class':
         courseid = request.form['courseid']
-        attendance = Attendance.query.filter_by(courseid = courseid).all()
+        attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.attid.desc()).all()
     
     elif category == 'student':
         student = request.form['student_list']
-        attendance = Attendance.query.filter_by(email = student).all() 
-        
+        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all() 
+                
     elif category == 'date':
         date = request.form['date']
-        attendance = Attendance.query.filter_by(att_date = date).all()   
+        attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid.desc()).all()   
+    
     else:
-        return "<H1> Please make a selection </H1>"
+        student = category
+        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
+    
     return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, date=date, category=category)
 #%%
 @app.route('/weekly_schedule/<wk>')
@@ -339,7 +342,7 @@ def about():
 def lessons(day):
     title = "My Lessons"
     if day=='all':
-        lessons = Lessons.query.all()
+        lessons = Lessons.query.order_by(Lessons.lessonid.desc()).all()
     else:
         lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessonid.desc())
     return render_template('lessons.html', title = title, lessons = lessons)  
