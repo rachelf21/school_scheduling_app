@@ -375,3 +375,31 @@ def lunch_menu():
 @app.route('/denied')
 def denied():
     return render_template('denied.html')
+
+@app.route('/edit_lesson/<lessonid>/<content>')
+def edit_lesson(lessonid, content):
+    #sql_df = pd.read_sql_query("Select * from period" , engine, index_col='periodid')
+
+    return render_template('edit.html', lessonid=lessonid, content=content)
+
+@app.route('/update_lesson/<lessonid>/<newcontent>')
+def update_lesson(lessonid, newcontent):
+    query = "UPDATE lessons set content = '" + newcontent + "' WHERE lessonid = '" + lessonid + "';"
+    
+    print(lessonid)
+    print(newcontent)
+    with engine.begin() as conn:     # TRANSACTION
+        conn.execute(query)
+    return render_template("confirmation.html", topic="updated lesson")
+
+
+@app.route('/delete_lesson/<lessonid>')
+def delete_lesson(lessonid):
+    topic = "delete lesson"
+    print(lessonid)
+    query = "DELETE FROM lessons WHERE lessonid = " + lessonid + ";"
+    #df = pd.read_sql_query(query, engine)
+    with engine.begin() as conn:     # TRANSACTION
+        conn.execute(query)
+        print('lesson has been deleted')
+    return render_template('confirmation.html', topic=topic)

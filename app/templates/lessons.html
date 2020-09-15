@@ -7,10 +7,9 @@
   style="border: 0px red solid; width: 100%"
 >
   <thead>
-    <th>Date</th>
-    <th>Per</th>
-    <th>Class</th>
+    <th>LessonID</th>
     <th>Content</th>
+    <th>Actions</th>
   </thead>
   <tbody>
     {% for lesson in lessons %}
@@ -22,10 +21,12 @@
           lessondate = ld.slice(-5);
           document.write(lessondate);
         </script>
+        <br />{{ lesson.scheduleid}} <br />{{ lesson.courseid}}
       </td>
-      <td>{{ lesson.scheduleid}}</td>
-      <td>{{ lesson.courseid}}</td>
-      <td>{{ lesson.content}}</td>
+      <td contenteditable="true">{{ lesson.content}}</td>
+      <td>
+        <a href="/edit_lesson/{{ lesson.lessonid}}/{{ lesson.content}}">Edit </a>| <a href="/delete_lesson/{{ lesson.lessonid}}">Delete </a>
+      </td>
     </tr>
     {%endfor%}
   </tbody>
