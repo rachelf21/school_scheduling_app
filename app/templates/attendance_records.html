@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
 
-<h1 class="mb-4 text-center">Attendance Records by {{category}}</h1>
+<h1 id="h1" class="mb-4 text-center">Attendance Tracking</h1>
 <hr />
 <p></p>
 <h4 id="page_title" class="mt-4 mb-4 text-center">test</h4>
@@ -12,9 +12,11 @@
   if (category == "class") {
     title = "{{courseid}}";
   } else if (category == "student") {
-    title = "{{student}}";
-  } else {
+    title = "{{student_name}}<br> {{student_class}}";
+  } else if (category == "date") {
     title = "{{date}}";
+  } else {
+    title = "{{student_name}} <br> {{student_class}}";
   }
   console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;

@@ -277,6 +277,8 @@ def records():
 
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
 def track_attendance(category):
+    student_name = ''
+    student_class = ''
     courseid = ''
     student = ''
     date = ''
@@ -287,6 +289,9 @@ def track_attendance(category):
     
     elif category == 'student':
         student = request.form['student_list']
+        student_name = Student.query.filter_by(email = student).first().name
+        print(student_name)
+        student_class = Student.query.filter_by(email = student).first().classid        
         attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all() 
                 
     elif category == 'date':
@@ -295,9 +300,12 @@ def track_attendance(category):
     
     else:
         student = category
+        student_name = Student.query.filter_by(email = student).first().name
+        print(student_name)
+        student_class = Student.query.filter_by(email = student).first().classid
         attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
     
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, date=date, category=category)
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category)
 #%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
