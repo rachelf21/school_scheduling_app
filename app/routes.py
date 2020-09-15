@@ -288,6 +288,12 @@ def records():
     return render_template('records.html', title=title, classes=classes, form=form)
 
 
+@app.route('/check_absences/<courseid>/<lessondate>')
+def check_absences(courseid,lessondate):
+    category = 'class'
+    attendance = Attendance.query.filter_by(courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category)
+        
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
 def track_attendance(category):
     student_name = ''
@@ -299,7 +305,7 @@ def track_attendance(category):
     if category == 'class':
         courseid = request.form['courseid']
         attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.attid.desc()).all()
-    
+            
     elif category == 'student':
         student = request.form['student_list']
         student_name = Student.query.filter_by(email = student).first().name
