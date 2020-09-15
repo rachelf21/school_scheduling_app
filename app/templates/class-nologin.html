@@ -1,0 +1,59 @@
+{% extends "base-denied.html" %} {% block content %}
+
+<h6 class = 'font-weight-light'>Anonymous User</h6>
+
+        <div style="text-align: center">
+          <h1 class='mb-4'>All Classes</h1>
+
+        </div>
+        <table
+          id="myTable"
+          class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive text-center"
+          style="border: 0px red solid"
+        >
+          <thead>
+            <th>Class ID</th>
+            <th>Gr</th>
+            <th>S</th>
+            <th>Level</th>
+            <th>Room</th>
+            <th>Amt</th>
+          </thead>
+          <tbody>
+            {% for group in group %} {%if group.classid != '0-0' %}
+            <tr>
+              <td>
+                <script>
+                  var classlink = "{{ group.classid}}";
+                  document.write("<a href='/get_students/" + classlink + "'>{{ group.classid}}</a>");
+                </script>
+              </td>
+              <td>{{ group.grade}}</td>
+              <td>{{ group.gender}}</td>
+              <td>{{ group.level}}</td>
+              <td>{{ group.room}}</td>
+              <td>{{ group.amount}}</td>
+            </tr>
+            {%endif%} {%endfor%}
+          </tbody>
+        </table>
+
+        <script>
+          $("#myTable").DataTable({
+            pageLength: 20,
+            filter: true,
+            deferRender: true,
+            //scrollY: 1200,
+            scrollCollapse: true,
+            scroller: true,
+            ordering: true,
+            select: true,
+            bSort: false,
+          });
+        </script>
+
+{%endblock content%}
+      </div>
+    </main>
+  </body>
+</html>

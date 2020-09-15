@@ -25,7 +25,8 @@
 <table id="myTable" class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive" style="border: 0px red solid">
   <thead>
     <th>Date</th>
-    <th>Schedule ID</th>
+    <th>Period</th>
+    <th>Class</th>
     <th>Name</th>
     <th>Status</th>
     <th>Comments</th>
@@ -35,6 +36,11 @@
     <tr>
       <td>{{ att.att_date}}</td>
       <td>{{ att.scheduleid}}</td>
+      <td>
+        <script>
+          document.write("{{ att.courseid}}".substring(0, 5));
+        </script>
+      </td>
       <td>{{ att.name}}</td>
       <td>{{ att.status}}</td>
       <td>{{ att.comment}}</td>
@@ -43,16 +49,5 @@
     {%endif%} {%endfor%}
   </tbody>
 </table>
-<script>
-  var title = "";
-  var category = "{{category}}";
-  if (category == "Class") {
-    title = "{{courseid}}";
-  } else if (category == "Student") {
-    title = "{{student}}";
-  } else {
-    title = "{{date}}";
-  }
-  document.getElementById("title").innerText = title;
-</script>
+
 {% endblock content %}

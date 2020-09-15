@@ -260,6 +260,16 @@ def classes():
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
     return render_template('class.html', group = group, schedule=schedule, attendance=attendance)
 
+
+@app.route('/classes_nologin')
+def classes_nologin():
+    group = Group.query.all()
+    schedule = Schedule.query.all()
+    attendance = Attendance.query.all()
+    #room = Group.query(Group.room).filter_by(classid='7-101')
+    #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
+    return render_template('class-nologin.html', group = group, schedule=schedule, attendance=attendance)
+
 @app.route('/get_students/<classname>')
 def get_students(classname):
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
@@ -358,3 +368,7 @@ def lessons(day):
 @app.route('/lunch_menu') 
 def lunch_menu():     
     return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')
+
+@app.route('/denied')
+def denied():
+    return render_template('denied.html')
