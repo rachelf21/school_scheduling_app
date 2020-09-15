@@ -261,21 +261,24 @@ def classes():
     return render_template('class.html', group = group, schedule=schedule, attendance=attendance)
 
 
-@app.route('/classes_nologin')
-def classes_nologin():
+@app.route('/classes_anon')
+def classes_anon():
     group = Group.query.all()
     schedule = Schedule.query.all()
     attendance = Attendance.query.all()
     #room = Group.query(Group.room).filter_by(classid='7-101')
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
-    return render_template('class-nologin.html', group = group, schedule=schedule, attendance=attendance)
+    return render_template('classes_anon.html', group = group, schedule=schedule, attendance=attendance)
 
-@app.route('/get_students/<classname>')
-def get_students(classname):
+@app.route('/get_students/<access>/<classname>')
+def get_students(access, classname):
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     title = classname
-    return render_template('students.html', students=students, title=title)
-
+    if access == 'a':
+        return render_template('students.html', students=students, title=title)
+    
+    elif access == 'd':
+                return render_template('students-denied.html', students=students, title=title)
 #%%
 @app.route('/records', methods=["GET" , "POST"])
 def records():
