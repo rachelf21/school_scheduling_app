@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, HiddenField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from app.models import Course, Student
 from wtforms.fields.html5 import DateField
@@ -20,7 +20,8 @@ class ClassAttendanceForm(FlaskForm):
     dow = StringField('Day')
     scheduleid = StringField('Schedule')
     classid = StringField('Class')
-    courseid = StringField('Course ID')
+    courseid = HiddenField('Course')
+    amount = IntegerField("Amt")
     students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()])
     data = StringField('data')
     save = SubmitField('Submit')

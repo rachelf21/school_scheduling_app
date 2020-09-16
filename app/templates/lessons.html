@@ -27,7 +27,8 @@
       </td>
       <td contenteditable="true">{{ lesson.content}}</td>
       <td>
-        <a href="/edit_lesson/{{ lesson.lessonid}}/{{ lesson.content}}">Edit </a>| <a href="/delete_lesson/{{ lesson.lessonid}}">Delete </a>
+        <a href="/edit_lesson/{{ lesson.lessonid}}/{{ lesson.content}}">Edit </a>|
+        <a href="/delete_lesson/{{ lesson.lessonid}}" onclick="return confirm('Are you sure youwant to delete?')">Delete </a>
       </td>
     </tr>
     {%endfor%}

@@ -77,6 +77,8 @@ def udpate_lessons():
 
 @app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
 def attendance(classname, courseid, dow, per): 
+    amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
+    print("AMOUNT", amount)
     att_form = ClassAttendanceForm(request.form)
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
@@ -100,7 +102,7 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title)
+        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
@@ -108,7 +110,7 @@ def attendance(classname, courseid, dow, per):
 def udpate_attendance():
     att_date = request.form['date']
     scheduleid = request.form['scheduleid']
-    classid = request.form['classid']
+    classid = request.form['courseid'][0:5]
     courseid = request.form['courseid']
     email = ''
     status = ''
