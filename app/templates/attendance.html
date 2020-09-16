@@ -25,16 +25,16 @@
     </script>
     <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mb-4 mt-0 form-control-lg") }}</div>
   </legend>
-  <div class="row flex-nowrap" style="border:0px solid red; width:100%">
-    <div class="ml-2 mr-2 col-xs-8">
-      {{ att_form.date.label(class="form-control-label") }} {{ att_form.date(class="form-control form-control-md") }}
+  <div class="row" style="flex-wrap:nowrap; border:0px solid red; width:100%">
+    <div class="ml-2 col-xs-4">
+      {{ att_form.date.label(class="form-control-label form-control-sm") }} {{ att_form.date(class="form-control form-control-sm") }}
       <script>
         document.getElementById("date").value = date;
       </script>
     </div>
-
-    <div class="mr-2 col-xs-4">
-      {{ att_form.scheduleid.label(class="form-control-label") }} {{ att_form.scheduleid(class="form-control form-control-md") }}
+  
+    <div class="ml-2 col-xs-3">
+      {{ att_form.scheduleid.label(class="form-control-label form-control-sm") }} {{ att_form.scheduleid(class="form-control form-control-sm") }}
       <script>
         document.getElementById("scheduleid").value = scheduleid;
       </script>
@@ -42,14 +42,28 @@
 
 
     <div class="" style = "display:none">
-      {{ att_form.courseid.label(class="form-control-label") }} {{ att_form.courseid(class="form-control form-control-md") }}
+      {{ att_form.courseid.label(class="form-control-label form-control-sm") }} {{ att_form.courseid(class="form-control form-control-sm") }}
       <script>
         document.getElementById("courseid").value = courseid;
       </script>
     </div>
 
-    <div class="col-xs-2">
-      {{ att_form.amount.label(class="form-control-label") }} {{ att_form.amount(class="form-control form-control-md") }}
+    <div class="ml-2 col-xs-3">
+      {{ att_form.start_time.label(class="form-control-label form-control-sm") }} {{ att_form.start_time(class="form-control form-control-sm") }}
+      <script>
+        document.getElementById("courseid").value = courseid;
+      </script>
+    </div>
+
+    <div class="ml-2 col-xs-3">
+      {{ att_form.end_time.label(class="form-control-label form-control-sm") }} {{ att_form.end_time(class="form-control form-control-sm") }}
+      <script>
+        document.getElementById("courseid").value = courseid;
+      </script>
+    </div>
+
+    <div class="ml-2 col-xs-3">
+      {{ att_form.amount.label(class="form-control-label form-control-sm") }} {{ att_form.amount(class="form-control form-control-sm") }}
       <script>
         document.getElementById("amount").value = amount;
       </script>
@@ -118,5 +132,5 @@
     </table>
   </div>
 </form>
-
+<p class='mt-4 mb-4'>&nbsp;</p>
 {%endblock%}

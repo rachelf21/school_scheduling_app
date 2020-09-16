@@ -78,10 +78,13 @@ def udpate_lessons():
 @app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
 def attendance(classname, courseid, dow, per): 
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
+    period = dow[2:]+per
     print("AMOUNT", amount)
     att_form = ClassAttendanceForm(request.form)
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
+    att_form.start_time.data = Period.query.filter_by(periodid=period).first().start_time
+    att_form.end_time.data = Period.query.filter_by(periodid=period).first().end_time
     class_att_records=[]
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     for s in students:
@@ -150,7 +153,7 @@ def udpate_attendance():
         i+=1
     df = df.set_index('email')
     df.fillna('', inplace=True)
-    print(df) 
+    #print(df) 
     df.to_sql('attendance', engine, if_exists="append")
     topic = "attendance"
     return render_template("confirmation.html", topic = topic)

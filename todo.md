@@ -31,7 +31,7 @@
 - [x] create HTML pages for each table
 - [x] save information from form into table
 - [x] dropdown for status A/P
-- [ ] add time to daily attendance sheet
+- [x] add time to daily attendance sheet
 - [x] class in All Classes list should link to that class
 - [ ] scheduleid's should be listed for each class
 - [x] remove my classes sidebar, make first col biger

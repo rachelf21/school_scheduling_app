@@ -21,6 +21,8 @@ class ClassAttendanceForm(FlaskForm):
     scheduleid = StringField('Schedule')
     classid = StringField('Class')
     courseid = HiddenField('Course')
+    start_time = TimeField('Start', format="%#I:%M")
+    end_time = TimeField('End', format="%#I:%M")
     amount = IntegerField("Amt")
     students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()])
     data = StringField('data')
