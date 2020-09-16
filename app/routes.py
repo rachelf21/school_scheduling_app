@@ -30,7 +30,7 @@ def retrieve_students(info):
 def addLesson(classid, courseid, dow, per):
     
     classinfo = Group.query.all()
-
+    classid = courseid[0:5]
     
     form = AddLessonForm()
     form.title = "Add Lesson for " + courseid
@@ -41,8 +41,8 @@ def addLesson(classid, courseid, dow, per):
     form.end_time.data = Period.query.filter_by(periodid=schedid[2:]).first().end_time
     form.subject.data = courseid[6:]
     form.room.data =  Group.query.filter_by(classid=classid).first().room
-    form.grade.data = classid[0:1]
-    form.classid.data = classid
+    form.grade.data = courseid[0:1]
+    form.classid.data = courseid[0:5]
     form.courseid.data = courseid
     form.total.data = Group.query.filter_by(classid=classid).first().amount
     form.content.data = ''
@@ -52,13 +52,13 @@ def addLesson(classid, courseid, dow, per):
 def udpate_lessons():
     date = request.form['date']
     scheduleid =  request.form['scheduleid']
-    periodid = request.form['periodid']
+    periodid = request.form['scheduleid'][2:]
     start_time = request.form['start_time']
     end_time = request.form['end_time']
     subject = request.form['courseid'][6:]
     room = request.form['room']
-    grade = request.form['classid'][0:1]
-    classid = request.form['classid']
+    grade = request.form['courseid'][0:1]
+    classid = request.form['courseid'][0:5]
     courseid = request.form['courseid']
     total = request.form['total']
     content = request.form['content']

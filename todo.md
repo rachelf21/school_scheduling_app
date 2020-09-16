@@ -22,8 +22,9 @@
 - [ ] add student detail when click on student
 - [x] add ability to click on student when taking attendance to bring up past attendance
 - [ ] adjust display on phone
-- [ ] edit lesson when in view lesson mode
+- [x] edit lesson when in view lesson mode
 - [x] delete lesson
+- [ ] add bootstrap flash success when added lesson and attendance
 
 ### HTML PAGES
 
