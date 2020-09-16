@@ -18,34 +18,36 @@
   btn-primary btn-md mb-2 mt-2 form-control-md") }}
   <br />
 
-  <div class="row mt-4 flex-nowrap">
-    <div class="ml-1 col-xs-3">
-      {{ form.date.label(class="form-control-label form-control-sm") }} {{ form.date(class="form-control form-control-md") }}
+  <div class="row no-gutters mt-4 flex-nowrap">
+    <div class="mr-1 col-xs-3 col-sm-3 col-lg-3 col-xl-2">
+      {{ form.date.label(class="form-control-label form-control-sm mb-0 mb-0") }} {{ form.date(class="form-control form-control-md") }}
       <script>
         document.getElementById("date").value = date;
       </script>
     </div>
-    <div class="ml-1 col-xs-3">
-      {{ form.scheduleid.label(class="form-control-label form-control-sm") }} {{ form.scheduleid(class="form-control form-control-md") }}
+    <div class="mr-1 col-xs-3 col-sm-2 col col-lg-2 col-xl-1">
+      {{ form.scheduleid.label(class="form-control-label form-control-sm mb-0") }} {{ form.scheduleid(class="form-control form-control-md")
+      }}
     </div>
 
-    <div class="ml-1 col-xs-3">
-      {{ form.start_time.label(class="form-control-label form-control-sm") }} {{ form.start_time(class="form-control form-control-md") }}
+    <div class="mr-1 col-xs-3 col-sm-2 col-lg-2 col-xl-1">
+      {{ form.start_time.label(class="form-control-label form-control-sm mb-0") }} {{ form.start_time(class="form-control form-control-md")
+      }}
     </div>
-    <div class="ml-1 col-xs-3">
-      {{ form.end_time.label(class="form-control-label form-control-sm") }} {{ form.end_time(class="form-control form-control-md") }}
+    <div class="col-xs-3 col-sm-2 col-lg-2 col-xl-1">
+      {{ form.end_time.label(class="form-control-label form-control-sm mb-0") }} {{ form.end_time(class="form-control form-control-md") }}
     </div>
   </div>
 
-  <div class="row flex-nowrap mt-4 mb-4">
-    <div class="col-sm-2">
-      {{ form.room.label(class="form-control-label form-control-sm") }} {{ form.room(class="form-control form-control-md") }}
+  <div class="row no-gutters mt-4 mb-4 flex-nowrap">
+    <div class="mr-1 col-xs-2 col-sm-1 col-md-1 col-lg-1">
+      {{ form.room.label(class="form-control-label form-control-sm mb-0") }} {{ form.room(class="form-control form-control-md") }}
     </div>
-    <div class="col-sm-5">
-      {{ form.courseid.label(class="form-control-label form-control-sm") }} {{ form.courseid(class="form-control form-control-md") }}
+    <div class="mr-1 col-xs-4 col-sm-5 col-md-3 col-lg-2">
+      {{ form.courseid.label(class="form-control-label form-control-sm mb-0") }} {{ form.courseid(class="form-control form-control-md") }}
     </div>
-    <div class="col-sm-2">
-      {{ form.total.label(class="form-control-label form-control-sm") }} {{ form.total(class="form-control form-control-md") }}
+    <div class="mr-1 col-xs-2 col-sm-2 col-md-2 col-lg-1">
+      {{ form.total.label(class="form-control-label form-control-sm mb-0") }} {{ form.total(class="form-control form-control-md") }}
     </div>
   </div>
 </form>

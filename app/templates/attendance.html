@@ -15,6 +15,9 @@
   year = today.getFullYear();
   var date = year + "-" + month + "-" + day;
 </script>
+
+
+
 <div id="top_of_form" >
 <form action="/update_attendance" method="post" name="att_form">
   {{ att_form.hidden_tag() }}
@@ -25,53 +28,59 @@
     </script>
     <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mb-4 mt-0 form-control-lg") }}</div>
   </legend>
-  <div class="row" style="flex-wrap:nowrap; border:0px solid red; width:100%">
-    <div class="ml-2 col-xs-4">
-      {{ att_form.date.label(class="form-control-label form-control-sm") }} {{ att_form.date(class="form-control form-control-sm") }}
+
+  <!-- <div class="row" style="flex-wrap:nowrap; border:0px solid red; width:100%"> -->
+
+  <div class="row no-gutters" style="border:0px solid red; width:100%">
+    <div class="col col-lg-3 col-xl-2 mr-1">
+      {{ att_form.date.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.date(class="form-control form-control-sm") }}
       <script>
         document.getElementById("date").value = date;
       </script>
     </div>
   
-    <div class="ml-2 col-xs-3">
-      {{ att_form.scheduleid.label(class="form-control-label form-control-sm") }} {{ att_form.scheduleid(class="form-control form-control-sm") }}
+    <div class="col col-lg-2 col-xl-1 mr-1">
+      {{ att_form.scheduleid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.scheduleid(class="form-control form-control-sm") }}
       <script>
         document.getElementById("scheduleid").value = scheduleid;
       </script>
     </div>
 
 
-    <div class="" style = "display:none">
-      {{ att_form.courseid.label(class="form-control-label form-control-sm") }} {{ att_form.courseid(class="form-control form-control-sm") }}
+    <div class="" style = "display:none ">
+      {{ att_form.courseid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.courseid(class="form-control form-control-sm") }}
       <script>
         document.getElementById("courseid").value = courseid;
       </script>
     </div>
 
-    <div class="ml-2 col-xs-3">
-      {{ att_form.start_time.label(class="form-control-label form-control-sm") }} {{ att_form.start_time(class="form-control form-control-sm") }}
+    <div class="col col-lg-2 col-xl-1 mr-1">
+      {{ att_form.start_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.start_time(class="form-control form-control-sm") }}
       <script>
         document.getElementById("courseid").value = courseid;
       </script>
     </div>
 
-    <div class="ml-2 col-xs-3">
-      {{ att_form.end_time.label(class="form-control-label form-control-sm") }} {{ att_form.end_time(class="form-control form-control-sm") }}
+    <div class="col col-lg-2 col-xl-1 mr-1">
+      {{ att_form.end_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.end_time(class="form-control form-control-sm") }}
       <script>
         document.getElementById("courseid").value = courseid;
       </script>
     </div>
 
-    <div class="ml-2 col-xs-3">
-      {{ att_form.amount.label(class="form-control-label form-control-sm") }} {{ att_form.amount(class="form-control form-control-sm") }}
+    <div class="nopadding col col-lg-2 col-xl-1">
+      {{ att_form.amount.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.amount(class="form-control form-control-sm ") }}
       <script>
         document.getElementById("amount").value = amount;
       </script>
     </div>
 
   </div>
+  
+
 </div>
-  <div class="mt-4">
+ 
+<div id="attendance_table" class="mt-4">
     <table
       id="myTable"
       class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
