@@ -32,7 +32,7 @@
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
+        <div class="container-fluid">
           <a class="navbar-brand" href="/">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
           </a>
@@ -57,10 +57,11 @@
         </div>
       </nav>
     </header>
-    <main role="main" class="container-fluid">
+    <main role="main"  class="container-fluid">
       <!--style="margin: 0 auto; width: 75% !important"-->
-      <div class="row">
-        <div class="col-md-9" style="border: 0px solid red;">
+      
+      <div class="row" style="border: 0px solid blue;">
+        <div class="col-md-9" style="border: 0px solid red;"  class="d-flex justify-content-center">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -97,9 +98,6 @@
 
 
       </div>
-    </main>
-
-
-    
+    </main>   
   </body>
 </html>
