@@ -11,24 +11,44 @@
     <th>Date</th>
     <th>Content</th>
     <th></th>
+    <th>Plan</th>
   </thead>
+
   <tbody>
     {% for lesson in lessons %}
     <tr>
       <td>
         <script>
-          courseid = "{{ lesson.courseid}}";
+          var return_all = "{{return_all}}";
+          console.log(return_all);
+          var courseid = "{{ lesson.courseid}}";
           var ld = "{{ lesson.lessondate}}";
           lessondate = ld.slice(-5);
           document.write(lessondate);
         </script>
         <br />{{ lesson.scheduleid}} <br />
+        {{lesson.courseid}}<br />
         <a href="/check_absences/{{lesson.courseid}}/{{lesson.lessondate}}" class="small">Absences</a>
       </td>
-      <td contenteditable="true">{{ lesson.content}}</td>
+      <td>{{ lesson.content}}</td>
       <td>
         <a href="/edit_lesson/{{ lesson.lessonid}}/{{ lesson.content}}">Edit </a>|
-        <a href="/delete_lesson/{{ lesson.lessonid}}" onclick="return confirm('Are you sure youwant to delete?')">Delete </a>
+        <a href="/delete_lesson/{{ lesson.lessonid}}" onclick="return confirm('Are you sure you want to delete?')">Delete </a>
+      </td>
+      <td>
+        <script>
+          var lessonid = "{{lesson.lessonid}}";
+          var c = "{{lesson.courseid}}".substring(0, 5);
+          var courseid = "{{lesson.courseid}}";
+          var sched = "{{lesson.scheduleid}}";
+          var dow = sched.substring(0, sched.length - 1);
+          var per = sched.substring(sched.length - 1, sched.length);
+          var t = '<a href="/addLesson/' + c + "/" + courseid + "/" + dow + "/" + per + "/" + lessonid + '">' + "PLAN " + "</a> | ";
+          document.write(t);
+
+          if ("{{lesson.plan}}" == "None") document.write("");
+          else document.write("{{lesson.plan}}");
+        </script>
       </td>
     </tr>
     {%endfor%}
@@ -58,8 +78,8 @@
 
 <script>
   window.onload = function () {
-    console.log(courseid);
-    document.getElementById("course").innerHTML = courseid;
+    console.log("return_all" + return_all);
+    if (return_all == "0") document.getElementById("course").innerHTML = courseid;
   };
 </script>
 {% endblock content %}

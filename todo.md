@@ -25,6 +25,8 @@
 - [x] edit lesson when in view lesson mode
 - [x] delete lesson
 - [ ] add bootstrap flash success when added lesson and attendance
+- [x] add feature to add lesson plan
+- [ ] display lesson plan in schedule view
 
 ### HTML PAGES
 

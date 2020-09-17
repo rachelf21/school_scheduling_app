@@ -157,6 +157,7 @@ class Lessons(db.Model):
     courseid = db.Column(db.String(25))
     total = db.Column(db.Integer)
     content = db.Column(db.String(1000))
+    plan = db.Column(db.String(1000))
     
     def __init__(self,lessondate, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content):
         self.lessondate = lessondate, 

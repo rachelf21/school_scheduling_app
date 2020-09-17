@@ -26,14 +26,14 @@ def retrieve_students(info):
 #%%
 
 
-@app.route('/addLesson/<classid>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
-def addLesson(classid, courseid, dow, per):
-    
+@app.route('/addLesson/<classid>/<courseid>/<dow>/<per>/<lessonid>', methods=['GET', 'POST'])
+def addLesson(classid, courseid, dow, per,lessonid):
+    cat='0'
     classinfo = Group.query.all()
     classid = courseid[0:5]
     
     form = AddLessonForm()
-    form.title = "Add Lesson for " + courseid
+    form.title = "Plan Lesson for " + courseid
     schedid = dow+per
     form.scheduleid.data = schedid
     form.periodid.data = schedid[2:]
@@ -46,10 +46,16 @@ def addLesson(classid, courseid, dow, per):
     form.courseid.data = courseid
     form.total.data = Group.query.filter_by(classid=classid).first().amount
     form.content.data = ''
-    return render_template("addLesson.html", form = form)
+    
+    if lessonid == 'a':
+        form.title = "Add Lesson for " + courseid
+        cat='Add'
+    else:
+        cat="Plan"
+    return render_template("addLesson.html", form = form, cat=cat, lessonid=lessonid) 
 
-@app.route('/update_lessons', methods=['GET', 'POST'])
-def udpate_lessons():
+@app.route('/update_lessons/<lessonid>', methods=['GET', 'POST'])
+def udpate_lessons(lessonid):
     date = request.form['date']
     scheduleid =  request.form['scheduleid']
     periodid = request.form['scheduleid'][2:]
@@ -64,13 +70,20 @@ def udpate_lessons():
     content = request.form['content']
     topic = "lesson"
         
-    df = pd.DataFrame(columns = ['lessondate','scheduleid', 'periodid', 'start_time', 'end_time', 'subject', 'room', 'grade', 'classid', 'courseid', 'total', 'content'])
-    entry = pd.Series([date, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content], index=df.columns)
-    df = df.append(entry, ignore_index=True)
-    df = df.set_index('periodid')
-    df.fillna('', inplace=True)
-    print(df) 
-    df.to_sql('lessons', engine, if_exists="append")    
+    if lessonid == 'a':
+        df = pd.DataFrame(columns = ['lessondate','scheduleid', 'periodid', 'start_time', 'end_time', 'subject', 'room', 'grade', 'classid', 'courseid', 'total', 'content'])
+        entry = pd.Series([date, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content], index=df.columns)
+        df = df.append(entry, ignore_index=True)
+        df = df.set_index('periodid')
+        df.fillna('', inplace=True)
+        print(df) 
+        df.to_sql('lessons', engine, if_exists="append")
+
+    else:
+        topic = "plan"
+        query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "';"
+        with engine.begin() as conn:     # TRANSACTION
+            conn.execute(query)
     return render_template("confirmation.html" , topic=topic)
 #%%
 
@@ -165,6 +178,7 @@ def display_schedule(dow):
     #x = Course.query.join(Group, Course.classid == Group.classid)
     global title
     title = ''
+    lessons = Lessons.query.all()
     
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
@@ -194,7 +208,7 @@ def display_schedule(dow):
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons)
     
 @app.route('/today/<classname>/<dow>/<per>')
 def today(classname, dow, per):
@@ -372,12 +386,14 @@ def about():
 
 @app.route('/lessons/<day>')
 def lessons(day):
+    return_all = 0
     title = "My Lessons"
     if day=='all':
-        lessons = Lessons.query.order_by(Lessons.lessonid.desc()).all()
+        return_all=1
+        lessons = Lessons.query.order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
     else:
-        lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessonid.desc())
-    return render_template('lessons.html', title = title, lessons = lessons)  
+        lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
+    return render_template('lessons.html', title = title, lessons = lessons, return_all=return_all)  
 
 @app.route('/lunch_menu') 
 def lunch_menu():     
