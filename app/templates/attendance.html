@@ -7,6 +7,7 @@
   var scheduleid = dow + "{{per}}";
   var courseid = "{{courseid}}";
   var amount = "{{amount}}";
+  var room = "{{room}}";
 
   var today = new Date();
   //var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -25,6 +26,9 @@
   <legend class="border-bottom mb-4">
     <script>
       document.write(courseid);
+      var x = "/lessons/"+courseid;
+      document.write('<a class="font-weight-light small" href="' + x + '"> | View Lessons</a> ');
+        
     </script>
     <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mb-4 mt-0 form-control-lg") }}</div>
   </legend>
@@ -68,10 +72,17 @@
       </script>
     </div>
 
-    <div class="nopadding col col-lg-2 col-xl-1">
+    <div class="nopadding col col-lg-2 col-xl-1 mr-1">
       {{ att_form.amount.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.amount(class="form-control form-control-sm ") }}
       <script>
         document.getElementById("amount").value = amount;
+      </script>
+    </div>
+
+    <div class="nopadding col col-lg-2 col-xl-1">
+      {{ att_form.room.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.room(class="form-control form-control-sm ") }}
+      <script>
+        document.getElementById("room").value = room;
       </script>
     </div>
 
@@ -80,6 +91,8 @@
 
 </div>
  
+
+
 <div id="attendance_table" class="mt-4">
     <table
       id="myTable"

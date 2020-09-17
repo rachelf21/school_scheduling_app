@@ -24,6 +24,7 @@ class ClassAttendanceForm(FlaskForm):
     start_time = TimeField('Start', format="%#I:%M")
     end_time = TimeField('End', format="%#I:%M")
     amount = IntegerField("Amt")
+    room = IntegerField("Rm")
     students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()])
     data = StringField('data')
     save = SubmitField('Submit')

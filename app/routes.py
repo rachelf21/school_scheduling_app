@@ -98,6 +98,8 @@ def attendance(classname, courseid, dow, per):
     title = "Attendance " + classname
     att_form.start_time.data = Period.query.filter_by(periodid=period).first().start_time
     att_form.end_time.data = Period.query.filter_by(periodid=period).first().end_time
+    room = Group.query.filter_by(classid=classname).first().room
+    att_form.room.data=room
     class_att_records=[]
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     for s in students:
@@ -118,7 +120,7 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount)
+        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
