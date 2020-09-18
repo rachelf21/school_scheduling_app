@@ -13,7 +13,7 @@
       style="border: 0px red solid"
     >
       <thead>
-        <th>Class ID</th>
+        <th>Class</th>
         <th>Gr</th>
         <th>S</th>
         <th>Level</th>
@@ -42,6 +42,7 @@
     <script>
       $("#myTable").DataTable({
         pageLength: 20,
+        paging: false,
         filter: true,
         deferRender: true,
         //scrollY: 1200,

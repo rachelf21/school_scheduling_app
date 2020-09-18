@@ -29,6 +29,7 @@
 - [ ] display lesson plan in schedule view
 - [x] option to display all students
 - [x] display total absences for attendance records
+- [ ] freeze first column in student table, attendance tracking table, class table
 
 ### HTML PAGES
 
