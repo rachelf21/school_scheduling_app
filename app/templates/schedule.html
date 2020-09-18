@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% block content %}
 
-<h1 class="mt-4 pt-4 text-center font-weight-normal" >{{title}}</h1>
+<h1 class="mt-1 4 text-center font-weight-normal" >{{title}}</h1>
 
 <div class="table-responsive">
 <table
   id="myTable"
-  class="table mx-auto  table-striped table-hover table-bordered text-center mt-4 pt-4  w-auto table-fixed  " 
+  class="table mx-auto  table-striped table-hover table-bordered text-center mt-4 pt-4  w-auto table-fixed " 
   style="border:0px solid green; width:auto; margin: 0px auto"
 >
   <thead>
@@ -54,7 +54,7 @@
           } else document.write("{{ schedule.course.subject}}");
         </script>
       </td>
-      <td>
+      <td class="text-nowrap">
         <script>
           var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var p = per[{{loop.index}}];
