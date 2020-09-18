@@ -293,8 +293,13 @@ def classes_anon():
 
 @app.route('/get_students/<access>/<classname>')
 def get_students(access, classname):
-    students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
-    title = classname
+    if classname == "all":
+        title = "All"
+        students = Student.query.order_by(Student.name, Student.classid).all()
+        
+    else:
+        students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
+        title = classname
     if access == 'a':
         return render_template('students.html', students=students, title=title)
     

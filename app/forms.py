@@ -18,7 +18,7 @@ class ClassAttendanceForm(FlaskForm):
     title = StringField('title')
     date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     dow = StringField('Day')
-    scheduleid = StringField('Schedule')
+    scheduleid = StringField('Sched')
     classid = StringField('Class')
     courseid = HiddenField('Course')
     start_time = TimeField('Start', format="%#I:%M")

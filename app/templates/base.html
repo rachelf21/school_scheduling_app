@@ -43,9 +43,11 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link mr-2" href="{{ url_for('index') }}">Home</a>
-              <a class="nav-item nav-link mr-2" href="/weekly_schedule/A">Week A</a>
-              <a class="nav-item nav-link mr-2" href="/weekly_schedule/B">Week B</a>
+              <a class="nav-item nav-link mr-2" href="/weekly_schedule/A">WeekA</a>
+              <a class="nav-item nav-link mr-2" href="/weekly_schedule/B">WeekB</a>
               <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}"> All Classes</a>
+              <a class="nav-item nav-link mr-2" href="get_students/a/all"> All Students</a> 
+              <a class="nav-item nav-link mr-2" a href="/lessons/all">Lessons</a>
               <a class="nav-item nav-link mr-2" href="/records"> Attendance Tracking</a>
             </div>
             <!-- Navbar Right Side -->
@@ -57,11 +59,11 @@
         </div>
       </nav>
     </header>
-    <main role="main"  class="container">
+    <main role="main"  class="container-fluid">
       <!--style="margin: 0 auto; width: 75% !important"-->
       
       <div class="row" style="border: 0px solid blue;">
-        <div class="col-md-9" style="border: 0px solid red;"  >
+        <div class="col-md-9" style="border: 0px red solid; "  >
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -73,7 +75,7 @@
           {% endwith %}
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-3">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-xl-2">
           <div class="content-section">
             <h3>My Schedule</h3>
             <p class='text-muted'>&nbsp;

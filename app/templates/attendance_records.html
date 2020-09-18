@@ -1,53 +1,60 @@
 {% extends "base.html" %} {% block content %}
 
-<h1 id="h1" class="mb-4 text-center">Attendance Tracking</h1>
-<hr />
-<p></p>
-<h4 id="page_title" class="mt-4 mb-4 text-center">test</h4>
+<div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto">
+    <h1 id="h1" class="mb-4 text-center">Attendance Tracking</h1>
+    <hr />
+    <p></p>
+    <h4 id="page_title" class="mt-4 mb-4 text-center">test</h4>
 
-<script>
-  var title = "";
-  var category = "{{category}}";
-  console.log("category", category);
-  if (category == "class") {
-    title = "{{courseid}}";
-  } else if (category == "student") {
-    title = "{{student_name}}<br> {{student_class}}";
-  } else if (category == "date") {
-    title = "{{date}}";
-  } else {
-    title = "{{student_name}} <br> {{student_class}}";
-  }
-  console.log("Title", title);
-  document.getElementById("page_title").innerHTML = title;
-</script>
+    <script>
+      var title = "";
+      var category = "{{category}}";
+      console.log("category", category);
+      if (category == "class") {
+        title = "{{courseid}}";
+      } else if (category == "student") {
+        title = "{{student_name}}<br> {{student_class}}";
+      } else if (category == "date") {
+        title = "{{date}}";
+      } else {
+        title = "{{student_name}} <br> {{student_class}}";
+      }
+      console.log("Title", title);
+      document.getElementById("page_title").innerHTML = title;
+    </script>
 
-<table id="myTable" class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive" style="border: 0px red solid">
-  <thead>
-    <th>Date</th>
-    <th>Period</th>
-    <th>Class</th>
-    <th>Name</th>
-    <th>Status</th>
-    <th>Comments</th>
-  </thead>
-  <tbody>
-    {% for att in attendance %} {% if att.status =='A'%}
-    <tr>
-      <td>{{ att.att_date}}</td>
-      <td>{{ att.scheduleid}}</td>
-      <td>
-        <script>
-          document.write("{{ att.courseid}}".substring(0, 5));
-        </script>
-      </td>
-      <td>{{ att.name}}</td>
-      <td>{{ att.status}}</td>
-      <td>{{ att.comment}}</td>
-    </tr>
+    <table
+      id="myTable"
+      class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+      style="border: 0px red solid"
+    >
+      <thead>
+        <th>Date</th>
+        <th>Period</th>
+        <th>Class</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Comments</th>
+      </thead>
+      <tbody>
+        {% for att in attendance %} {% if att.status =='A'%}
+        <tr>
+          <td>{{ att.att_date}}</td>
+          <td>{{ att.scheduleid}}</td>
+          <td>
+            <script>
+              document.write("{{ att.courseid}}".substring(0, 5));
+            </script>
+          </td>
+          <td>{{ att.name}}</td>
+          <td>{{ att.status}}</td>
+          <td>{{ att.comment}}</td>
+        </tr>
 
-    {%endif%} {%endfor%}
-  </tbody>
-</table>
-
+        {%endif%} {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock content %}

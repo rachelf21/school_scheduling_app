@@ -27,6 +27,7 @@
 - [ ] add bootstrap flash success when added lesson and attendance
 - [x] add feature to add lesson plan
 - [ ] display lesson plan in schedule view
+- [x] option to display all students
 
 ### HTML PAGES
 

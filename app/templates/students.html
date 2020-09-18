@@ -1,49 +1,57 @@
 {% extends "base.html" %} {% block content %}
-
-<h1>Students {{title}}</h1>
-<!-- <table
+<div id="outerdiv" style="display: flex">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto">
+    <h1>Students {{title}}</h1>
+    <!-- <table
   id="myTable"
   class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
   style="border: 0px red solid; margin: 0 auto; width: 75% !important"
 > -->
-<table id="myTable" class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive" style="border: 0px red solid">
-  <thead>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Parent1 Email</th>
-    <th>Parent2 Email</th>
-  </thead>
-  <tbody>
-    {% for students in students %}
-    <tr>
-      <td>{{ students.name}}</td>
-      <td>{{ students.email}}</td>
-      <td class="small">{{ students.parent1}}</td>
-      <td class="small">{{ students.parent2}}</td>
-    </tr>
-    {%endfor%}
-  </tbody>
-</table>
+    <table
+      id="myTable"
+      class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+      style="border: 0px red solid"
+    >
+      <thead>
+        <th>Name</th>
+        <th id="class" style="display: block">Class</th>
+        <th>Email</th>
+        <th>Parent1 Email</th>
+        <th>Parent2 Email</th>
+      </thead>
+      <tbody>
+        {% for students in students %}
+        <tr>
+          <td>{{ students.name}}</td>
+          <td name="classid" style="display: block">{{students.classid}}</td>
+          <td>{{ students.email}}</td>
+          <td class="small">{{ students.parent1}}</td>
+          <td class="small">{{ students.parent2}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
 
-<script>
-  $("#myTable").DataTable({
-    pageLength: 20,
-    filter: true,
-    deferRender: true,
-    //scrollY: 1200,
-    scrollCollapse: true,
-    scroller: true,
-    //ordering: true,
-    select: true,
-    bSort: false,
-    //order: [[2, "asc"]],
-  });
-</script>
+    <script>
+      $("#myTable").DataTable({
+        pageLength: 20,
+        filter: true,
+        deferRender: true,
+        //scrollY: 1200,
+        //scrollCollapse: true,
+        //scroller: true,
+        //ordering: true,
+        select: true,
+        bSort: false,
+        //order: [[2, "asc"]],
+      });
+    </script>
 
-<!-- <script>
+    <!-- <script>
   $(document).ready(function () {
     $("#myTable").DataTable();
   });
 </script> -->
-
+  </div>
+</div>
 {% endblock content %}
