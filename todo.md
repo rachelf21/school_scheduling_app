@@ -28,6 +28,7 @@
 - [x] add feature to add lesson plan
 - [ ] display lesson plan in schedule view
 - [x] option to display all students
+- [x] display total absences for attendance records
 
 ### HTML PAGES
 

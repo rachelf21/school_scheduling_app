@@ -295,8 +295,7 @@ def classes_anon():
 def get_students(access, classname):
     if classname == "all":
         title = "All"
-        students = Student.query.order_by(Student.name, Student.classid).all()
-        
+        students = Student.query.order_by(Student.name, Student.classid).all()       
     else:
         students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
         title = classname
@@ -322,35 +321,40 @@ def check_absences(courseid,lessondate):
         
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
 def track_attendance(category):
+    absences = 0
     student_name = ''
     student_class = ''
     courseid = ''
     student = ''
     date = ''
-
+    
     if category == 'class':
         courseid = request.form['courseid']
         attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.attid.desc()).all()
+        absences = Attendance.query.filter_by(courseid = courseid, status = 'A').count()
             
     elif category == 'student':
         student = request.form['student_list']
         student_name = Student.query.filter_by(email = student).first().name
         print(student_name)
         student_class = Student.query.filter_by(email = student).first().classid        
-        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all() 
-                
+        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
+        absences = Attendance.query.filter_by(email = student, status = 'A').count()
+           
     elif category == 'date':
         date = request.form['date']
         attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid.desc()).all()   
-    
+        absences =  Attendance.query.filter_by(att_date = date, status = 'A').count() 
+
     else:
         student = category
         student_name = Student.query.filter_by(email = student).first().name
         print(student_name)
         student_class = Student.query.filter_by(email = student).first().classid
         attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
+        absences = Attendance.query.filter_by(email = student, status = 'A').count()
     
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category)
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences)
 #%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
