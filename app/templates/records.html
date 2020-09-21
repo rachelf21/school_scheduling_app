@@ -2,11 +2,10 @@
 <div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto">
     <h1 class="mb-4 text-center font-weight-normal">Attendance Tracking</h1>
-    <hr />
     <div>
       <form action="/track_attendance/class" method="post" name="form">
         {{ form.hidden_tag() }}
-        <legend class="border-bottom mb-4">Select by class.</legend>
+        <legend class="border-bottom mb-4 text-muted">Select by class</legend>
         <div class="row no-gutters">
           <div class="col col-md-7">{{ form.courseid(class="form-control form-control-md") }}</div>
           <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
@@ -15,7 +14,7 @@
 
       <form action="/track_attendance/student" method="post" name="form">
         {{ form.hidden_tag() }}
-        <legend class="border-bottom mt-4 mb-2">Select by student.</legend>
+        <legend class="border-bottom mt-4 mb-2 text-muted">Select by student</legend>
         <div class="row no-gutters">
           <div class="col col-md-7">{{ form.student_list(class="form-control form-control-md") }}</div>
           <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
@@ -23,7 +22,7 @@
       </form>
       <form action="/track_attendance/date" method="post" name="form">
         {{ form.hidden_tag() }}
-        <legend class="border-bottom mt-4 mb-2">Select by date.</legend>
+        <legend class="border-bottom mt-4 mb-2 text-muted">Select by date</legend>
         <div class="row no-gutters mb-4">
           <div class="col col-md-7">{{ form.date(class="form-control form-control-md") }}</div>
           <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>

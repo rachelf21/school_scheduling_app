@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block title %}MDY Schedule{% endblock %} 
+{% block content %}
 
 <h1 class="mt-1 4 text-center font-weight-normal" >{{title}}</h1>
 
@@ -76,7 +78,7 @@
           }
         </script>
       </td>
-      <td>
+      <td class="text-nowrap">
         <script>
           var s = "{{ schedule.course.subject}}" ;
           if (s == "Computers" || s == "STEM") {
@@ -96,6 +98,20 @@
   </tbody>
   </table>
 </div>
+
+<script>
+  var current_week = "{{current_week}}";
+  window.onload = function () {
+    if (current_week == "A") {
+      document.getElementById("weekA").classList.add("active");
+      document.getElementById("weekB").classList.remove("active");
+    } else if (current_week == "B") {
+      document.getElementById("weekB").classList.add("active");
+      document.getElementById("weekA").classList.remove("active");
+    }
+  };
+</script>
+
 <hr class="mt-4 mb-4">
           <!-- <script>
             $("#myTable").DataTable({

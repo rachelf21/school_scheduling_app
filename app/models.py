@@ -7,6 +7,7 @@ class Group(db.Model):
     __tablename__ = "class"
     __table_args__ = {'extend_existing': True} 
     classid = db.Column(db.String(5), primary_key=True)
+    classid2 = db.Column(db.String(5))
     grade = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String(1), nullable=False)
     level = db.Column(db.Integer, nullable=False)
@@ -87,6 +88,7 @@ class Schedule(db.Model):
     def __repr__(self):
         return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid}')"
     
+
 #%%
 class Student(db.Model):
     __tablename__ = "students"
@@ -112,6 +114,26 @@ class Student(db.Model):
     def __repr__(self):
         return f"Student('{self.name}', '{self.classid}')"
         
+#%%
+class Dismissal(db.Model):
+    __tablename__ = "dismissal"
+    __table_args__ = {'extend_existing': True}
+    email = db.Column(db.String(255), db.ForeignKey(Student.email), nullable=False, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    last = db.Column(db.String(50), nullable=False)
+    first = db.Column(db.String(50), nullable=False)
+    grade = db.Column(db.Integer)
+    section = db.Column(db.String(8))
+    mom = db.Column(db.String(50))
+    mom_cell = db.Column(db.String(12))
+    mom_email = db.Column(db.String(100))
+    dad = db.Column(db.String(50))
+    dad_cell = db.Column(db.String(12))
+    dad_email = db.Column(db.String(100))    
+    mode = db.Column(db.String(50))
+    number = db.Column(db.Integer)
+    siblings = db.Column(db.String(255))
+    notes = db.Column(db.String(255))
   
 #%%
 class Attendance(db.Model):
@@ -173,6 +195,12 @@ class Lessons(db.Model):
         self.total = total, 
         self.content = content
 
+#%%
+class Week(db.Model):
+    __tablename__ = "week"
+    __table_args__ = {'extend_existing': True}    
+    weekid = db.Column(db.Integer, primary_key=True)
+    today = db.Column(db.String(1))
 
 
 #%%

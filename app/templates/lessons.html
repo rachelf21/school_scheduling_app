@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}{% block title %}MDY Lessons{% endblock %} {% block content %}
 
 <h1 class="text-center font-weight-normal">{{title}}</h1>
-<h4 id="course" class="mb-4 text-center"></h4>
+<h4 id="course" class="font-weight-normal mb-4 text-center"></h4>
 <table
   id="myTable"
   class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
@@ -40,6 +40,7 @@
           var lessonid = "{{lesson.lessonid}}";
           var c = "{{lesson.courseid}}".substring(0, 5);
           var courseid = "{{lesson.courseid}}";
+          var room = "{{lesson.room}}";
           var sched = "{{lesson.scheduleid}}";
           var dow = sched.substring(0, sched.length - 1);
           var per = sched.substring(sched.length - 1, sched.length);
@@ -77,9 +78,18 @@
 </script> -->
 
 <script>
+  var current_week = "{{current_week}}";
+
   window.onload = function () {
-    console.log("return_all" + return_all);
-    if (return_all == "0") document.getElementById("course").innerHTML = courseid;
+    if (return_all == "0") document.getElementById("course").innerHTML = courseid + " (Rm " + room + ")";
+    if (current_week == "A") {
+      document.getElementById("weekA").classList.add("active");
+      document.getElementById("weekB").classList.remove("active");
+    } else if (current_week == "B") {
+      document.getElementById("weekB").classList.add("active");
+      document.getElementById("weekA").classList.remove("active");
+    }
   };
 </script>
+
 {% endblock content %}

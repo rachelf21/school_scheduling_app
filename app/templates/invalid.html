@@ -1,0 +1,29 @@
+{% extends "base-denied.html" %} {% block content %}
+
+<h1 class="pt-4 b-4 text-center font-weight-normal">Invalid Room Number</h1>
+<hr />
+<p></p>
+<h4 class="mt-4 mb-4 text-center font-weight-normal">Please enter a valid 3-digit room number or select a room from below.</h4>
+<h5 class="mt-4 mb-4 text-center font-weight-normal">Only Grade 7 and Grade 8 classrooms are accepted at this time.</h5>
+
+<div style="display: block; text-align: center">
+  <form
+    action="/dismissal/room"
+    method="post"
+    name="form"
+    style="display: inline-block; margin-left: auto; margin-right: auto; text-align: left"
+  >
+    {{ form.hidden_tag() }}
+    <legend class="border-bottom mt-4 mb-2 text-center">Select room</legend>
+    <div class="row no-gutters">
+      <div class="col mr-1">{{ form.room_list(class="form-control form-control-md") }}</div>
+      <div class="col">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+    </div>
+  </form>
+</div>
+
+<p class="mt-4 mb-4">&nbsp;</p>
+<hr class="mb-4" />
+<p class="mt-4 mb-4">&nbsp;</p>
+
+{% endblock content %}

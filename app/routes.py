@@ -1,15 +1,16 @@
-from flask import render_template, url_for, jsonify, request, redirect, flash, send_file
+from flask import render_template, url_for, jsonify, request, redirect, flash, send_file, Response
 import datetime
 from datetime import date
 from app import app
-from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm, AddLessonForm, AttendanceRecordForm
-from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance
+from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm, AddLessonForm, AttendanceRecordForm, DismissalSelectForm
+from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance, Dismissal, Week
 import json
 import pandas as pd
 from app import db, engine
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, DataError
+from functools import wraps
 
-
+current_week ='A'
 schedule = ''
 title = ''
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
@@ -22,7 +23,42 @@ def retrieve_students(info):
         names.append(s.name)
     return emails, names    
   
+    
+#%%
+#https://stackoverflow.com/questions/29725217/password-protect-one-webpage-in-flask-app
 
+def check_auth(username, password):
+    #Checks if username / password combination is valid
+    return username == 'teacher' and password == 'magen444'
+
+def check_auth_admin(username, password):
+    #Checks if username / password combination is valid
+    return username == 'rfriedman' and password == 'magen626'
+
+def authenticate():
+    #Sends a 401 response that enables basic auth"
+    return Response(
+    '<h3>This information is password protected.</h3>'
+    '<h3>Please log in with proper credentials.</h3>', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
+def requires_auth_admin(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth_admin(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
 #%%
 
 
@@ -179,8 +215,12 @@ def display_schedule(dow):
     global schedule
     #x = Course.query.join(Group, Course.classid == Group.classid)
     global title
+    global current_week
+    
     title = ''
     lessons = Lessons.query.all()
+    
+    current_week = Week.query.first().today
     
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
@@ -210,37 +250,37 @@ def display_schedule(dow):
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week)
     
-@app.route('/today/<classname>/<dow>/<per>')
-def today(classname, dow, per):
+# @app.route('/today/<classname>/<dow>/<per>')
+# def today(classname, dow, per):
     
-    form = TodayForm(request.form)
-    day = dow[2:4]
-    if day=='M':
-        day = 'Monday'
-    elif day=='T':
-        day = 'Tuesday'
-    elif day =='W':
-        day = 'Wednesday'
-    elif day == 'Th':
-        day = 'Thursday'
-    else:
-        day = 'Monday'
-    form.today_dow.data = day
-    form.today_date.data = date.today()
-    form.today_week.data = dow[0:1]
-    form.today_period.data = per
-    title = 'Attendance '+ dow + per
-    if per == "-1":
-        schedid = dow+"L"
-        print(schedid)
-    else:
-        schedid = dow+per
-    print(per)
-    students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
-    schedule = Schedule.query.all()
-    return render_template('today.html', students=students, form=form, title=title, schedid = schedid, schedule = schedule)    
+#     form = TodayForm(request.form)
+#     day = dow[2:4]
+#     if day=='M':
+#         day = 'Monday'
+#     elif day=='T':
+#         day = 'Tuesday'
+#     elif day =='W':
+#         day = 'Wednesday'
+#     elif day == 'Th':
+#         day = 'Thursday'
+#     else:
+#         day = 'Monday'
+#     form.today_dow.data = day
+#     form.today_date.data = date.today()
+#     form.today_week.data = dow[0:1]
+#     form.today_period.data = per
+#     title = 'Attendance '+ dow + per
+#     if per == "-1":
+#         schedid = dow+"L"
+#         print(schedid)
+#     else:
+#         schedid = dow+per
+#     print(per)
+#     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
+#     schedule = Schedule.query.all()
+#     return render_template('today.html', students=students, form=form, title=title, schedid = schedid, schedule = schedule)    
 
 @app.route('/results')
 def results():
@@ -293,17 +333,36 @@ def classes_anon():
 
 @app.route('/get_students/<access>/<classname>')
 def get_students(access, classname):
+    room = ''
+    subtitle = ''
+    grade=''
+    
     if classname == "all":
-        title = "All"
-        students = Student.query.order_by(Student.name, Student.classid).all()       
+        title = "All Students"
+        subtitle = "Grade 7, Grade 8"
+        students = Student.query.order_by(Student.name, Student.classid).all()
+
+    elif classname == "7":
+        title = "Grade 7 Students"
+        subtitle = ""
+        students = Student.query.filter(Student.classid.match(classname+'%')).order_by(Student.name).all()
+
+    elif classname == "8":
+        title = "Grade 8 Students"
+        subtitle = ""
+        students = Student.query.filter(Student.classid.match(classname+'%')).order_by(Student.name).all()
+        
     else:
         students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
-        title = classname
+        title = "Students " + Group.query.filter_by(classid = classname).first().classid2
+        grade = classname[0:1]
+        room = "(Rm " + str(Group.query.filter_by(classid = classname).first().room) + ")"
+        
     if access == 'a':
         return render_template('students.html', students=students, title=title)
     
     elif access == 'd':
-                return render_template('students-denied.html', students=students, title=title)
+                return render_template('students-denied.html', students=students, title=title ,room=room, subtitle=subtitle, grade=grade)
 #%%
 @app.route('/records', methods=["GET" , "POST"])
 def records():
@@ -317,7 +376,8 @@ def records():
 def check_absences(courseid,lessondate):
     category = 'class'
     attendance = Attendance.query.filter_by(courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category)
+    absences = Attendance.query.filter_by(courseid=courseid).filter_by(att_date = lessondate, status='A').count()
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences)
         
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
 def track_attendance(category):
@@ -360,6 +420,53 @@ def track_attendance(category):
 def get_week(wk):
     global schedule
     global title
+    global current_week
+    today = date.today().weekday()
+    current_week=wk
+    if wk == 'A':
+        if today == 0:
+            dow = 'A_M'
+        elif today == 1:
+            dow = 'A_T'
+        elif today == 2:
+            dow = 'A_W'
+        elif today == 3:
+            dow = 'A_Th'
+        else: 
+            dow = 'A_M'
+    else:
+        if today == 0:
+            dow = 'B_M'
+        elif today == 1:
+            dow = 'B_T'
+        elif today == 2:
+            dow = 'B_W'
+        elif today == 3:
+            dow = 'B_Th'
+        else:
+            dow = 'B_M'
+    print("dow", dow)
+    display_schedule(dow)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week)
+
+#%%
+@app.route('/daily_schedule/<day>')
+def get_day(day):
+    global schedule
+    global title
+    global current_week
+    wk = Week.query.first().today
+    current_week=wk
+    dow =  wk+"_"+day
+    print("dow", dow)
+    display_schedule(dow)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week)
+#%%
+@app.route('/today')
+def today():
+    global current_week
+    wk = Week.query.first().today  
+    current_week = wk
     today = date.today().weekday()
     if wk == 'A':
         if today == 0:
@@ -385,9 +492,10 @@ def get_week(wk):
             dow = 'B_M'
     print("dow", dow)
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week)
 
 @app.route('/')
+@requires_auth_admin 
 def index():
     return render_template('index.html')
 
@@ -396,7 +504,10 @@ def about():
     return render_template('about.html')  
 
 @app.route('/lessons/<day>')
+@requires_auth_admin
 def lessons(day):
+    global current_week
+    current_week = Week.query.first().today
     return_all = 0
     title = "My Lessons"
     if day=='all':
@@ -404,7 +515,7 @@ def lessons(day):
         lessons = Lessons.query.order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
     else:
         lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
-    return render_template('lessons.html', title = title, lessons = lessons, return_all=return_all)  
+    return render_template('lessons.html', title = title, lessons = lessons, return_all=return_all, current_week=current_week)  
 
 @app.route('/lunch_menu') 
 def lunch_menu():     
@@ -441,3 +552,96 @@ def delete_lesson(lessonid):
         conn.execute(query)
         print('lesson has been deleted')
     return render_template('confirmation.html', topic=topic)
+
+#%%
+@app.route('/dismissal_form')
+def dismissal_form():
+    title = 'Dismissal'
+    form = DismissalSelectForm()
+    return render_template("dismissal_form.html" , title=title, form=form)
+
+#%%
+@app.route('/dismissal/<category>', methods=['GET','POST'])
+def dismissal(category):
+    print(category)
+    student= ''
+    student_name = ''
+    classid2 = ''
+    student = ''
+    room = ''
+    count = 1
+    
+    if category == 'class7':
+        classid2 = request.form['class_list_7']
+        dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
+        count = len(dismissal)
+        classid3 = classid2[0:2] + "-" + classid2[2:5]
+        room = Group.query.filter_by(classid2=classid3).first().room
+         
+    elif category == 'class8':
+        classid2 = request.form['class_list_8']
+        dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
+        count = len(dismissal)
+        classid3 = classid2[0:2] + "-" + classid2[2:5]
+        room = Group.query.filter_by(classid2=classid3).first().room
+        
+    elif category == 'room':
+        room = request.form['room_list']
+        classid2 = Group.query.filter_by(room=room).first().classid2
+        classid2 = classid2[0:2] + classid2[3:6]
+        dismissal = Dismissal.query.filter_by(section=classid2).all()
+        count = len(dismissal)
+                   
+    elif category == 'student':
+        student = request.form['student_list']
+        student_name = Student.query.filter_by(email=student).first().name
+        dismissal = Dismissal.query.filter_by(email=student).all()
+        classid2 = Dismissal.query.filter_by(email=student).first().section
+        classid3 = classid2[0:2] + "-" + classid2[2:5]
+        room = Group.query.filter_by(classid2=classid3).first().room
+
+    elif category[0:2] == 's_':
+        print("category", category)
+        student = category[2:]
+        print("student", student)
+        return redirect(url_for('student_info', category[2:]))
+               
+    elif category[0:2] == 'rm':
+        room = category[2:5]
+        print(room)
+        try:
+            classid2 = Group.query.filter_by(room=room).first().classid2
+            classid2 = classid2[0:2] + classid2[3:6]
+            dismissal = Dismissal.query.filter_by(section=classid2).all()
+            count = len(dismissal)
+        except (AttributeError, DataError) as a:
+            print("Room not found", a)
+            form = DismissalSelectForm()
+            return render_template("invalid.html", form=form)
+            
+    else:
+        classid2 = category
+        dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
+        count = len(dismissal)
+        classid3 = classid2[0:2] + "-" + classid2[2:5]
+        room = Group.query.filter_by(classid2=classid3).first().room
+    
+    return render_template('dismissal.html', dismissal=dismissal, classid2=classid2, room=room, student_name=student_name, count=count, category=category)
+
+@app.route('/set_week/<letter>')    
+def set_week(letter):
+    query = "UPDATE week SET today='" + letter + "';"
+    with engine.begin() as conn:     # TRANSACTION
+        conn.execute(query)
+    topic = "Week " + letter
+    return render_template("confirmation.html", topic=topic)
+    #return redirect(url_for('get_week', wk=letter))
+                    
+#%%
+@app.route('/student_info/<student>')
+@requires_auth
+def student_info(student):
+    print('student from within student function' , student)
+    student_info = Dismissal.query.filter_by(email=student).first()
+    return render_template("student_info.html", student_info=student_info)
+

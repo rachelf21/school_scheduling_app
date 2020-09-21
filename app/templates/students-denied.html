@@ -1,6 +1,15 @@
 {% extends "base-denied.html" %} {% block content %}
 <div style="text-align: center">
-  <h1 class="font-weight-normal">Students {{title}}</h1>
+  <h2 class="font-weight-normal">{{title}} {{room}}</h2>
+  <h4 class="font-weight-normal">{{subtitle}}</script></h4>
+    <div id="all7" class="font-weight-normal mb-4" style="display:none"><a href="/get_students/d/7">View all Grade 7 Students</a></div>
+    <div id="all8" class="font-weight-normal mb-4" style="display:none"><a href="/get_students/d/8">View all Grade 8 Students</a></div>
+    <script>
+      if("{{grade}}" == "7") 
+        document.getElementById("all7").style.display = "block";
+      else if ("{{grade}}" =="8")
+      document.getElementById("all8").style.display = "block";
+    </script>
 </div>
 <div class="table-responsive">
   <!-- <table
@@ -23,8 +32,13 @@
     <tbody>
       {% for students in students %}
       <tr>
-        <td class="text-nowrap">{{ students.name}}</td>
-        <td name="classid" class="text-center">{{students.classid}}</td>
+        <td class="text-nowrap"><a href="/student_info/{{students.email}}" style="color: black">{{ students.name}}</a></td>
+        <td name="classid" class="text-center">
+          <script>
+            var classlink = "{{students.classid}}";
+            document.write("<a style='color:black' href='/get_students/d/" + classlink + "'> {{students.class_code.classid2}}</a>");
+          </script>
+        </td>
         <td>{{ students.email}}</td>
         <td class="small">{{ students.parent1}}</td>
         <td class="small">{{ students.parent2}}</td>
@@ -35,7 +49,7 @@
 </div>
 <script>
   $("#myTable").DataTable({
-    pageLength: 20,
+    pageLength: 30,
     filter: true,
     deferRender: true,
     //scrollY: 1200,

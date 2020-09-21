@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=.8, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=.7, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no"
+    />
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}" />
 
     <!-- <style>
     table {
@@ -19,90 +27,94 @@
     }
   </style> -->
 
-<!-- Optional JavaScript -->
+    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-<title> MDY Attendance </title>
-</head>
-<body>
+    <title>{% block title %}MDY Attendance{% endblock %}</title>
+  </head>
+  <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="/">
+          <a class="navbar-brand" href="/today">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
           </a>
-    
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarToggle"
+            aria-controls="navbarToggle"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
-         
 
-          <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="collapse navbar-collapse float-right text-right pr-3" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="navbar-brand mr-2"  href="/">MDY Attendance</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('index') }}">Home</a>
-              <a class="nav-item nav-link mr-2" href="/weekly_schedule/A">WeekA</a>
-              <a class="nav-item nav-link mr-2" href="/weekly_schedule/B">WeekB</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}"> All Classes</a>
-              <a class="nav-item nav-link mr-2" href="/get_students/a/all"> All Students</a> 
+              <a class="navbar-brand mr-4" href="/">MDY Daily App</a>
+
+              <li class="nav-link nav-item dropdown mr-2">
+                <a
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Schedule</a
+                >
+                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a class="dropdown-item" href="/daily_schedule/M" style="width: 100%">Monday</a>
+                  <a class="dropdown-item" href="/daily_schedule/T">Tuesday</a>
+                  <a class="dropdown-item" href="/daily_schedule/W">Wednesday</a>
+                  <a class="dropdown-item" href="/daily_schedule/Th">Thursday</a>
+                </div>
+              </li>
+              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">Classes</a>
+              <a class="nav-item nav-link mr-2" href="/get_students/a/all">Students</a>
               <a class="nav-item nav-link mr-2" a href="/lessons/all">Lessons</a>
-              <a class="nav-item nav-link mr-2" href="/records"> Attendance Tracking</a>
+              <a class="nav-item nav-link mr-2" href="/records"> Attendance</a>
+              <a class="nav-item nav-link mr-2" href="/dismissal_form">Dismissal</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="#">Login</a>
-              <a class="nav-item nav-link" href="#">Register</a>
+              <a id="weekA" class="nav-item nav-link" href="/set_week/A">Week A</a>
+              <a id="weekB" class="nav-item nav-link" href="/set_week/B">Week B</a>
             </div>
           </div>
         </div>
       </nav>
     </header>
-    <main role="main"  class="container-fluid">
+
+    <main role="main" class="container-fluid">
       <!--style="margin: 0 auto; width: 75% !important"-->
-      
-      <div class="row" style="border: 0px solid blue;">
-        <div class="col-md-9" style="border: 0px red solid; "  >
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
-          {% block content %}{% endblock %}
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-xl-2">
-          <div class="content-section">
-            <h3>My Schedule</h3>
-            <p class='text-muted'>&nbsp;
-              <ul class="list-group">
-                <li class="list-group-item font-weight-bold"">Week A</li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_M">Monday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_T">Tuesday </a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_W">Wednesday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/A_Th">Thursday </a></li>
-                <li class="list-group-item font-weight-bold"">Week B</li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_M">Monday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_T">Tuesday </a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_W">Wednesday</a></li>
-                <li class="list-group-item list-group-item-light"><a href="/schedule/B_Th">Thursday </a></li>
-                <li class="list-group-item list-group-item-light font-weight-bold"><a href="/lessons/all">Lessons</a></li>
-                <li class="list-group-item "><a href="{{ url_for('lunch_menu') }}">Lunch Menu</a></li>               
 
-              </ul>
-            </p>
-          </div>
+      <div class="row" style="border: 0px solid blue">
+        <div class="col-md-9 mt-2" style="border: 0px red solid">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
         </div>
 
-
+        {% extends "sidebar_schedule.html"%}
       </div>
-    </main>   
+    </main>
   </body>
 </html>

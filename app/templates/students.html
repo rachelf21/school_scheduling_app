@@ -1,8 +1,8 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block title %}MDY Students{% endblock %} {% block content %}
 <!-- <div id="outerdiv" style="display: flex">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
 <div style="text-align: center">
-  <h1 class="font-weight-normal">Students {{title}}</h1>
+  <h2 class="font-weight-normal">{{title}} {{room}}</h2>
 </div>
 <!-- <table
   id="myTable"
@@ -25,8 +25,13 @@
     <tbody>
       {% for students in students %}
       <tr>
-        <td class="text-nowrap">{{ students.name}}</td>
-        <td name="classid" class="text-center">{{students.classid}}</td>
+        <td class="text-nowrap"><a href="/student_info/{{students.email}}" style="color: black">{{ students.name}}</a></td>
+        <td name="classid" class="text-center">
+          <script>
+            var classlink = "{{students.classid}}";
+            document.write("<a style='color:black' href='/get_students/d/" + classlink + "'> {{students.class_code.classid2}}</a>");
+          </script>
+        </td>
         <td>{{ students.email}}</td>
         <td class="small">{{ students.parent1}}</td>
         <td class="small">{{ students.parent2}}</td>
@@ -38,7 +43,7 @@
 
 <script>
   $("#myTable").DataTable({
-    pageLength: 20,
+    pageLength: 30,
     filter: true,
     deferRender: true,
     //scrollY: 1200,
@@ -48,6 +53,10 @@
     select: true,
     bSort: false,
     //order: [[2, "asc"]],
+    lengthMenu: [
+      [20, 50, 100, -1],
+      [20, 50, 100, "All"],
+    ],
   });
 </script>
 

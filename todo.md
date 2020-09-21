@@ -30,6 +30,11 @@
 - [x] option to display all students
 - [x] display total absences for attendance records
 - [ ] freeze first column in student table, attendance tracking table, class table
+- [x] display dismissal lists
+- [x] create student info view
+- [x] password protect student info pages
+- [ ] enable check/uncheck students called for dismissal, based on numbers
+- [x] initialize to WeekA or WeekB, automatically go to today's schedule based on week
 
 ### HTML PAGES
 

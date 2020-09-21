@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=.8, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no"
+      content="width=device-width, initial-scale=.7, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no"
     />
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
@@ -43,16 +43,28 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <title>MDY Attendance</title>
+
+    <script>
+      function get_room() {
+        console.log("get room");
+        form = document.getElementById("myForm");
+        r = document.getElementById("rm").value;
+        console.log(r);
+        form.action = "/dismissal/rm" + r;
+        form.submit();
+      }
+    </script>
+    <title>{%block title%}MDY Attendance{%endblock%}</title>
   </head>
   <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="/denied">
+          <a class="navbar-brand" href="/dismissal_form">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
           </a>
-          <a class="navbar-brand mr-4" href="/denied">MDY Attendance</a>
+          <a class="navbar-brand mr-4" href="/dismissal_form">MDY Dismissal</a>
+
           <button
             class="navbar-toggler"
             type="button"
@@ -64,28 +76,104 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link mr-2" href="/denied">Home</a>
-              <a class="nav-item nav-link mr-2" href="/denied">Week A</a>
-              <a class="nav-item nav-link mr-2" href="/denied">Week B</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('classes_anon') }}"> All Classes</a>
-              <a class="nav-item nav-link mr-2" href="get_students/d/all"> All Students</a>
-              <a class="nav-item nav-link mr-2" href="/denied"> Attendance Tracking</a>
-            </div>
+
+          <div class="collapse navbar-collapse float-right text-right pr-3" id="navbarToggle">
+            <ul class="navbar-nav mr-auto float-right text-right pr-3">
+              <!-- <li class="nav-item dropdown mr-4" style="color: #cbd5db; margin-top: 0.5rem; position: relative">
+                <a
+                  style="color: #cbd5db"
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Students</a
+                >
+                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/get_students/d/7">Grade 7</a>
+                  <a class="dropdown-item" href="/get_students/d/8">Grade 8</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/get_students/d/all">All Students</a>
+                </div>
+              </li> -->
+
+              <li class="nav-link nav-item dropdown mr-2 float-right text-right pr-3" style="width: 100px !important">
+                <a
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Grade 7</a
+                >
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a class="dropdown-item" href="/dismissal/7G101" style="width: 100%">7G-101</a>
+                  <a class="dropdown-item" href="/dismissal/7G102">7G-102</a>
+                  <a class="dropdown-item" href="/dismissal/7G103">7G-103</a>
+                  <a class="dropdown-item" href="/dismissal/7G111">7G-111</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/dismissal/7B201">7B-201</a>
+                  <a class="dropdown-item" href="/dismissal/7B202">7B-202</a>
+                  <a class="dropdown-item" href="/dismissal/7B203">7B-203</a>
+                  <a class="dropdown-item" href="/dismissal/7B211">7B-211</a>
+                </div>
+              </li>
+
+              <li class="nav-link nav-item dropdown mr-2 float-right text-right pr-3" style="width: 100px !important">
+                <a
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Grade 8</a
+                >
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a class="dropdown-item" href="/dismissal/8G101">8G-101</a>
+                  <a class="dropdown-item" href="/dismissal/8G102">8G-102</a>
+                  <a class="dropdown-item" href="/dismissal/8G103">8G-103</a>
+                  <a class="dropdown-item" href="/dismissal/8G111">8G-111</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/dismissal/8B201">8B-201</a>
+                  <a class="dropdown-item" href="/dismissal/8B202">8B-202</a>
+                  <a class="dropdown-item" href="/dismissal/8B203">8B-203</a>
+                  <a class="dropdown-item" href="/dismissal/8B211">8B-211</a>
+                </div>
+              </li>
+              <!-- <li class="nav-item mr-4"><a class="nav-link" href="{{ url_for('classes_anon') }}"> Class Info</a></li>
+
+              <li class="nav-item mr-2"><a class="nav-link" href="/dismissal_form">Dismissal</a></li> -->
+            </ul>
             <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              <a class="nav-item nav-link" href="#">Login</a>
-              <a class="nav-item nav-link" href="#">Register</a>
+
+            <div class="navbar-nav float-right text-right pr-3">
+              <form id="myForm" class="form-inline my-2 my-lg-0">
+                <input
+                  id="rm"
+                  class="form-control form-control-sm mr-2"
+                  style="width: 120px"
+                  type="search"
+                  placeholder="Room Number"
+                  aria-label="Submit"
+                />
+                <button class="btn btn my-2 my-sm-0 btn-sm" type="submit" onclick="get_room()">Submit</button>
+              </form>
             </div>
           </div>
         </div>
       </nav>
     </header>
-    <main role="main" class="container">
+
+    <main role="main" class="container-fluid">
       <!--style="margin: 0 auto; width: 75% !important"-->
       <div class="row">
-        <div class="col-md-9" style="border: 0px solid red">{% block content %}{% endblock %}</div>
+        <div class="col-md-12 mt-2" style="border: 0px solid red">{% block content %}{% endblock %}</div>
       </div>
     </main>
   </body>

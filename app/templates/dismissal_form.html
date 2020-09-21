@@ -1,0 +1,52 @@
+{% extends "base-denied.html" %}{% block title %}MDY Dismissal{% endblock %} {% block content %}
+<div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto">
+    <h2 class="mb-4 text-center font-weight-normal">Dismissal Lists</h2>
+    <div>
+      <form action="/dismissal/class7" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <legend class="border-bottom mb-2 text-muted">Grade 7</legend>
+        <div class="row no-gutters pb-2">
+          <div class="col col-md-7 mr-1">{{ form.class_list_7(class="form-control form-control-md") }}</div>
+          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+        </div>
+      </form>
+
+      <form action="/dismissal/class8" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <legend class="border-bottom mt-4 mb-2 text-muted">Grade 8</legend>
+        <div class="row no-gutters pb-2">
+          <div class="col col-md-7 mr-1">{{ form.class_list_8(class="form-control form-control-md") }}</div>
+          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+        </div>
+      </form>
+
+      <form action="/dismissal/room" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <legend class="border-bottom mt-4 mb-2 text-muted">Select by room</legend>
+        <div class="row no-gutters pb-2">
+          <div class="col col-md-7 mr-1">{{ form.room_list(class="form-control form-control-md") }}</div>
+          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+        </div>
+      </form>
+      <form id="getstudent" action="" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <legend class="border-bottom mt-4 mb-2 text-muted">Select by student</legend>
+        <div class="row no-gutters mb-4">
+          <div class="col col-md-7 mr-1">{{ form.student_list(class="form-control form-control-md") }}</div>
+          <div class="col col-md-3">
+            <a style="color: whitesmoke" class="btn btn-primary btn-md form-control-lg" onclick="get_student()"> Submit </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function get_student() {
+    s = document.getElementById("student_list").value;
+    window.location.href = "/student_info/" + s;
+  }
+</script>
+<hr class="mb-4" />
+{% endblock content %}

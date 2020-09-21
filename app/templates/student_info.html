@@ -1,0 +1,74 @@
+{% extends "base-denied.html" %} {% block title %}MDY Student Info{% endblock %} {% block content %}
+
+<div style="text-align: center">
+  <h2 class="pt-2 font-weight-normal">Student Dismissal Info</h2>
+</div>
+
+<style>
+  tr {
+    display: block;
+    float: left;
+  }
+  th,
+  td {
+    display: block;
+  }
+</style>
+<!-- <script>
+  pwd = prompt("Enter code to access student information");
+  if (pwd != "magen444") window.location.replace("/denied");
+</script> -->
+<!-- <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+    style="border: 0px red solid; margin: 0 auto; width: 75% !important"
+  > -->
+<div id="student" class="table-responsive pt-3">
+  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+    <th><h4>STUDENT</h4></th>
+    <th>Email</th>
+    <th>Class</th>
+    <th>Mode</th>
+    <th>Number</th>
+    <th>Siblings</th>
+
+    <tr>
+      <td class="font-weight-bold mark"><h4>{{ student_info.name}}</h4></td>
+      <td>{{ student_info.email}}</td>
+      <td>{{student_info.section}}</td>
+      <td>{{ student_info.mode}}</td>
+      <td>{{ student_info.number}}</td>
+      <td style="white-space: pre-wrap">{{ student_info.siblings}}</td>
+    </tr>
+  </table>
+</div>
+
+<div id="mom" class="table-responsive pt-3">
+  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+    <th>MOM</th>
+    <th>Mom Cell</th>
+    <th>Mom Email</th>
+
+    <tr>
+      <td class="font-weight-bold">{{ student_info.mom}}</td>
+      <td>{{student_info.mom_cell}}</td>
+      <td>{{ student_info.mom_email}}</td>
+    </tr>
+  </table>
+</div>
+
+<div id="dad" class="table-responsive pt-3">
+  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+    <th>DAD</th>
+    <th>Dad Cell</th>
+    <th>Dad Email</th>
+
+    <tr>
+      <td class="font-weight-bold">{{ student_info.dad}}</td>
+      <td>{{student_info.dad_cell}}</td>
+      <td>{{ student_info.dad_email}}</td>
+    </tr>
+  </table>
+</div>
+<hr class="mb-4" />
+{% endblock content %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %} {%block title%} Attendance Form {%endblock%} {%block content%}
+{% extends "base.html" %} {%block title%} MDY Attendance {%endblock%} {%block content%}
 
 <script>
   var students = [];
@@ -95,7 +95,7 @@
       class="table mx-auto w-auto table-striped table-hover table-bordered "
       style="border: 0px red solid; width:auto; margin: 0px auto"
     >
-      <tr>
+      <tr >
         <th style="display: none">Email</th>
         <th>I</th>
         <th>Name</th>
@@ -106,7 +106,7 @@
       <tr>
         <td style="display: none">{{ student.email}}</td>
         <td><a href="/track_attendance/{{ student.email.data}}">{{loop.index}}</a></td> 
-        <td>{{ student.student_name}}</td>
+        <td><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name}}</a></td>
         <td>{{ student.status}}</td>
         <td>{{ student.comment(length=300)|safe}}</td>
       </tr>

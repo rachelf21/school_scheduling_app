@@ -1,0 +1,4 @@
+added dismissal module
+created student info page
+password protected pages
+adjust nav bar float right
