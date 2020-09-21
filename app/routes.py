@@ -11,6 +11,8 @@ from sqlalchemy.exc import IntegrityError, DataError
 from functools import wraps
 
 current_week ='A'
+sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
+sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th']
 schedule = ''
 title = ''
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
@@ -221,7 +223,14 @@ def display_schedule(dow):
     lessons = Lessons.query.all()
     
     current_week = Week.query.first().today
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
+        
+    #jsonify(sched_list=sched_list) 
     
+
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
         title = 'Monday (A)'
@@ -247,10 +256,11 @@ def display_schedule(dow):
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
         title = 'Thursday (B)'
     
+    
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list)
     
 # @app.route('/today/<classname>/<dow>/<per>')
 # def today(classname, dow, per):
@@ -434,6 +444,7 @@ def get_week(wk):
             dow = 'A_Th'
         else: 
             dow = 'A_M'
+        sched_list = sched_list_A
     else:
         if today == 0:
             dow = 'B_M'
@@ -445,9 +456,10 @@ def get_week(wk):
             dow = 'B_Th'
         else:
             dow = 'B_M'
+        sched_list = sched_list_B
     print("dow", dow)
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list)
 
 #%%
 @app.route('/daily_schedule/<day>')
@@ -457,10 +469,14 @@ def get_day(day):
     global current_week
     wk = Week.query.first().today
     current_week=wk
+    if wk == 'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
     dow =  wk+"_"+day
     print("dow", dow)
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list)
 #%%
 @app.route('/today')
 def today():
@@ -491,8 +507,12 @@ def today():
         else:
             dow = 'B_M'
     print("dow", dow)
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list)
 
 @app.route('/')
 @requires_auth_admin 
