@@ -400,7 +400,7 @@ def track_attendance(category):
     
     if category == 'class':
         courseid = request.form['courseid']
-        attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.attid.desc()).all()
+        attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()
         absences = Attendance.query.filter_by(courseid = courseid, status = 'A').count()
             
     elif category == 'student':
@@ -413,7 +413,7 @@ def track_attendance(category):
            
     elif category == 'date':
         date = request.form['date']
-        attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid.desc()).all()   
+        attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid).all()   
         absences =  Attendance.query.filter_by(att_date = date, status = 'A').count() 
 
     else:

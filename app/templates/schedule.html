@@ -5,9 +5,9 @@
 
 
 <div class="d-flex justify-content-around" style="border:0px solid red;"> 
-<button class='btn btn-sm' onclick="get_prev()" > <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </button>
+<button id="next" class='btn btn-sm' onclick="get_prev()" style="display:block"> <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </button>
 <h1 class="mt-1 4 text-center font-weight-normal" >{{title}}</h1>
-<button class='btn btn-sm' onclick="get_next()"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></button>
+<button id="prev" class='btn btn-sm' onclick="get_next()" style="display:block"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></button>
 </div>
 <div class="table-responsive">
 <table
@@ -126,6 +126,7 @@
     console.log(current);
     for(i=0; i< sched.length; i++){
       if(current.substring(2,4)=="Th"){
+        //document.getElementById("next").disabled=true;
         next=sched[0];
         console.log("next day should be Mon " + next);
         window.location.href = "/schedule/" + next;
@@ -159,26 +160,6 @@
   
 </script>
 <hr class="mt-4 mb-4">
-          <!-- <script>
-            $("#myTable").DataTable({
-              //pageLength: 20,
-              paging: false,
-              //filter: true,
-              deferRender: true,
-              //scrollY: 1200,
-              //scrollCollapse: true,
-              //scroller: true,
-              ordering: false,
-              select: true,
-              bSort: false,
-              dom: "lrtip",
-            });
-        </script> -->
 
-        <!-- <script>
-  $(document).ready(function () {
-    $("#myTable").DataTable();
-  });
-</script> -->
         {% endblock content %}
 

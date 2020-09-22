@@ -14,3 +14,5 @@ Export tables from postgres database
 \copy (SELECT * FROM lessons) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\lessons.csv' with csv header;
 
 \copy (SELECT * FROM attendance) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\attendance.csv' with csv header;
+
+\copy (SELECT * FROM week) to 'C:\Users\Rachel\Dropbox\MDY 2021\ATTENDANCE_DATA\backups\week.csv' with csv header;

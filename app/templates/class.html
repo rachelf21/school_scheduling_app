@@ -21,9 +21,9 @@
       <th>Level</th>
       <th>Room</th>
       <th>Amt</th>
-      <th>Lessons</th>
       <th>Comp</th>
       <th>STEM</th>
+      <th>Lessons</th>
     </thead>
     <tbody>
       {% for group in group %} {%if group.classid != '0-0' %}
@@ -39,20 +39,17 @@
         <td>{{ group.level}}</td>
         <td>{{ group.room}}</td>
         <td>{{ group.amount}}</td>
-        <td>
-          <script>
-            var courseid = "{{ group.grade}}" + "-" + "{{group.level}}" + "-Computers";
-            var x = "/lessons/" + courseid;
-            document.write('<a href="' + x + '"> View </a>');
-          </script>
-        </td>
+
         <td>
           <script>
             {% for sched in schedule %} {%if (sched.courseid == group.classid +'-Computers') and (sched.week=='A')%}
 
             var x = "{{sched.scheduleid}}";
             period = x.substring(2,x.length);
-            document.write(period);
+
+              var courseid = "{{ group.grade}}" + "-" + "{{group.level}}" + "-Computers";
+              var x = "/lessons/" + courseid;
+              document.write('<a style="color:black" href="' + x + '">' + period +' </a>');
 
             {%endif%} {%endfor%}
           </script>
@@ -63,9 +60,18 @@
             {% for sched in schedule %} {%if sched.courseid == group.classid +'-STEM'%}
 
             period = "{{sched.scheduleid}}";
-            document.write(period);
+            var courseid = "{{ group.grade}}" + "-" + "{{group.level}}" + "-STEM";
+            var x = "/lessons/" + courseid;
+            document.write('<a style="color:black" href="' + x + '">'+ period +'</a>');
 
             {%endif%} {%endfor%}
+          </script>
+        </td>
+        <td>
+          <script>
+            var courseid = "{{ group.grade}}" + "-" + "{{group.level}}" + "-Computers";
+            var x = "/lessons/" + courseid;
+            document.write('<a href="' + x + '"> View </a>');
           </script>
         </td>
       </tr>
