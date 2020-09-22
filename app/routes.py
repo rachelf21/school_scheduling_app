@@ -539,7 +539,8 @@ def lessons(day):
 
 @app.route('/lunch_menu') 
 def lunch_menu():     
-    return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')
+    #return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')
+    return render_template("lunch.html")
 
 @app.route('/denied')
 def denied():

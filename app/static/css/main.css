@@ -113,6 +113,18 @@ a.article-title:hover {
   box-shadow: 0 0 0 0.2rem rgba(30, 42, 93, 0.5) !important;
 }
 
+.fill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.fill img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
 /* @media (min-width: 400px) {
   .container {
     width: 400px;
