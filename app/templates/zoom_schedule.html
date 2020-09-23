@@ -1,0 +1,55 @@
+{% extends "base-denied.html" %} {% block title %}MDY Zoom Schedule{% endblock %} {% block content %}
+
+<div class="d-flex justify-content-around" style="border: 0px solid red">
+  <h1 class="mt-1 4 text-center font-weight-normal">{{title}}</h1>
+</div>
+<div class="table-responsive">
+  <table
+    id="myTable"
+    class="table mx-auto table-striped table-hover table-bordered text-center mt-4 pt-4 w-auto table-fixed"
+    style="border: 0px solid green; width: auto; margin: 0px auto"
+  >
+    <thead>
+      <th>Period</th>
+      <th>Start</th>
+      <th>End</th>
+    </thead>
+    <tbody>
+      {% for schedule in schedule %}
+      <script>
+        var dow = "{{dow}}"; //this is actually scheduleid!!!!
+        var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+        //var per = parseInt({{ schedule.sort}})
+        var i = {{loop.index}};
+        var start_time = "{{ schedule.period.start_time}}";
+        var end_time = "{{ schedule.period.end_time}}";
+      </script>
+      <tr>
+        <td>
+          <script>
+            document.write("<span class='font-weight-bold");
+            if (per[i] != -1) document.write("''>" + per[i] + "</span>");
+            else document.write(" mark'>L</span>");
+          </script>
+        </td>
+        <td>
+          <script>
+            if (per[i] != -1) document.write(start_time);
+            else document.write("<span class='mark'>LUNCH</span>");
+          </script>
+        </td>
+        <td>
+          <script>
+            if (per[i] != -1) document.write(end_time);
+            else document.write("<span class='mark'>LUNCH</span>");
+          </script>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+<hr class="mt-4 mb-4" />
+
+{% endblock content %}

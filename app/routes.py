@@ -140,6 +140,7 @@ def attendance(classname, courseid, dow, per):
     att_form.room.data=room
     class_att_records=[]
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
+    count = len(students)
     for s in students:
         student_form = StudentAttendanceForm()
         student_form.email = s.email
@@ -158,7 +159,7 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room)
+        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
@@ -681,7 +682,19 @@ def set_week(letter):
     topic = "Week " + letter
     return render_template("confirmation.html", topic=topic)
     #return redirect(url_for('get_week', wk=letter))
-                    
+
+#%%
+@app.route('/zoom_schedule')
+def zoom_schedule():
+    title = 'Zoom Schedule'
+    schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
+
+       
+    for s in schedule:
+        s.period.start_time = s.period.start_time.strftime("%#I:%M")
+        s.period.end_time = s.period.end_time.strftime("%#I:%M")
+    return render_template('zoom_schedule.html', schedule = schedule, title = title)
+                     
 #%%
 @app.route('/student_info/<student>')
 @requires_auth

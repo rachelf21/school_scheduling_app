@@ -35,6 +35,7 @@
 - [x] password protect student info pages
 - [ ] enable check/uncheck students called for dismissal, based on numbers
 - [x] initialize to WeekA or WeekB, automatically go to today's schedule based on week
+- [x] change colors of Status items - highlight absences
 
 ### HTML PAGES
 

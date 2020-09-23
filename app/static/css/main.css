@@ -125,6 +125,17 @@ a.article-title:hover {
   min-height: 100%;
 }
 
+/* select {
+  color: green;
+}
+
+select option {
+  color: black;
+}
+select option:first-child {
+  color: red;
+} */
+
 /* @media (min-width: 400px) {
   .container {
     width: 400px;

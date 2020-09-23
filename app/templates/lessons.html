@@ -21,6 +21,7 @@
       <td>
         <script>
           var classid = "{{lesson.classid}}";
+          console.log("classid " + classid);
 
           var return_all = "{{return_all}}";
           console.log(return_all);
@@ -29,6 +30,7 @@
           lessondate = ld.slice(-5);
           document.write(lessondate);
         </script>
+
         <br />{{ lesson.scheduleid}} <br />
         {{lesson.courseid}}<br />
         <a href="/check_absences/{{lesson.courseid}}/{{lesson.lessondate}}" class="small">Absences</a>

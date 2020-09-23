@@ -15,6 +15,20 @@
   day = ("0" + today.getDate()).slice(-2);
   year = today.getFullYear();
   var date = year + "-" + month + "-" + day;
+
+
+  window.onload = function () {
+    //console.log("is it working " + classid);
+    //document.getElementById("classid").value = classid;
+    var count = {{count}};
+    for (i=0; i<count; i++){
+      var s = document.getElementById("students-" + i + "-status");
+      s.addEventListener("click", change_color);
+    }
+
+  };
+
+
 </script>
 
 <div id="outerdiv" style="display: flex; justify-content: center; text-align:center">
@@ -107,7 +121,10 @@
         <td style="display: none">{{ student.email}}</td>
         <td><a href="/track_attendance/{{ student.email.data}}">{{loop.index}}</a></td> 
         <td><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name}}</a></td>
-        <td>{{ student.status}}</td>
+        <td >
+{{ student.status}}
+
+        </td>
         <td>{{ student.comment(length=300)|safe}}</td>
       </tr>
       <script>
@@ -116,6 +133,7 @@
         var newName = "{{ student.student_name.data }}";
         var newStatus = "{{ student.status.value }}";
         var newComment = "{{ student.comment.data }}";
+
         var jsonData = {};
         jsonData["email"] = newEmail;
         jsonData["name"] = newName;
@@ -126,7 +144,6 @@
       {% endfor %}
       <script>
         document.getElementsByName("data").value = students;
-        console.log(students);
       </script>
 
       <script>
@@ -142,10 +159,44 @@
           select: true,
           bSort: false,
         });
-        document.onload = function () {
-          console.log("is it working " + classid);
-          document.getElementById("classid").value = classid;
-        };
+     
+        function change_color(e){
+          var ele = e.target;
+          var id = ele.id;
+          var x = id.indexOf("-",9)
+          y = id.substring(9,x)
+          var name = "students-" +y+ "-student_name";
+          n = document.getElementById(name);
+
+          var selected = ele.value;
+          if(selected=='A'){
+            ele.style.color="red";
+            ele.setAttribute("class", "mark");
+            n.style.color="red";
+            n.setAttribute("class", "mark");           
+
+          }
+          
+          else if (selected=='L'){
+            ele.style.color="blue";
+            n.style.color="blue";
+            n.classList.remove("mark");
+            ele.classList.remove("mark");
+
+          }
+          else{
+            ele.style.color="black";
+            n.style.color="black";
+            n.classList.remove("mark");
+            ele.classList.remove("mark");
+
+
+          }
+        }
+        
+
+
+
       </script>
     </table>
     </div></div>
