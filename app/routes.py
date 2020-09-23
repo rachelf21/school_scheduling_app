@@ -212,6 +212,7 @@ def udpate_attendance():
     return render_template("confirmation.html", topic = topic)
 
 #%%
+#%%
 @app.route('/schedule/<dow>')
 def display_schedule(dow):
     global schedule
@@ -262,6 +263,29 @@ def display_schedule(dow):
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
     return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list)
     
+#%%
+#%%
+@app.route('/full_schedule')
+def display_full_schedule():
+    global schedule
+    #x = Course.query.join(Group, Course.classid == Group.classid)
+    global title
+    global current_week
+    
+    title = 'Weekly Schedule'
+    lessons = Lessons.query.all()
+    
+    current_week = Week.query.first().today
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
+   
+    schedule = Schedule.query.all()     
+    
+    return render_template('full_schedule.html', schedule = schedule, title = title,  lessons=lessons, current_week=current_week, sched_list=sched_list)
+    
+
 # @app.route('/today/<classname>/<dow>/<per>')
 # def today(classname, dow, per):
     
@@ -610,7 +634,7 @@ def dismissal(category):
         room = request.form['room_list']
         classid2 = Group.query.filter_by(room=room).first().classid2
         classid2 = classid2[0:2] + classid2[3:6]
-        dismissal = Dismissal.query.filter_by(section=classid2).all()
+        dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
         count = len(dismissal)
                    
     elif category == 'student':
