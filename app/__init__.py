@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
+import os
 
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
-DB_URL = 'postgres+psycopg2://svntfyhoqoirng:12ad9ca372500c43ce02a1c50fd43928d34d6c9269516873e76143df0151715f@ec2-50-16-221-180.compute-1.amazonaws.com:5432/dbivbhrtqmb565'
+DB_URL = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
