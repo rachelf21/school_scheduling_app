@@ -9,6 +9,7 @@ import pandas as pd
 from app import db, engine
 from sqlalchemy.exc import IntegrityError, DataError
 from functools import wraps
+from app.schedule import Full_Schedule
 
 current_week ='A'
 sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
@@ -273,18 +274,22 @@ def display_full_schedule():
     global title
     global current_week
     
-    title = 'Weekly Schedule'
+    title = 'Weekly Schedule A'
     lessons = Lessons.query.all()
     
     current_week = Week.query.first().today
-    if current_week ==  'A':
-        sched_list = sched_list_A
-    else:
-        sched_list = sched_list_B
+
    
-    schedule = Schedule.query.all()     
+    schedule = Full_Schedule()
+    #mon = list(schedule.mon_df)
+    mon = schedule.monday   
+    tues = schedule.tuesday
+    wed = schedule.wednesday
+    thurs = schedule.thursday
     
-    return render_template('full_schedule.html', schedule = schedule, title = title,  lessons=lessons, current_week=current_week, sched_list=sched_list)
+    start_times = schedule.start_times 
+    end_times = schedule.end_times
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times)
     
 
 # @app.route('/today/<classname>/<dow>/<per>')
