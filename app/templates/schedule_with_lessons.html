@@ -3,49 +3,57 @@
 {% block content %}
 
 <script>
-  var dow = "{{dow}}";
-</script>
+    var dow = "{{dow}}";
+  </script>
 
 <div class="d-flex justify-content-around" style="border:0px solid red;"> 
 <button id="next" class='btn btn-sm' onclick="get_prev()" style="display:block"> <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </button>
-<h1 class="mt-1 text-center display-4" >{{title}}</h1>
-
+<h1 class="mt-1 text-center  display-4" >{{title}}</h1>
 <button id="prev" class='btn btn-sm' onclick="get_next()" style="display:block"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></button>
 </div>
-
-<h5 class="mt-1 text-center font-weight-normal" ><a id="get_details">View details</a></h5>
+<h5 class="mt-1 text-center font-weight-normal" ><a id="get_condensed">View condensed</a></h5>
 
 <div class="table-responsive">
 <table
   id="myTable"
   class="table mx-auto  table-striped table-hover table-bordered text-center mt-4 pt-4  w-auto table-fixed " 
-  style="border:0px solid green; width:auto; margin: 0px auto"
+  style="border:0px solid green; width:auto; margin: 0px auto; table-layout:fixed;"
 >
   <thead>
     <th>Per</th>
-    <th>Start</th>
-    <th>End</th>
-    <th>Subject</th>
+    <th>Timet</th>
     <th>Class</th>
-    <th>Room</th>
+    <th> Last</th>
     <th>Lessons</th>
   </thead>
   <tbody>
-    {% for schedule in schedule %}
+
     <script>
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
       var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+      var len = {{latest_lessons | length}}; 
+      var latest_lessons = [];
+      var next_lessons = [];
+      {% for l in latest_lessons %}
+        latest_lessons.push("{{l.content}}");
+        next_lessons.push("{{l.plan}}");
+      {%endfor%}
+      console.log(latest_lessons);
       //var per = parseInt({{ schedule.sort}})
     </script>
-    <tr>
-      <td>
+
+    {% for schedule in schedule %}
+
+    <tr style="
+    min-height: 60px;
+    height: 60px">
+      <td class="display-4">
         <script>
           if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
           else document.write("L");
         </script>
       </td>
-      <td>{{ schedule.period.start_time}}</td>
-      <td>{{ schedule.period.end_time}}</td>
+      <td>{{ schedule.period.start_time}}<br>-<br>{{ schedule.period.end_time}}</td>
       <!-- <td>
         <script>
           if ("{{ schedule.course.classid}}" == "0-0") {
@@ -65,45 +73,38 @@
           if ("{{ schedule.course.subject}}" == "0") {
             document.write("");
           } else document.write("{{ schedule.course.subject}}");
-        </script>
-      </td>
-      <td class="text-nowrap">
-        <script>
           var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var p = per[{{loop.index}}];
           var c = "{{ schedule.course.classid}}";
           var courseid = "{{ schedule.course.courseid}}";         
           //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
-          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c + "</a>";
+          var t = '<br> <a style="font-size:1.4rem" class="font-weight-bold" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c + "</a>";
           if ("{{ schedule.course.subject}}" == "0") {
             document.write("");
           } else document.write(t);
-        </script>
-      </td>
-      <td>
-        <script>
+
           if ("{{ schedule.course.subject}}" != "0") {
           if ({{ schedule.course.room}} ==500)
-          document.write('Gym');
-          else document.write("{{ schedule.course.room}}");
+          document.write('<br>Gym');
+          else document.write("<br>{{ schedule.course.room}}");
           }
         </script>
       </td>
-      <td class="text-nowrap">
-        <script>
-          var s = "{{ schedule.course.subject}}" ;
-          if (s == "Computers" || s == "STEM") {
-            var x = "/lessons/"+course;
-                    document.write('<a href="' + x + '">View</a>  &nbsp;|  ');
-                  }
 
-                  var t = '<a href="/addLesson/' + c + '/' + courseid + '/' + dow + '/' +p + '/a">' + "&nbsp; Add" + "</a>";
-                  if (s == "Computers" || s == "STEM")  {
-                    document.write(t);
-                  } else document.write("");
-                </script>
-                 </script> 
-                </td>
+                <td class="text-left " style="min-width:300px! important;width:700px !important"" ><div style="height:70px; overflow-y:scroll; overflow-x:hidden; "><script>document.write(latest_lessons[{{loop.index}}-1])</script></div></td>
+                <td>        <script>
+                  var s = "{{ schedule.course.subject}}" ;
+                  if (s == "Computers" || s == "STEM") {
+                    var x = "/lessons/"+course;
+                            document.write('<a href="' + x + '">View</a>  &nbsp;|  ');
+                          }
+        
+                          var t = '<a href="/addLesson/' + c + '/' + courseid + '/' + dow + '/' +p + '/a">' + "&nbsp; Add" + "</a>";
+                          if (s == "Computers" || s == "STEM")  {
+                            document.write(t);
+                          } else document.write("");
+                        </script>
+                         </script> </td>
               </tr>
               {%endfor%}
   </tbody>
@@ -120,7 +121,7 @@
       document.getElementById("weekB").classList.add("active");
       document.getElementById("weekA").classList.remove("active");
     }
-    document.getElementById("get_details").href = "/schedule_with_lessons/" + dow;
+    document.getElementById("get_condensed").href = "/schedule/" + dow;
 
   };
 </script>
@@ -170,3 +171,4 @@
 <hr class="mt-4 mb-4">
 
         {% endblock content %}
+

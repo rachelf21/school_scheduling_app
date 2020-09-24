@@ -16,6 +16,7 @@ sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
 sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th']
 schedule = ''
 title = ''
+latest_lessons = []
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
 def retrieve_students(info):
     emails = []
@@ -62,6 +63,11 @@ def requires_auth_admin(f):
             return authenticate()
         return f(*args, **kwargs)
     return decorated
+
+def get_latest_lesson(courseid2):
+    lesson = Lessons.query.filter_by(courseid=courseid2).order_by(Lessons.lessonid.desc()).first()
+    print(lesson)
+    return lesson
 #%%
 
 
@@ -221,6 +227,7 @@ def display_schedule(dow):
     #x = Course.query.join(Group, Course.classid == Group.classid)
     global title
     global current_week
+    global latest_lessons
     
     title = ''
     lessons = Lessons.query.all()
@@ -259,11 +266,75 @@ def display_schedule(dow):
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
         title = 'Thursday (B)'
     
-    
+    latest_lessons = []
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list)
+        print("sched courseid=", s.courseid)
+        latest_lesson = get_latest_lesson(s.courseid)
+        latest_lessons.append(latest_lesson)
+   
+    print(latest_lessons)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+
+#%%
+@app.route('/schedule_with_lessons/<dow>')
+@requires_auth_admin
+def schedule_with_lessons(dow):
+    global schedule
+    #x = Course.query.join(Group, Course.classid == Group.classid)
+    global title
+    global current_week
+    global latest_lessons
+    
+    title = ''
+    lessons = Lessons.query.all()
+    
+    current_week = Week.query.first().today
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
+        
+    #jsonify(sched_list=sched_list) 
+    
+
+    if dow == 'A_M':
+        schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
+        title = 'Monday (A)'
+    elif dow == 'A_T':
+         schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='A').order_by(Schedule.sort).all()
+         title = 'Tuesday (A)'
+    elif dow == 'A_W':
+        schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='A').order_by(Schedule.sort).all()         
+        title = 'Wednesday (A)'
+    elif dow == 'A_Th':
+        schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='A').order_by(Schedule.sort).all()         
+        title = 'Thursday (A)'
+    elif dow == 'B_M':
+        schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()
+        title = 'Monday (B)'
+    elif dow == 'B_T':
+         schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='B').order_by(Schedule.sort).all()
+         title = 'Tuesday (B)'
+    elif dow == 'B_W':
+        schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='B').order_by(Schedule.sort).all()         
+        title = 'Wednesday (B)'
+    elif dow == 'B_Th':
+        schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
+        title = 'Thursday (B)'
+    
+    latest_lessons = []
+    for s in schedule:
+        s.period.start_time = s.period.start_time.strftime("%#I:%M")
+        s.period.end_time = s.period.end_time.strftime("%#I:%M")
+        print("sched courseid=", s.courseid)
+        latest_lesson = get_latest_lesson(s.courseid)
+        latest_lessons.append(latest_lesson)
+   
+    print(latest_lessons)
+    return render_template('schedule_with_lessons.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+    
     
 #%%
 #%%
@@ -461,6 +532,7 @@ def get_week(wk):
     global schedule
     global title
     global current_week
+    global latest_lessons
     today = date.today().weekday()
     current_week=wk
     if wk == 'A':
@@ -488,8 +560,10 @@ def get_week(wk):
             dow = 'B_M'
         sched_list = sched_list_B
     print("dow", dow)
+    
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list)
+    
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list,latest_lessons=latest_lessons)
 
 #%%
 @app.route('/daily_schedule/<day>')
@@ -511,6 +585,7 @@ def get_day(day):
 @app.route('/today')
 def today():
     global current_week
+    global latest_lessons
     wk = Week.query.first().today  
     current_week = wk
     today = date.today().weekday()
@@ -542,7 +617,7 @@ def today():
     else:
         sched_list = sched_list_B
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
 
 @app.route('/')
 @requires_auth_admin 

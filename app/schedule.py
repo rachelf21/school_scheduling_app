@@ -12,7 +12,7 @@ class Full_Schedule:
     #mon_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
     #print(mon_df)
    
-    print(tuesday)
+    # print(tuesday)
     
     start_times = []
     end_times=[]
