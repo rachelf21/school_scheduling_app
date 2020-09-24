@@ -26,6 +26,8 @@
       s.addEventListener("click", change_color);
     }
 
+
+
   };
 
 
@@ -93,9 +95,19 @@
   <script>
     var x = "/lessons/"+courseid;
     document.write('<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a> </div>');
-      
+    function present(){
+      var count = {{count}};
+      for (i=0; i<count; i++){
+        var s = document.getElementById("students-" + i + "-status");
+        if(s.value == "")
+          s.value ="P";
+        else s.value = "";
+      }
+    }
   </script>
-  <div style="float: right">{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
+  <div style="float: right">
+
+    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2" style="color:azure" onclick="present()"> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
 
 
 
@@ -111,7 +123,7 @@
     >
       <tr >
         <th style="display: none">Email</th>
-        <th>I</th>
+        <th>Abs</th>
         <th>Name</th>
         <th>Status</th>
         <th>Comment</th>
@@ -119,7 +131,7 @@
       {% for student in att_form.students %}
       <tr>
         <td style="display: none">{{ student.email}}</td>
-        <td><a href="/track_attendance/{{ student.email.data}}">{{loop.index}}</a></td> 
+        <td class="font-weight-bold"><a href="/track_attendance/{{ student.email.data}}">{{student.count.data}}</a></td> 
         <td><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name}}</a></td>
         <td >
 {{ student.status}}

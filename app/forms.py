@@ -8,8 +8,9 @@ class StudentAttendanceForm(FlaskForm):
     email = StringField('Email',
                            validators=[DataRequired(), Length(min=2, max=255)])
     student_name = StringField('Student')
+    count = IntegerField("Absences")
     status = SelectField('Status', 
-                      choices=[("P","P"),("A","A"),("L","L"),("O","O")],
+                      choices=[("",""),("P","P"),("A","A"),("L","L"),("O","O")],
                       coerce=str)
     comment = StringField(u"Comment", render_kw={'class': 'form-control', 'cols': 100})
     save = SubmitField('Save')

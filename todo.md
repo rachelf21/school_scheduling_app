@@ -19,14 +19,14 @@
 - [x] add ability to retrieve attendance records for specific student
 - [x] add ability to retrieve attendance records for specific day
 - [ ] attendance records to display latest dates first
-- [ ] add student detail when click on student
+- [x] add student detail when click on student
 - [x] add ability to click on student when taking attendance to bring up past attendance
 - [ ] adjust display on phone
 - [x] edit lesson when in view lesson mode
 - [x] delete lesson
 - [ ] add bootstrap flash success when added lesson and attendance
 - [x] add feature to add lesson plan
-- [ ] display lesson plan in schedule view
+- [x] display lesson plan in schedule view
 - [x] option to display all students
 - [x] display total absences for attendance records
 - [ ] freeze first column in student table, attendance tracking table, class table
@@ -36,6 +36,8 @@
 - [ ] enable check/uncheck students called for dismissal, based on numbers
 - [x] initialize to WeekA or WeekB, automatically go to today's schedule based on week
 - [x] change colors of Status items - highlight absences
+- [x] display absence amount next to students name for attendance
+- [x] button to mark/unmark all as present
 
 ### HTML PAGES
 
@@ -44,7 +46,7 @@
 - [x] dropdown for status A/P
 - [x] add time to daily attendance sheet
 - [x] class in All Classes list should link to that class
-- [ ] scheduleid's should be listed for each class
+- [x] scheduleid's should be listed for each class
 - [x] remove my classes sidebar, make first col biger
 - [x] show room number on class list
 - [ ] change mdy logo to white

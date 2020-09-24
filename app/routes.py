@@ -149,7 +149,9 @@ def attendance(classname, courseid, dow, per):
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
     for s in students:
+        amt = len(Attendance.query.filter_by(email = s.email).filter_by(status='A').all())
         student_form = StudentAttendanceForm()
+        student_form.count = amt
         student_form.email = s.email
         student_form.student_name = s.name
         student_form.comment = ""
