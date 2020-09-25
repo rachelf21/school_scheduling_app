@@ -43,6 +43,7 @@
 - [x] weekly schedule
 - [ ] on weekly schedule, turn cell into link instead of text
 - [ ] remove sidebar from pages
+- [ ] add Edit button on attendance page to edit attendance record, for individual student
 
 ### HTML PAGES
 
