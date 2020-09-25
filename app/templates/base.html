@@ -3,10 +3,13 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
+
+    {% block scale %}
     <meta
       name="viewport"
       content="width=device-width, initial-scale=.7, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no"
     />
+    {% endblock %}
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />

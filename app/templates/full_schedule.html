@@ -1,4 +1,9 @@
-{% extends "base.html" %} {% block title %}MDY Schedule{% endblock %} {% block content %}
+{% extends "base.html" %} {% block scale %}
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=.5, user-scalable=yes, maximum-scale=4.0, minimum-scale=.1, shrink-to-fit=yes"
+/>
+{% endblock %} {% block title %}MDY Schedule{% endblock %} {% block content %}
 <script src="/static/js/full_schedule.js"></script>
 <div class="d-flex justify-content-around" style="border: 0px solid red">
   <button id="next" class="btn btn-sm" onclick="get_prev()" style="display: block" disabled>
