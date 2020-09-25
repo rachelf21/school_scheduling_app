@@ -30,7 +30,7 @@
     font-weight: bold;
   }
   td:hover {
-    background-color: #fff0f5 !important;
+    background-color: #e0ffff !important;
   }
 
   td a {
@@ -82,7 +82,10 @@
               var curr_course = "{{mon.courseid[n]}}";
               if (curr_course.includes("Computers")) {
                 document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              } else if (curr_course.includes("STEM")) {
+                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+              }
               var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
               console.log(link_text);
               parent.setAttribute("href", link_text);
@@ -103,7 +106,10 @@
               console.log(link_text);
               if (curr_course.includes("Computers")) {
                 document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              } else if (curr_course.includes("STEM")) {
+                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+              }
               parent.setAttribute("href", link_text);
             </script>
           </a>
@@ -121,7 +127,10 @@
               console.log(link_text);
               if (curr_course.includes("Computers")) {
                 document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              } else if (curr_course.includes("STEM")) {
+                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+              }
 
               parent.setAttribute("href", link_text);
             </script>
@@ -140,7 +149,11 @@
               console.log(link_text);
               if (curr_course.includes("Computers")) {
                 document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              } else if (curr_course.includes("STEM")) {
+                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+              }
+              }
 
               parent.setAttribute("href", link_text);
             </script>
