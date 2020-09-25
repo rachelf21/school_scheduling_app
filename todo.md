@@ -42,6 +42,7 @@
 - [ ] change color for status on phone
 - [x] weekly schedule
 - [ ] on weekly schedule, turn cell into link instead of text
+- [ ] remove sidebar from pages
 
 ### HTML PAGES
 

@@ -119,8 +119,7 @@
           <div class="alert alert-{{ category }}">{{ message }}</div>
           {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
         </div>
-
-        {% extends "sidebar_schedule.html"%}
+        {% block sidebar %} {% extends "sidebar_schedule.html"%} {% endblock %}
       </div>
     </main>
   </body>
