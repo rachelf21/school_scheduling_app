@@ -38,6 +38,10 @@
 - [x] change colors of Status items - highlight absences
 - [x] display absence amount next to students name for attendance
 - [x] button to mark/unmark all as present
+- [ ] when clicking All, trigger color change on relevant status buttons
+- [ ] change color for status on phone
+- [x] weekly schedule
+- [ ] on weekly schedule, turn cell into link instead of text
 
 ### HTML PAGES
 

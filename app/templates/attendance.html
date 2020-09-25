@@ -99,9 +99,12 @@
       var count = {{count}};
       for (i=0; i<count; i++){
         var s = document.getElementById("students-" + i + "-status");
-        if(s.value == "")
+        if(s.value == ""){
           s.value ="P";
-        else s.value = "";
+        }
+        else {
+          s.value = "";
+        }
       }
     }
   </script>

@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% block title %}MDY Schedule{% endblock %} {% block content %}
 <script src="/static/js/full_schedule.js"></script>
 <div class="d-flex justify-content-around" style="border: 0px solid red">
-  <button id="next" class="btn btn-sm" onclick="get_prev()" style="display: block">
+  <button id="next" class="btn btn-sm" onclick="get_prev()" style="display: block" disabled>
     <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
   </button>
-  <h1 class="mt-1 4 text-center font-weight-normal">{{title}}</h1>
-  <button id="prev" class="btn btn-sm" onclick="get_next()" style="display: block">
+  <h1 class="mt-1 4 text-center display-4">{{title}}</h1>
+  <button id="prev" class="btn btn-sm" onclick="get_next()" style="display: block" disabled>
     <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
   </button>
 </div>
@@ -15,14 +15,31 @@
   var dow = ["A_M", "A_T", "A_W", "A_Th"]; //change this to wk variable later
   var per = [0, 1, 2, 3, 4, 5, "L", 6, 7, 8, 9, 10];
 </script>
+<style>
+  a {
+    color: black;
+  }
+  a:hover {
+    color: blue;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  td:hover {
+    background-color: #fff0f5 !important;
+  }
 
+  td a {
+    width: 100%;
+    display: block;
+  }
+</style>
 <div class="table-responsive">
   <table
     id="myTable"
-    class="table mx-auto table-hover table-bordered text-center mt-4 pt-4 w-auto table-fixed"
+    class="table mx-auto table-bordered text-center mt-4 pt-4 w-auto table-fixed"
     style="border: 0px solid green; width: auto; margin: 0px auto"
   >
-    <thead>
+    <thead style="border-width: medium">
       <th>Per</th>
       <th>Time</th>
       <th>Monday</th>
@@ -33,17 +50,97 @@
 
     <tbody>
       {%for n in range(11)%}
+
       <tr>
-        <td>
+        <script>
+          var paleyellow = "rgb(252, 255, 217)";
+          var curr_per = per[{{n}}+1];
+          if (curr_per == 'L' || curr_per == '8'){
+            document.currentScript.parentElement.style.background = "Gainsboro";
+          }
+        </script>
+
+        <td class="display-4" style="border-width: medium">
           <script>
-            document.write(per[{{n}}+1]);
+            document.write(curr_per);
           </script>
         </td>
-        <td>{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
-        <td>{{mon[n].courseid}}</td>
-        <td>{{tues[n].courseid}}</td>
-        <td>{{wed[n].courseid}}</td>
-        <td>{{thurs[n].courseid}}</td>
+        <td style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
+        <td style="border-width: medium; vertical-align: middle">
+          <a
+            >{{mon.courseid[n]}}
+            <script>
+              var parent = document.currentScript.parentElement;
+              console.log(parent);
+              var schedid = "{{mon.scheduleid[n]}}".substring(0, 3);
+              var curr_class = "{{mon.courseid[n]}}".substring(0, 5);
+              var curr_course = "{{mon.courseid[n]}}";
+              if (curr_course.includes("Computers")) {
+                document.currentScript.parentElement.parentElement.style.background = paleyellow;
+              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
+              console.log(link_text);
+              parent.setAttribute("href", link_text);
+              parent.style.cssText = "width:100%; display:block";
+            </script>
+          </a>
+        </td>
+        <td style="border-width: medium; vertical-align: middle">
+          <a>
+            {{tues.courseid[n]}}
+            <script>
+              var parent = document.currentScript.parentElement;
+              console.log(parent);
+              var schedid = "{{tues.scheduleid[n]}}".substring(0, 3);
+              var curr_class = "{{tues.courseid[n]}}".substring(0, 5);
+              var curr_course = "{{tues.courseid[n]}}";
+              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
+              console.log(link_text);
+              if (curr_course.includes("Computers")) {
+                document.currentScript.parentElement.parentElement.style.background = paleyellow;
+              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+              parent.setAttribute("href", link_text);
+            </script>
+          </a>
+        </td>
+        <td style="border-width: medium; vertical-align: middle">
+          <a>
+            {{wed.courseid[n]}}
+            <script>
+              var parent = document.currentScript.parentElement;
+              console.log(parent);
+              var schedid = "{{wed.scheduleid[n]}}".substring(0, 3);
+              var curr_class = "{{wed.courseid[n]}}".substring(0, 5);
+              var curr_course = "{{wed.courseid[n]}}";
+              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
+              console.log(link_text);
+              if (curr_course.includes("Computers")) {
+                document.currentScript.parentElement.parentElement.style.background = paleyellow;
+              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+
+              parent.setAttribute("href", link_text);
+            </script>
+          </a>
+        </td>
+        <td style="border-width: medium; vertical-align: middle">
+          <a>
+            {{thurs.courseid[n]}}
+            <script>
+              var parent = document.currentScript.parentElement;
+              console.log(parent);
+              var schedid = "{{thurs.scheduleid[n]}}".substring(0, 4);
+              var curr_class = "{{thurs.courseid[n]}}".substring(0, 5);
+              var curr_course = "{{thurs.courseid[n]}}";
+              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
+              console.log(link_text);
+              if (curr_course.includes("Computers")) {
+                document.currentScript.parentElement.parentElement.style.background = paleyellow;
+              } else if (curr_course.includes("STEM")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+
+              parent.setAttribute("href", link_text);
+            </script>
+          </a>
+        </td>
       </tr>
       {%endfor%}
     </tbody>

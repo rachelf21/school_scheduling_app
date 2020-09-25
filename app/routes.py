@@ -347,22 +347,23 @@ def display_full_schedule():
     global title
     global current_week
     
-    title = 'Weekly Schedule A'
     lessons = Lessons.query.all()
     
     current_week = Week.query.first().today
-
+    title = 'Weekly Schedule ' + current_week
    
     schedule = Full_Schedule()
+    schedule.get_schedule(current_week)
     #mon = list(schedule.mon_df)
-    mon = schedule.monday   
-    tues = schedule.tuesday
-    wed = schedule.wednesday
-    thurs = schedule.thursday
+    mon = schedule.mon_df   
+    tues = schedule.tues_df
+    wed = schedule.wed_df
+    thurs = schedule.thurs_df
     
+    schedule.get_times()
     start_times = schedule.start_times 
     end_times = schedule.end_times
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times)
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, )
     
 
 # @app.route('/today/<classname>/<dow>/<per>')
