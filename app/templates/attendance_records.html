@@ -19,6 +19,8 @@
     title = "{{student_name}}<br> {{student_class}}";
   } else if (category == "date") {
     title = "{{date}}";
+  } else if (category == "classdate") {
+    title = "{{courseid}}" + "<br>{{date}}";
   } else {
     title = "{{student_name}} <br> {{student_class}}";
   }
@@ -82,6 +84,8 @@
 <hr class="mb-4" />
 <script>
   $("#myTable").DataTable({
+    ordering: false,
+    order: [[1, "desc"]],
     pageLength: 20,
     paging: false,
     filter: true,
@@ -89,9 +93,8 @@
     //scrollY: 1200,
     scrollCollapse: true,
     scroller: true,
-    //ordering: true,
     select: true,
-    bSort: true,
+    //bSort: false,
   });
 </script>
 {% endblock content %}

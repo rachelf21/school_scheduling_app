@@ -10,6 +10,8 @@ from app import db, engine
 from sqlalchemy.exc import IntegrityError, DataError
 from functools import wraps
 from app.schedule import Full_Schedule
+from app.automate import Automate
+from app.utilities import Util
 
 current_week ='A'
 sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
@@ -137,7 +139,6 @@ def udpate_lessons(lessonid):
 def attendance(classname, courseid, dow, per): 
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
     period = dow[2:]+per
-    print("AMOUNT", amount)
     att_form = ClassAttendanceForm(request.form)
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
@@ -221,6 +222,19 @@ def udpate_attendance():
     topic = "attendance"
     return render_template("confirmation.html", topic = topic)
 
+#%%
+@app.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')
+def edit_attendance(date, courseid, email, status, comment):
+    att_date = date
+    print(email, att_date, status, comment, courseid)
+    query = "UPDATE attendance set status = '" + status +"', comment = '" + comment + "' where email = '" + email +"' and att_date = '" + att_date +"' and courseid = '" + courseid + "';"
+    print(query)
+    with engine.begin() as conn:     # TRANSACTION
+        conn.execute(query)
+
+    topic = "attendance change"
+    return render_template("confirmation.html", topic=topic)
+    
 #%%
 #%%
 @app.route('/schedule/<dow>')
@@ -473,7 +487,7 @@ def get_students(access, classname):
         room = "(Rm " + str(Group.query.filter_by(classid = classname).first().room) + ")"
         
     if access == 'a':
-        return render_template('students.html', students=students, title=title)
+        return render_template('students.html', students=students, title=title,room=room, subtitle=subtitle, grade=grade)
     
     elif access == 'd':
                 return render_template('students-denied.html', students=students, title=title ,room=room, subtitle=subtitle, grade=grade)
@@ -520,6 +534,12 @@ def track_attendance(category):
         attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid).all()   
         absences =  Attendance.query.filter_by(att_date = date, status = 'A').count() 
 
+    elif category == 'classdate':
+        date = request.form['date']
+        courseid = request.form['courseid']
+        attendance = Attendance.query.filter_by(att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()   
+        absences =  Attendance.query.filter_by(att_date = date, courseid = courseid, status = 'A').count() 
+        
     else:
         student = category
         student_name = Student.query.filter_by(email = student).first().name
@@ -589,38 +609,40 @@ def get_day(day):
 def today():
     global current_week
     global latest_lessons
-    wk = Week.query.first().today  
-    current_week = wk
-    today = date.today().weekday()
-    if wk == 'A':
-        if today == 0:
-            dow = 'A_M'
-        elif today == 1:
-            dow = 'A_T'
-        elif today == 2:
-            dow = 'A_W'
-        elif today == 3:
-            dow = 'A_Th'
-        else: 
-            dow = 'A_M'
-    else:
-        if today == 0:
-            dow = 'B_M'
-        elif today == 1:
-            dow = 'B_T'
-        elif today == 2:
-            dow = 'B_W'
-        elif today == 3:
-            dow = 'B_Th'
-        else:
-            dow = 'B_M'
-    print("dow", dow)
+    current_week = Week.query.first().today  
+    util = Util()
+    dow = util.get_dow()
     if current_week ==  'A':
         sched_list = sched_list_A
     else:
         sched_list = sched_list_B
     display_schedule(dow)
     return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+
+
+
+#%%
+@app.route('/now')
+def now():
+    alltimes = []
+    periods = []
+    current_period = 1
+    util = Util()
+    day = util.get_day()
+    
+    for i in range(1,11):
+        periodid = day+str(i)
+        periods.append(periodid)
+        
+    periods = Period.query.filter(Period.periodid.like(day+'%')).order_by(Period.start_time).all()
+
+    for p in periods:
+        if(util.is_time_between(p.start_time, p.end_time)):
+            result = p.periodid
+        else:
+            result = "not found"
+    return str(result)
+
 
 @app.route('/')
 @requires_auth_admin 
@@ -764,7 +786,7 @@ def set_week(letter):
         conn.execute(query)
     topic = "Week " + letter
     return render_template("confirmation.html", topic=topic)
-    #return redirect(url_for('get_week', wk=letter))
+    #return redirect("/full_schedule")
 
 #%%
 @app.route('/zoom_schedule')

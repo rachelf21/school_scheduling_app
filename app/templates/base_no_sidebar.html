@@ -10,15 +10,9 @@
       content="width=device-width, initial-scale=.7, user-scalable=yes, maximum-scale=3.0, minimum-scale=.1, shrink-to-fit=no"
     />
     {% endblock %}
-
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -103,6 +97,7 @@
                 </div>
               </li>
               <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">Classes</a>
+
               <li class="nav-link nav-item dropdown mr-2">
                 <a
                   class="dropdown-toggle"
@@ -140,12 +135,11 @@
       <!--style="margin: 0 auto; width: 75% !important"-->
 
       <div class="row" style="border: 0px solid blue">
-        <div class="col-md-9 mt-2" style="border: 0px red solid">
+        <div class="col-md-12 mt-2" style="border: 0px red solid">
           {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
           <div class="alert alert-{{ category }}">{{ message }}</div>
           {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
         </div>
-        {% extends "sidebar_schedule.html"%}
       </div>
     </main>
   </body>

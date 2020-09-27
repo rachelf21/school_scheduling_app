@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from app.models import Course, Student, Group
 from wtforms.fields.html5 import DateField
 
+
 class StudentAttendanceForm(FlaskForm):
     email = StringField('Email',
                            validators=[DataRequired(), Length(min=2, max=255)])
@@ -13,6 +14,7 @@ class StudentAttendanceForm(FlaskForm):
                       choices=[("",""),("P","P"),("A","A"),("L","L"),("O","O")],
                       coerce=str)
     comment = StringField(u"Comment", render_kw={'class': 'form-control', 'cols': 100})
+    edit = SubmitField('Edit')
     save = SubmitField('Save')
 
 class ClassAttendanceForm(FlaskForm):
@@ -29,6 +31,7 @@ class ClassAttendanceForm(FlaskForm):
     students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()])
     data = StringField('data')
     save = SubmitField('Submit')
+
     
 
     

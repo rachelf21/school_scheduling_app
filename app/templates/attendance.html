@@ -1,5 +1,21 @@
-{% extends "base.html" %} {%block title%} MDY Attendance {%endblock%} {%block content%}
+{% extends "base_no_sidebar.html" %} {% block scale %}
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06"
+/>
+{% endblock %}
+{%block title%} MDY Attendance {%endblock%} {%block content%}
+<style>
+  tr:hover {
+    background-color: #e0ffff !important;
+  }
 
+  .mont{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;   text-transform: uppercase;
+  }
+  
+</style>
 <script>
   var students = [];
   var classid = "{{classid}}";
@@ -25,11 +41,7 @@
       var s = document.getElementById("students-" + i + "-status");
       s.addEventListener("click", change_color);
     }
-
-
-
   };
-
 
 </script>
 
@@ -38,14 +50,14 @@
 <div id="top_of_form" >
 <form action="/update_attendance" method="post" name="att_form">
   {{ att_form.hidden_tag() }}
-  <h1 class="font-weight-normal">Attendance</h1>
-  <legend class="border-bottom mb-4">
+  <h1 class="mt-4 font-weight-normal mont">Attendance</h1>
+  <legend class="border-bottom mb-4 mont" >
     <script>
       document.write(courseid +" (Rm " + room + ")");  
     </script>
   </legend>
 
-  <!-- <div class="row" style="flex-wrap:nowrap; border:0px solid red; width:100%"> -->
+  <!-- <div class="row" style="flex-wrap:nowrap; border:0px solid DeepPink; width:100%"> -->
 
   <div class="row no-gutters " style="justify-content: center; border:0px solid red; width:100%">
     <div class="col col-lg-2 mr-1">
@@ -93,69 +105,202 @@
 
   </div>
   <script>
+    var toggle = 1;
+    var late_selected = 0;
+    var absent_selected = 0;
+    var present_selected = 0;
+    var PaleRed = "rgb(255, 227, 232)";
+
     var x = "/lessons/"+courseid;
     document.write('<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a> </div>');
-    function present(){
+    
+    function present(x){
+      toggle = -(toggle);
+      var checks = document.getElementsByName("check");
+      var exes = document.getElementsByName("ex");
+      var lates = document.getElementsByName("late");
+      var empties = document.getElementsByName("empty");
+
       var count = {{count}};
       for (i=0; i<count; i++){
         var s = document.getElementById("students-" + i + "-status");
-        if(s.value == ""){
+        var n = document.getElementById("students-" + i + "-student_name");
+        n.setAttribute("style", "background-color: none");
+        if(toggle < 0){
           s.value ="P";
+          checks[i].style.display="block";
+          exes[i].style.display="none";
+          lates[i].style.display="none";
+          empties[i].style.display="none";
         }
         else {
           s.value = "";
+          exes[i].style.display="none";
+          checks[i].style.display="none";
+          lates[i].style.display="none";
+          empties[i].style.display="block";
         }
-      }
+      }   
     }
+    
+
+    function edit_attendance(id, email){
+      id=id-1;
+      console.log(email);
+      var changed_status = document.getElementById("students-" + id + "-status").value;
+      var changed_comment = document.getElementById("students-" + id + "-comment").value;
+      changed_comment = changed_comment.replace(/'/g, "") + " -edited";
+      console.log(changed_comment);
+      window.location.href = "/edit_attendance/" + date + "/" + courseid +"/" + email +"/" + changed_status + "/" + changed_comment;
+    }
+
+    function mark_present(id){
+      id=id-1;
+      s= document.getElementById("students-" + id + "-status");
+      s.value = "P";
+      s.style.color="black";
+      s.setAttribute("style", "background-color: none");
+      n = document.getElementById("students-" + id + "-student_name");
+      n.style.color="black";
+      n.setAttribute("style", "background-color: none");
+      var checks = document.getElementsByName("check");
+      checks[id].style.display="block";
+      var exes = document.getElementsByName("ex");
+      exes[id].style.display="none";
+      var lates = document.getElementsByName("late");
+      lates[id].style.display="none"; 
+      var empty = document.getElementsByName("empty");
+      empty[id].style.display="none"; 
+    }
+
+    function mark_absent(id){
+      id=id-1;
+      s = document.getElementById("students-" + id + "-status");
+      s.value = "A";
+      s.style.color="DeepPink";
+      s.setAttribute("style", "background-color: " + PaleRed);
+      n = document.getElementById("students-" + id + "-student_name");
+      n.style.color="DeepPink";
+      n.setAttribute("style", "background-color: " + PaleRed);
+      //n.setAttribute("class", "mark");     
+      var checks = document.getElementsByName("check");
+      checks[id].style.display="none";
+      var exes = document.getElementsByName("ex");
+      exes[id].style.display="block"; 
+      var lates = document.getElementsByName("late");
+      lates[id].style.display="none"; 
+      var empty = document.getElementsByName("empty");
+      empty[id].style.display="none";
+    }
+
+    function mark_late(id){
+      id=id-1;
+      s = document.getElementById("students-" + id + "-status");
+      s.value = "L";
+      s.style.color="blue";
+      s.setAttribute("style", "background-color: none");
+      n = document.getElementById("students-" + id + "-student_name");
+      n.style.color="black";
+      n.setAttribute("style", "background-color: none");
+      var checks = document.getElementsByName("check");
+      checks[id].style.display="none";
+      var exes = document.getElementsByName("ex");
+      exes[id].style.display="none"; 
+      var lates = document.getElementsByName("late");
+      lates[id].style.display="block"; 
+      var late_icons = document.getElementsByName("late_icon");
+      var empty = document.getElementsByName("empty");
+      empty[id].style.display="none";
+    }
+
+    function mark_clear(id){
+      id=id-1;
+      c = document.getElementById("students-" + id + "-comment");
+      c.value = "";
+      s = document.getElementById("students-" + id + "-status");
+      s.value = "";
+      s.style.color="black";
+      s.setAttribute("style", "background-color: none");
+      n = document.getElementById("students-" + id + "-student_name");
+      n.style.color="black";
+      n.setAttribute("style", "background-color: none");
+      var checks = document.getElementsByName("check");
+      checks[id].style.display="none";
+      var exes = document.getElementsByName("ex");
+      exes[id].style.display="none"; 
+      var lates = document.getElementsByName("late");
+      lates[id].style.display="none"; 
+      var empty = document.getElementsByName("empty");
+      empty[id].style.display="block";
+    }
+
+
   </script>
-  <div style="float: right">
-
-    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2" style="color:azure" onclick="present()"> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
-
-
-
- 
+  <div style="float: right; border:0px solid red">
+    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick="present()"> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
 
 <div class="table-responsive">
 
 <div id="attendance_table" class="mt-0">
     <table
       id="myTable"
-      class="table mx-auto w-auto table-striped table-hover table-bordered "
-      style="border: 0px red solid; width:auto; margin: 0px auto"
+      class="table mx-auto w-auto table-striped table-hover table-bordeDeepPink "
+      style="border: 0px DeepPink solid; width:auto; margin: 0px auto"
     >
       <tr >
         <th style="display: none">Email</th>
-        <th>Abs</th>
+        <th> </th>
+        <th>A</th>
         <th>Name</th>
         <th>Status</th>
         <th>Comment</th>
+        <th></th>
       </tr>
       {% for student in att_form.students %}
       <tr>
+
         <td style="display: none">{{ student.email}}</td>
-        <td class="font-weight-bold"><a href="/track_attendance/{{ student.email.data}}">{{student.count.data}}</a></td> 
-        <td><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name}}</a></td>
-        <td >
+        <td class="font-weight-normal text-nowrap"">
+          <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
+          <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
+          <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:HotPink" class="fa fa-times"></i> </a>
+          <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
+          </td> 
+          <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
+            {{student.count.data if student.count.data !=0}}
+          </a></td>
+        <td>
+{{ student.student_name}}</td>
+        <td>
+          <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> -- </a></div>
+          <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
+          <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:HotPink" class="fa fa-times fa-2x"></i></a></div>
+          <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
+<div style="display:none">
 {{ student.status}}
+</div>
 
         </td>
+        
         <td>{{ student.comment(length=300)|safe}}</td>
+        <script>
+          var newStudent = "student" + "{{loop.index}}";
+          var newEmail = "{{ student.email.data }}";
+          var newName = "{{ student.student_name.data }}";
+          var newStatus = "{{ student.status.value }}";
+          var newComment = "{{ student.comment.data }}";
+  
+          var jsonData = {};
+          jsonData["email"] = newEmail;
+          jsonData["name"] = newName;
+          jsonData["status"] = newStatus;
+          jsonData["comment"] = newComment;
+          students.push(jsonData);
+        </script>
+        <td>
+          <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
       </tr>
-      <script>
-        var newStudent = "student" + "{{loop.index}}";
-        var newEmail = "{{ student.email.data }}";
-        var newName = "{{ student.student_name.data }}";
-        var newStatus = "{{ student.status.value }}";
-        var newComment = "{{ student.comment.data }}";
 
-        var jsonData = {};
-        jsonData["email"] = newEmail;
-        jsonData["name"] = newName;
-        jsonData["status"] = newStatus;
-        jsonData["comment"] = newComment;
-        students.push(jsonData);
-      </script>
       {% endfor %}
       <script>
         document.getElementsByName("data").value = students;
@@ -164,15 +309,18 @@
       <script>
         $("#myTable").DataTable({
           pageLength: 20,
+          //ordering:false,
+          //order: [0, "desc"],
           paging: false,
           dom: "lrtip",
           filter: true,
-          deferRender: true,
+          //deferRender: true,
           //scrollY: 1200,
           scrollCollapse: true,
           scroller: true,
           select: true,
           bSort: false,
+          //order: [[0, "desc"]]
         });
      
         function change_color(e){
@@ -185,9 +333,9 @@
 
           var selected = ele.value;
           if(selected=='A'){
-            ele.style.color="red";
+            ele.style.color="DeepPink";
             ele.setAttribute("class", "mark");
-            n.style.color="red";
+            n.style.color="DeepPink";
             n.setAttribute("class", "mark");           
 
           }

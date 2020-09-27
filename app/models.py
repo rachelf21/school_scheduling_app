@@ -159,7 +159,7 @@ class Attendance(db.Model):
         self.comment = comment
     
     def __repr__(self):
-        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.classid}', '{self.email}','{self.status}', '{self.comment}')"
+        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
 
 #%%
 

@@ -28,6 +28,16 @@
           <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
         </div>
       </form>
+
+      <form action="/track_attendance/classdate" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <legend class="border-bottom mt-4 mb-2 text-muted">Select by class and date</legend>
+        <div class="row no-gutters mb-4">
+          <div class="col col-md-7 mb-2">{{ form.date(class="form-control form-control-md") }}</div>
+          <div class="col col-md-7">{{ form.courseid(class="form-control form-control-md") }}</div>
+          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

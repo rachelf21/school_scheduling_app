@@ -3,7 +3,12 @@
 <h1 class="mb-2 text-center font-weight-normal">Success!</h1>
 <hr />
 <p></p>
-<h4 class="mt-4 mb-0 text-center font-weight-normal">Your {{topic}} has been recorded.</h4>
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %} {% endif %} {% endwith %}
+
+<h4 class="mt-4 mb-0 text-center font-weight-normal alert alert-success">Your {{topic}} has been recorded.</h4>
 <p class="mt-4 mb-4">&nbsp;</p>
 <div class="text-center">
   <a href="/full_schedule" class="mb-2 mr-4 btn btn-primary btn-md">Weekly Schedule</a>

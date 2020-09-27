@@ -1,9 +1,18 @@
 {% extends "base.html" %} {% block title %}MDY Students{% endblock %} {% block content %}
 <!-- <div id="outerdiv" style="display: flex">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
-<div style="text-align: center">
-  <h2 class="font-weight-normal">{{title}} {{room}}</h2>
-</div>
+    <div style="text-align: center">
+      <h2 class="font-weight-normal">{{title}} {{room}}</h2>
+      <h4 class="font-weight-normal">{{subtitle}}</script></h4>
+        <div id="all7" class="font-weight-normal mb-4" style="display:none"><a href="/get_students/a/7">View all Grade 7 Students</a></div>
+        <div id="all8" class="font-weight-normal mb-4" style="display:none"><a href="/get_students/a/8">View all Grade 8 Students</a></div>
+        <script>
+          if("{{grade}}" == "7") 
+            document.getElementById("all7").style.display = "block";
+          else if ("{{grade}}" =="8")
+          document.getElementById("all8").style.display = "block";
+        </script>
+    </div>
 <!-- <table
   id="myTable"
   class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
@@ -29,7 +38,7 @@
         <td name="classid" class="text-center">
           <script>
             var classlink = "{{students.classid}}";
-            document.write("<a style='color:black' href='/get_students/d/" + classlink + "'> {{students.class_code.classid2}}</a>");
+            document.write("<a style='color:black' href='/get_students/a/" + classlink + "'> {{students.class_code.classid2}}</a>");
           </script>
         </td>
         <td>{{ students.email}}</td>
