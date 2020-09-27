@@ -1,21 +1,23 @@
 {% extends "base_no_sidebar.html" %} {% block scale %}
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06"
+  content="width=device-width, initial-scale=.7, user-scalable=yes, maximum-scale=3.0, minimum-scale=.06"
 />
 {% endblock %}
 {%block title%} MDY Attendance {%endblock%} {%block content%}
+
 <style>
   tr:hover {
     background-color: #e0ffff !important;
   }
-
   .mont{
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;   text-transform: uppercase;
-  }
-  
+  }  
 </style>
+
+<script src = "/static/js/attendance.js"></script>
+
 <script>
   var students = [];
   var classid = "{{classid}}";
@@ -24,19 +26,11 @@
   var courseid = "{{courseid}}";
   var amount = "{{amount}}";
   var room = "{{room}}";
+  var date = get_today();
+  var count = {{count}};
+  var PaleRed = "rgb(255, 227, 232)";
 
-  var today = new Date();
-  //var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  month = ("0" + (today.getMonth() + 1)).slice(-2);
-  day = ("0" + today.getDate()).slice(-2);
-  year = today.getFullYear();
-  var date = year + "-" + month + "-" + day;
-
-
-  window.onload = function () {
-    //console.log("is it working " + classid);
-    //document.getElementById("classid").value = classid;
-    var count = {{count}};
+  window.onload = function () {  
     for (i=0; i<count; i++){
       var s = document.getElementById("students-" + i + "-status");
       s.addEventListener("click", change_color);
@@ -46,198 +40,66 @@
 </script>
 
 <div id="outerdiv" style="display: flex; justify-content: center; text-align:center">
-<div id = "innerdiv" style="margin-left:auto; margin-right:auto">
-<div id="top_of_form" >
-<form action="/update_attendance" method="post" name="att_form">
-  {{ att_form.hidden_tag() }}
-  <h1 class="mt-4 font-weight-normal mont">Attendance</h1>
-  <legend class="border-bottom mb-4 mont" >
-    <script>
-      document.write(courseid +" (Rm " + room + ")");  
-    </script>
-  </legend>
+  <div id = "innerdiv" style="margin-left:auto; margin-right:auto">
+    <h1 class="mt-2 font-weight-normal mont">Attendance</h1>
+    <legend class="border-bottom mb-4 mont" >
+      <script> document.write(courseid +" (Rm " + room + ")"); </script>
+    </legend>
+    <form action="/update_attendance" method="post" name="att_form"> {{ att_form.hidden_tag() }}
 
-  <!-- <div class="row" style="flex-wrap:nowrap; border:0px solid DeepPink; width:100%"> -->
-
-  <div class="row no-gutters " style="justify-content: center; border:0px solid red; width:100%">
-    <div class="col col-lg-2 mr-1">
-      {{ att_form.date.label(class="form-control-label form-control-sm mb-0 ") }} {{ att_form.date(class="form-control form-control-sm pl-1") }}
-      <script>
-        document.getElementById("date").value = date;
-      </script>
-    </div>
-  
-    <div class="col col-lg-1 mr-1">
-      {{ att_form.scheduleid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.scheduleid(class="form-control form-control-sm") }}
-      <script>
-        document.getElementById("scheduleid").value = scheduleid;
-      </script>
-    </div>
-
-
-    <div class="" style = "display:none ">
-      {{ att_form.courseid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.courseid(class="form-control form-control-sm") }}
-      <script>
-        document.getElementById("courseid").value = courseid;
-      </script>
-    </div>
-
-    <div class="col col-lg-1 mr-1">
-      {{ att_form.start_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.start_time(class="form-control form-control-sm") }}
-      <script>
-        document.getElementById("courseid").value = courseid;
-      </script>
-    </div>
-
-    <div class="col col-lg-1 mr-1">
-      {{ att_form.end_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.end_time(class="form-control form-control-sm") }}
-      <script>
-        document.getElementById("courseid").value = courseid;
-      </script>
-    </div>
-
-    <div class="nopadding col col-lg-1 mr-1">
-      {{ att_form.amount.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.amount(class="form-control form-control-sm ") }}
-      <script>
-        document.getElementById("amount").value = amount;
-      </script>
-    </div>
-
-  </div>
-  <script>
-    var toggle = 1;
-    var late_selected = 0;
-    var absent_selected = 0;
-    var present_selected = 0;
-    var PaleRed = "rgb(255, 227, 232)";
-
-    var x = "/lessons/"+courseid;
-    document.write('<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a> </div>');
+  <div id="top_of_form" >
+    <div class="row no-gutters " style="justify-content: center; border:0px solid red; width:100%">
+      <div class="col col-lg-2 mr-1">
+        {{ att_form.date.label(class="form-control-label form-control-sm mb-0 ") }} {{ att_form.date(class="form-control form-control-sm pl-1") }}
+        <script>
+          document.getElementById("date").value = date;
+        </script>
+      </div>
     
-    function present(x){
-      toggle = -(toggle);
-      var checks = document.getElementsByName("check");
-      var exes = document.getElementsByName("ex");
-      var lates = document.getElementsByName("late");
-      var empties = document.getElementsByName("empty");
+      <div class="col col-lg-1 mr-1">
+        {{ att_form.scheduleid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.scheduleid(class="form-control form-control-sm") }}
+        <script>
+          document.getElementById("scheduleid").value = scheduleid;
+        </script>
+      </div>
 
-      var count = {{count}};
-      for (i=0; i<count; i++){
-        var s = document.getElementById("students-" + i + "-status");
-        var n = document.getElementById("students-" + i + "-student_name");
-        n.setAttribute("style", "background-color: none");
-        if(toggle < 0){
-          s.value ="P";
-          checks[i].style.display="block";
-          exes[i].style.display="none";
-          lates[i].style.display="none";
-          empties[i].style.display="none";
-        }
-        else {
-          s.value = "";
-          exes[i].style.display="none";
-          checks[i].style.display="none";
-          lates[i].style.display="none";
-          empties[i].style.display="block";
-        }
-      }   
-    }
-    
+      <div class="" style = "display:none ">
+        {{ att_form.courseid.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.courseid(class="form-control form-control-sm") }}
+        <script>
+          document.getElementById("courseid").value = courseid;
+        </script>
+      </div>
 
-    function edit_attendance(id, email){
-      id=id-1;
-      console.log(email);
-      var changed_status = document.getElementById("students-" + id + "-status").value;
-      var changed_comment = document.getElementById("students-" + id + "-comment").value;
-      changed_comment = changed_comment.replace(/'/g, "") + " -edited";
-      console.log(changed_comment);
-      window.location.href = "/edit_attendance/" + date + "/" + courseid +"/" + email +"/" + changed_status + "/" + changed_comment;
-    }
+      <div class="col col-lg-1 mr-1">
+        {{ att_form.start_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.start_time(class="form-control form-control-sm") }}
+        <script>
+          document.getElementById("courseid").value = courseid;
+        </script>
+      </div>
 
-    function mark_present(id){
-      id=id-1;
-      s= document.getElementById("students-" + id + "-status");
-      s.value = "P";
-      s.style.color="black";
-      s.setAttribute("style", "background-color: none");
-      n = document.getElementById("students-" + id + "-student_name");
-      n.style.color="black";
-      n.setAttribute("style", "background-color: none");
-      var checks = document.getElementsByName("check");
-      checks[id].style.display="block";
-      var exes = document.getElementsByName("ex");
-      exes[id].style.display="none";
-      var lates = document.getElementsByName("late");
-      lates[id].style.display="none"; 
-      var empty = document.getElementsByName("empty");
-      empty[id].style.display="none"; 
-    }
+      <div class="col col-lg-1 mr-1">
+        {{ att_form.end_time.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.end_time(class="form-control form-control-sm") }}
+        <script>
+          document.getElementById("courseid").value = courseid;
+        </script>
+      </div>
 
-    function mark_absent(id){
-      id=id-1;
-      s = document.getElementById("students-" + id + "-status");
-      s.value = "A";
-      s.style.color="DeepPink";
-      s.setAttribute("style", "background-color: " + PaleRed);
-      n = document.getElementById("students-" + id + "-student_name");
-      n.style.color="DeepPink";
-      n.setAttribute("style", "background-color: " + PaleRed);
-      //n.setAttribute("class", "mark");     
-      var checks = document.getElementsByName("check");
-      checks[id].style.display="none";
-      var exes = document.getElementsByName("ex");
-      exes[id].style.display="block"; 
-      var lates = document.getElementsByName("late");
-      lates[id].style.display="none"; 
-      var empty = document.getElementsByName("empty");
-      empty[id].style.display="none";
-    }
+      <div class="nopadding col col-lg-1 mr-1">
+        {{ att_form.amount.label(class="form-control-label form-control-sm mb-0") }} {{ att_form.amount(class="form-control form-control-sm ") }}
+        <script>
+          document.getElementById("amount").value = amount;
+        </script>
+      </div>
 
-    function mark_late(id){
-      id=id-1;
-      s = document.getElementById("students-" + id + "-status");
-      s.value = "L";
-      s.style.color="blue";
-      s.setAttribute("style", "background-color: none");
-      n = document.getElementById("students-" + id + "-student_name");
-      n.style.color="black";
-      n.setAttribute("style", "background-color: none");
-      var checks = document.getElementsByName("check");
-      checks[id].style.display="none";
-      var exes = document.getElementsByName("ex");
-      exes[id].style.display="none"; 
-      var lates = document.getElementsByName("late");
-      lates[id].style.display="block"; 
-      var late_icons = document.getElementsByName("late_icon");
-      var empty = document.getElementsByName("empty");
-      empty[id].style.display="none";
-    }
+    </div>
 
-    function mark_clear(id){
-      id=id-1;
-      c = document.getElementById("students-" + id + "-comment");
-      c.value = "";
-      s = document.getElementById("students-" + id + "-status");
-      s.value = "";
-      s.style.color="black";
-      s.setAttribute("style", "background-color: none");
-      n = document.getElementById("students-" + id + "-student_name");
-      n.style.color="black";
-      n.setAttribute("style", "background-color: none");
-      var checks = document.getElementsByName("check");
-      checks[id].style.display="none";
-      var exes = document.getElementsByName("ex");
-      exes[id].style.display="none"; 
-      var lates = document.getElementsByName("late");
-      lates[id].style.display="none"; 
-      var empty = document.getElementsByName("empty");
-      empty[id].style.display="block";
-    }
-
-
+  <script> 
+    text = view_lessons();  
+    document.write(text);
   </script>
+
   <div style="float: right; border:0px solid red">
-    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick="present()"> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
+    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
 
 <div class="table-responsive">
 
@@ -256,111 +118,52 @@
         <th>Comment</th>
         <th></th>
       </tr>
+
       {% for student in att_form.students %}
       <tr>
 
-        <td style="display: none">{{ student.email}}</td>
-        <td class="font-weight-normal text-nowrap"">
-          <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
-          <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
-          <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:HotPink" class="fa fa-times"></i> </a>
-          <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
+          <td style="display: none">{{ student.email}}</td>
+          
+          <td class="font-weight-normal text-nowrap"">
+            <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
+            <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
+            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:HotPink" class="fa fa-times"></i> </a>
+            <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
           </td> 
+          
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
-            {{student.count.data if student.count.data !=0}}
-          </a></td>
-        <td>
-{{ student.student_name}}</td>
-        <td>
-          <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> -- </a></div>
-          <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
-          <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:HotPink" class="fa fa-times fa-2x"></i></a></div>
-          <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
-<div style="display:none">
-{{ student.status}}
-</div>
+              {{student.count.data if student.count.data !=0}}
+            </a></td>
+          <td> {{ student.student_name}}</td>
+          
+          <td>
+            <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> -- </a></div>
+            <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
+            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:HotPink" class="fa fa-times fa-2x"></i></a></div>
+            <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
+            <div style="display:none"> {{ student.status}} </div>
+          </td>
+          
+          <td>{{ student.comment(length=300)|safe}}</td>
+          <td>
+            <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a>
+          </td>
 
-        </td>
-        
-        <td>{{ student.comment(length=300)|safe}}</td>
-        <script>
-          var newStudent = "student" + "{{loop.index}}";
-          var newEmail = "{{ student.email.data }}";
-          var newName = "{{ student.student_name.data }}";
-          var newStatus = "{{ student.status.value }}";
-          var newComment = "{{ student.comment.data }}";
-  
-          var jsonData = {};
-          jsonData["email"] = newEmail;
-          jsonData["name"] = newName;
-          jsonData["status"] = newStatus;
-          jsonData["comment"] = newComment;
-          students.push(jsonData);
-        </script>
-        <td>
-          <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-      </tr>
-
-      {% endfor %}
-      <script>
-        document.getElementsByName("data").value = students;
-      </script>
+        </tr>
+     {% endfor %}
 
       <script>
         $("#myTable").DataTable({
           pageLength: 20,
-          //ordering:false,
-          //order: [0, "desc"],
           paging: false,
           dom: "lrtip",
           filter: true,
-          //deferRender: true,
-          //scrollY: 1200,
           scrollCollapse: true,
           scroller: true,
           select: true,
           bSort: false,
-          //order: [[0, "desc"]]
         });
-     
-        function change_color(e){
-          var ele = e.target;
-          var id = ele.id;
-          var x = id.indexOf("-",9)
-          y = id.substring(9,x)
-          var name = "students-" +y+ "-student_name";
-          n = document.getElementById(name);
-
-          var selected = ele.value;
-          if(selected=='A'){
-            ele.style.color="DeepPink";
-            ele.setAttribute("class", "mark");
-            n.style.color="DeepPink";
-            n.setAttribute("class", "mark");           
-
-          }
-          
-          else if (selected=='L'){
-            ele.style.color="blue";
-            n.style.color="blue";
-            n.classList.remove("mark");
-            ele.classList.remove("mark");
-
-          }
-          else{
-            ele.style.color="black";
-            n.style.color="black";
-            n.classList.remove("mark");
-            ele.classList.remove("mark");
-
-
-          }
-        }
-        
-
-
-
-      </script>
+     </script>
     </table>
     </div></div>
   </div>

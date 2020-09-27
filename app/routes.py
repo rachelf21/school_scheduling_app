@@ -127,7 +127,7 @@ def udpate_lessons(lessonid):
         df.to_sql('lessons', engine, if_exists="append")
 
     else:
-        topic = "plan"
+        topic = "plan for " + courseid
         query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "';"
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(query)
@@ -219,12 +219,13 @@ def udpate_attendance():
     df.fillna('', inplace=True)
     #print(df) 
     df.to_sql('attendance', engine, if_exists="append")
-    topic = "attendance"
+    topic = "attendance for "+ courseid 
     return render_template("confirmation.html", topic = topic)
 
 #%%
 @app.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')
 def edit_attendance(date, courseid, email, status, comment):
+    name = Student.query.filter_by(email = email).first().name
     att_date = date
     print(email, att_date, status, comment, courseid)
     query = "UPDATE attendance set status = '" + status +"', comment = '" + comment + "' where email = '" + email +"' and att_date = '" + att_date +"' and courseid = '" + courseid + "';"
@@ -232,7 +233,7 @@ def edit_attendance(date, courseid, email, status, comment):
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
 
-    topic = "attendance change"
+    topic = "attendance change for " + name
     return render_template("confirmation.html", topic=topic)
     
 #%%
@@ -685,7 +686,6 @@ def edit_lesson(lessonid, content):
 @app.route('/update_lesson/<lessonid>/<newcontent>')
 def update_lesson(lessonid, newcontent):
     query = "UPDATE lessons set content = '" + newcontent + "' WHERE lessonid = '" + lessonid + "';"
-    
     print(lessonid)
     print(newcontent)
     with engine.begin() as conn:     # TRANSACTION
