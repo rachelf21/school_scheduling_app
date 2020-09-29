@@ -1,48 +1,132 @@
-awsebcli==3.18.2
+alabaster==0.7.12
+argh==0.26.2
+astroid @ file:///C:/ci/astroid_1592487315634/work
+atomicwrites==1.4.0
+attrs @ file:///tmp/build/80754af9/attrs_1598374659300/work
+autopep8 @ file:///tmp/build/80754af9/autopep8_1596578164842/work
 Babel==2.8.0
-botocore==1.15.49
-cement==2.8.2
+backcall==0.2.0
+bcrypt @ file:///C:/ci/bcrypt_1597936263757/work
+beautifulsoup4==4.9.1
+bleach==3.1.5
+brotlipy==0.7.0
+bs4==0.0.1
 certifi==2020.6.20
+cffi @ file:///C:/ci/cffi_1598352710791/work
 chardet==3.0.4
 click==7.1.2
+cloudpickle @ file:///tmp/build/80754af9/cloudpickle_1598884132938/work
 colorama==0.4.3
-cycler==0.10.0
-docutils==0.15.2
-dominate==2.5.1
+cryptography @ file:///C:/ci/cryptography_1598892079907/work
+decorator==4.4.2
+defusedxml==0.6.0
+diff-match-patch @ file:///tmp/build/80754af9/diff-match-patch_1594828741838/work
+dnspython==2.0.0
+docutils==0.16
+email-validator==1.1.1
+entrypoints==0.3
+flake8==3.8.3
 Flask==1.1.2
-Flask-Babel==1.0.0
-Flask-Bootstrap==3.3.7.1
+Flask-Admin==1.5.6
+Flask-Bcrypt==0.7.1
+Flask-Login==0.5.0
 Flask-SQLAlchemy==2.4.4
-Flask-Table==0.5.0
-future==0.16.0
-gunicorn==20.0.4
-idna==2.7
+Flask-WTF==0.14.3
+future==0.18.2
+idna @ file:///tmp/build/80754af9/idna_1593446292537/work
+imagesize==1.2.0
+importlib-metadata @ file:///C:/ci/importlib-metadata_1593446511143/work
+intervaltree @ file:///tmp/build/80754af9/intervaltree_1598376443606/work
+ipykernel @ file:///C:/ci/ipykernel_1596190155316/work/dist/ipykernel-5.3.4-py3-none-any.whl
+ipython @ file:///C:/ci/ipython_1598865816163/work
+ipython-genutils==0.2.0
+isort @ file:///C:/ci/isort_1598358138880/work
 itsdangerous==1.1.0
+jedi @ file:///C:/ci/jedi_1592833825077/work
 Jinja2==2.11.2
-jmespath==0.10.0
-kiwisolver==1.2.0
+jsonschema==3.2.0
+jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1594826976318/work
+jupyter-core==4.6.3
+keyring @ file:///C:/ci/keyring_1598884979533/work
+lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
-matplotlib==3.3.0
-numpy==1.18.1
-pandas==1.0.1
-pathspec==0.5.9
+mccabe==0.6.1
+mistune==0.8.4
+mkl-fft==1.1.0
+mkl-random==1.1.1
+mkl-service==2.3.0
+nbconvert==5.6.1
+nbformat==5.0.7
+numpy @ file:///C:/ci/numpy_and_numpy_base_1596215850360/work
+numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
+packaging==20.4
+pandas @ file:///C:/ci/pandas_1598371563714/work
+pandocfilters==1.4.2
+paramiko @ file:///tmp/build/80754af9/paramiko_1598886428689/work
+parso==0.7.0
+pathtools==0.1.2
+pexpect==4.8.0
+pickleshare==0.7.5
 Pillow==7.2.0
-plotly==4.9.0
-plotly-express==0.4.1
-psycopg2==2.8.6
+pluggy==0.13.1
+prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1598885458782/work
+psutil @ file:///C:/ci/psutil_1598370330503/work
+psycopg2 @ file:///C:/ci/psycopg2_1594305172475/work
+pycodestyle==2.6.0
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+pydocstyle @ file:///tmp/build/80754af9/pydocstyle_1598885001695/work
+pyflakes==2.2.0
+Pygments==2.6.1
+pylint @ file:///C:/ci/pylint_1598617153160/work
+PyNaCl @ file:///C:/ci/pynacl_1595000047588/work
+pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1594392929924/work
 pyparsing==2.4.7
-pypiwin32==223
-python-dateutil==2.8.0
-pytz==2019.3
-pywin32==228
+pyrsistent==0.16.0
+PySocks==1.7.1
+python-dateutil==2.8.1
+python-jsonrpc-server @ file:///tmp/build/80754af9/python-jsonrpc-server_1594397536060/work
+python-language-server @ file:///C:/ci/python-language-server_1594162130238/work
+pytz==2020.1
+pywin32==227
+pywin32-ctypes==0.2.0
 PyYAML==5.3.1
-requests==2.20.1
-retrying==1.3.3
-semantic-version==2.5.0
-six==1.11.0
+pyzmq==19.0.1
+QDarkStyle==2.8.1
+QtAwesome==0.7.2
+qtconsole @ file:///tmp/build/80754af9/qtconsole_1598374667791/work
+QtPy==1.9.0
+requests @ file:///tmp/build/80754af9/requests_1592841827918/work
+rope==0.17.0
+Rtree==0.9.4
+selenium==3.141.0
+sip==4.19.13
+six==1.15.0
+snowballstemmer==2.0.0
+sortedcontainers==2.2.2
+soupsieve==2.0.1
+Sphinx @ file:///tmp/build/80754af9/sphinx_1597428793432/work
+sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.3
+sphinxcontrib-serializinghtml==1.1.4
+spyder @ file:///C:/ci/spyder_1599054115447/work
+spyder-kernels @ file:///C:/ci/spyder-kernels_1599051709837/work
 SQLAlchemy==1.3.19
-termcolor==1.1.0
-urllib3==1.24.3
-visitor==0.1.3
-wcwidth==0.1.9
+testpath==0.4.4
+toml @ file:///tmp/build/80754af9/toml_1592853716807/work
+tornado==6.0.4
+traitlets==4.3.3
+ujson==1.35
+urllib3 @ file:///tmp/build/80754af9/urllib3_1597086586889/work
+watchdog @ file:///C:/ci/watchdog_1593447437088/work
+wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
+webencodings==0.5.1
 Werkzeug==1.0.1
+win-inet-pton==1.1.0
+wincertstore==0.2
+wrapt==1.11.2
+WTForms==2.3.3
+yapf @ file:///tmp/build/80754af9/yapf_1593528177422/work
+zipp==3.1.0
