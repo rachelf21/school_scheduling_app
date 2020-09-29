@@ -58,3 +58,5 @@
 - [x] remove my classes sidebar, make first col biger
 - [x] show room number on class list
 - [ ] change mdy logo to white
+
+  Add this requirement manually: Flask-Bcrypt==0.7.1
