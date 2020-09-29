@@ -1,7 +1,7 @@
 {% extends "base-denied.html" %} {% block scale %}
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=3.0, minimum-scale=.06"
+  content="width=device-width, initial-scale=.65, user-scalable=yes, maximum-scale=3.0, minimum-scale=.06"
 />
 {% endblock %}
 {%block title%} MDY Attendance {%endblock%}     
@@ -44,17 +44,19 @@
 
 </script>
 
-<div id="outerdiv" style="display: flex; justify-content: center; text-align:center">
-  <div id = "innerdiv" style="margin-left:auto; margin-right:auto">
+<div class="container" style="text-align:center">
     <h1 class="mt-2 font-weight-normal mont">Attendance</h1>
 
-    <legend class="border-bottom mb-0 mont" >
+    <legend class="border-bottom mb-3 mont" >
       <script> document.write(courseid +" (Rm " + room + ")"); </script>
     </legend>
+</div>
 
-    <form action="/update_attendance" method="post" name="att_form"> {{ att_form.hidden_tag() }}
+
+<form action="/update_attendance" method="post" name="att_form"> {{ att_form.hidden_tag() }}
 
   <div id="top_of_form" >
+    
     <div class="row no-gutters " style="justify-content: center; border:0px solid red; width:100%">
       <div class="col col-lg-2 mr-1">
         {{ att_form.date.label(class="form-control-label form-control-sm mb-0 ") }} {{ att_form.date(class="form-control form-control-sm pl-1") }}
@@ -106,17 +108,24 @@
       </div>
 
     </div>
-    <span class='text-left text-muted font-weight-normal' style="float:left"><script>document.write("Teacher: " + teacher)</script></span>
 
-  <div style="float: right; border:0px solid red">
-    <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
+    <div class = "container" style="display:flex; align-items:baseline; justify-content: space-around;">
+    <div class='text-left text-muted font-weight-normal pb-0' style="margin-top: auto;" ><script>document.write("Teacher: " + teacher)</script></div>
+    <div style="border:0px solid red">
+      <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
+    </div>
+
+  </div>
+
+
+
 <div class="table-responsive">
 
 <div id="attendance_table" class="mt-0">
     <table
       id="myTable"
-      class="table mx-auto w-auto table-striped table-hover table-bordeDeepPink "
-      style="border: 0px DeepPink solid; width:auto; margin: 0px auto"
+      class="table mx-auto w-auto table-striped table-hover table-bordered "
+      style="border: 0px DeepPink solid; width:auto; margin: 0px"
     >
       <tr >
         <th style="display: none">Email</th>
@@ -174,10 +183,13 @@
         });
      </script>
     </table>
-    </div></div>
+
   </div>
+</div>
+ 
 </form>
+
+
 <p class='mt-4 mb-4'>&nbsp;</p>
-</div>
-</div>
+
 {%endblock%}
