@@ -152,7 +152,7 @@
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
               {{student.count.data if student.count.data !=0}}
             </a></td>
-          <td> {{ student.student_name}}</td>
+          <td> {{ student.student_name}} </td>
           
           <td class='text-center'>
             <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> --- </a></div>
