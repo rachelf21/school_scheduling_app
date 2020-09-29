@@ -11,7 +11,7 @@ import datetime
 class StudentAttendanceForm(FlaskForm):
     email = StringField('Email',
                            validators=[DataRequired(), Length(min=2, max=255)])
-    student_name = StringField('Student')
+    student_name = StringField('Student', render_kw = {'disabled': 'disabled'})
     count = IntegerField("Absences")
     status = SelectField('Status', 
                       choices=[("",""),("P","P"),("A","A"),("L","L"),("O","O")],
@@ -32,7 +32,7 @@ class ClassAttendanceForm(FlaskForm):
     end_time = TimeField('End', format="%#I:%M")
     amount = IntegerField("Amt")
     room = IntegerField("Rm")
-    students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()])
+    students = FieldList(FormField(StudentAttendanceForm),validators=[DataRequired()],render_kw = {'disabled': 'disabled'})
     data = StringField('data')
     save = SubmitField('Submit')
 
