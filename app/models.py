@@ -1,8 +1,31 @@
 from datetime import datetime
-from app import db
+from app import db, login_manager
 from sqlalchemy.exc import IntegrityError
+from flask_login import UserMixin
 
- #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
+#%%
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+#%%
+class Users(db.Model, UserMixin):
+    __tablename__ = "users"
+    __table_args__ = {'extend_existing': True} 
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25), unique=True, nullable=False)
+    image_file = db.Column(db.String(120), nullable=False, default='default.jpg')
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    #attendance = db.relationship('Attendance', backref='teacher', lazy=True)
+
+
+    def __repr__(self):
+        return f"User('{self.id}', '{self.username}', '{self.email}' )"
+    
+    
+#%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
 class Group(db.Model):
     __tablename__ = "class"
     __table_args__ = {'extend_existing': True} 
@@ -32,7 +55,7 @@ class Course(db.Model):
     courseid = db.Column(db.String(25), primary_key=True)
     #classid = db.Column(db.String(8))
     classid = db.Column(db.String(8), db.ForeignKey(Group.classid))
-    #classcode = db.relationship("Group", backref='classcode', lazy=True)
+    classcode = db.relationship("Group", backref='classcode', lazy=True)
     subject = db.Column(db.String(25))
     teacher = db.Column(db.String(25))
     room = db.Column(db.Integer, nullable=False) #this is a bad idea! should get room from related class table! but i cant seem to create the relationship, so doing it manually. how sad.
@@ -140,6 +163,8 @@ class Attendance(db.Model):
     __tablename__ = "attendance"
     __table_args__ = {'extend_existing': True}
     attid = db.Column(db.Integer, primary_key=True)  
+    #teacher = db.Column(db.String(50), db.ForeignKey(User.username))
+    teacher = db.Column(db.String(50))
     att_date =db.Column(db.Date) #double check if right date field
     scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
     #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
@@ -149,8 +174,9 @@ class Attendance(db.Model):
     status = db.Column(db.String(1), nullable=False)
     comment = db.Column(db.String(255), nullable=False)
     
-    def __init__(self, att_date, scheduleid, classid, courseid, email, status, comment):
+    def __init__(self, att_date, teacher, scheduleid, classid, courseid, email, status, comment):
         self.att_date = att_date
+        self.teacher = teacher
         self.scheduleid = scheduleid
         self.classid = classid
         self.courseid = courseid
@@ -159,7 +185,38 @@ class Attendance(db.Model):
         self.comment = comment
     
     def __repr__(self):
-        return f"Attendance('{self.att_date}', '{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
+        return f"Attendance('{self.att_date}', '{self.teacher}','{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
+    
+
+#%% started this table for other teachers, but then decided this wasn't a good approach
+# class Attendance2(db.Model):
+#     __tablename__ = "attendance2"
+#     __table_args__ = {'extend_existing': True}
+#     attid = db.Column(db.Integer, primary_key=True)  
+#     teacher = db.Column(db.String(50))
+#     att_date =db.Column(db.Date) #double check if right date field
+#     scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
+#     #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
+#     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
+#     email = db.Column(db.String(255), db.ForeignKey(Student.email))
+#     name = db.Column(db.String(65))    
+#     status = db.Column(db.String(1), nullable=False)
+#     comment = db.Column(db.String(255), nullable=False)
+    
+#     def __init__(self, teacher, att_date, scheduleid, classid, courseid, email, status, comment):
+#         self.att_date = att_date
+#         self.teacher = teacher
+#         self.scheduleid = scheduleid
+#         self.classid = classid
+#         self.courseid = courseid
+#         self.email = email        
+#         self.status = status
+#         self.comment = comment
+    
+#     def __repr__(self):
+#         return f"Attendance2('{self.att_date}', '{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
+    
+    
 
 #%%
 
@@ -180,8 +237,9 @@ class Lessons(db.Model):
     total = db.Column(db.Integer)
     content = db.Column(db.String(1000))
     plan = db.Column(db.String(1000))
+    teacher = db.Column(db.String(25))
     
-    def __init__(self,lessondate, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content):
+    def __init__(self,lessondate, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content, plan, teacher):
         self.lessondate = lessondate, 
         self.scheduleid = scheduleid, 
         self.periodid = periodid, 
@@ -194,6 +252,8 @@ class Lessons(db.Model):
         self.courseid = courseid, 
         self.total = total, 
         self.content = content
+        self.plan = plan, 
+        self.teacher = teacher
 
 #%%
 class Week(db.Model):

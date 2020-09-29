@@ -9,6 +9,8 @@ import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
 import os
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 
 app = Flask(__name__)
@@ -25,9 +27,14 @@ DB_URL = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
-
 db = SQLAlchemy(app)
 engine = create_engine(DB_URL)
+
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login' #value is function for login, same as url_for
+login_manager.login_message_category = 'info'
+
 from app import routes
 
 # try:

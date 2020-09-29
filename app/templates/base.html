@@ -95,15 +95,18 @@
                   Schedule</a
                 >
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
-                  <a class="dropdown-item" href="/daily_schedule/M" style="width: 100%">Monday</a>
+                  <a class="dropdown-item" href="/today" style="width: 100%">Today</a>
+                  <a class="dropdown-item" href="/full_schedule" style="width: 100%">Weekly Schedule</a>
+                  <a class="dropdown-item" href="/daily_schedule/M">Monday</a>
                   <a class="dropdown-item" href="/daily_schedule/T">Tuesday</a>
                   <a class="dropdown-item" href="/daily_schedule/W">Wednesday</a>
                   <a class="dropdown-item" href="/daily_schedule/Th">Thursday</a>
-                  <a class="dropdown-item" href="/full_schedule">Weekly Schedule</a>
                 </div>
               </li>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">Classes</a>
-              <li class="nav-link nav-item dropdown mr-2">
+              <a class="nav-item nav-link mr-2 text-nowrap" href="{{ url_for('classes_anon') }}">My Classes</a>
+              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">ClassInfo</a>
+
+              <!-- <li class="nav-link nav-item dropdown mr-2">
                 <a
                   class="dropdown-toggle"
                   id="navbarDropdown"
@@ -119,12 +122,10 @@
                   <a class="dropdown-item" href="/get_students/a/7">Grade 7</a>
                   <a class="dropdown-item" href="/get_students/a/8">Grade 8</a>
                 </div>
-              </li>
+              </li> -->
 
               <a class="nav-item nav-link mr-2" a href="/lessons/all">Lessons</a>
-              <a class="nav-item nav-link mr-2" href="/records"> Attendance</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('lunch_menu') }}"> Lunch</a>
-              <a class="nav-item nav-link mr-2" href="/dismissal_form">Dismissal</a>
+              <a class="nav-item nav-link mr-2" href="/records"> Att Tracking</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">

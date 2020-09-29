@@ -1,8 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, HiddenField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-from app.models import Course, Student, Group
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, HiddenField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField, RadioField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from app.models import Course, Student, Group, Users
 from wtforms.fields.html5 import DateField
+from flask_login import current_user
+import datetime
 
 
 class StudentAttendanceForm(FlaskForm):
@@ -19,6 +22,7 @@ class StudentAttendanceForm(FlaskForm):
 
 class ClassAttendanceForm(FlaskForm):
     title = StringField('title')
+    teacher = StringField('Teacher')
     date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     dow = StringField('Day')
     scheduleid = StringField('Sched')
@@ -62,9 +66,12 @@ class AddLessonForm(FlaskForm):
 class AttendanceRecordForm(FlaskForm):
     courses = Course.query.all()
     options = []
-    for c in courses:
-        if ('Computers' in c.courseid) or ('STEM' in c.courseid):
-            options.append([c.courseid, c.courseid])
+    
+    # for c in courses:
+    #     options.append([c.courseid, c.courseid])
+    # print(options)
+ 
+        
     courseid = SelectField('Select', 
                       choices=options)
     options=[]
@@ -73,9 +80,11 @@ class AttendanceRecordForm(FlaskForm):
         options.append([s.email, s.name])
         student_list = SelectField('Select', 
                   choices=options)
-    date = DateField('DatePicker', format='%Y-%m-%d')
+    date = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
+    view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only')],default='absences')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
-    save = SubmitField('Submit')
+    submit = SubmitField('Submit')
+
     
 class DismissalSelectForm(FlaskForm):
     options = []
@@ -108,3 +117,54 @@ class DismissalSelectForm(FlaskForm):
     room_list = SelectField('Select Room',choices=options)
     
     save = SubmitField('Submit')
+    
+#%%
+#%%
+class RegistrationForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+    
+    def validate_username(self, username):
+        user = Users.query.filter_by(username= username.data).first()        
+        if user:
+            raise ValidationError('User already exists.')
+
+    def validate_email(self, email):
+        user = Users.query.filter_by(email=email.data).first()        
+        if user:
+            raise ValidationError('Email already exists.')
+            
+            
+class LoginForm(FlaskForm):
+    username = StringField('Username',
+                        validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
+
+#%%
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=4, max=25)],render_kw = {'disabled': 'disabled'})
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()],render_kw = {'disabled': 'disabled'})
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'gif'])])
+    submit = SubmitField('Upload')
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = Users.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken. Please choose a different one.')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = Users.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('That email is taken. Please choose a different one.')

@@ -160,5 +160,9 @@ function change_color(e) {
 
 function view_lessons() {
   var x = "/lessons/" + courseid;
-  return '<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a> </div>';
+  return '<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a>';
+}
+
+function set_teacher(teacher) {
+  return "<div style="float:left"> <a class="font-weight-normal" | <span class='text-muted'>" + teacher + " </span></div>";
 }

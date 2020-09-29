@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base-denied.html" %} {% block content %}
+
+<script src="/static/js/records.js"></script>
 
 <!-- <div id="outerdiv" style="display: flex; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
@@ -26,7 +28,9 @@
   }
   console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;
+  hideCover();
 </script>
+
 <div class="table-responsive">
   <table
     id="myTable"
@@ -41,9 +45,10 @@
       <th>Name</th>
       <th class="text-center">St</th>
       <th>Comments</th>
+      <th>Edit</th>
     </thead>
     <tbody>
-      {% for att in attendance %} {% if att.status =='A'%}
+      {% for att in attendance %}
       <tr>
         <td>
           <script>
@@ -73,9 +78,27 @@
         <td class="text-nowrap">{{ att.name}}</td>
         <td class="text-center">{{ att.status}}</td>
         <td>{{ att.comment}}</td>
+        <td>
+          <a
+            class="a btn-sm mt-2 mb-1 form-control-sm"
+            onclick='edit_attendance("{{loop.index}}", "{{ att.att_date}}","{{ att.courseid}}", "{{ att.email}}","{{att.name}}", "{{ att.status}}", "{{ att.comment}}"  )'
+            ><i class="fa fa-pencil" aria-hidden="true"></i
+          ></a>
+
+          <button id="show-button" style="display: none" /><i class="fa fa-pencil" aria-hidden="true"></i>
+          <div id="prompt-form-container" style="display: none">
+            <form id="prompt-form">
+              <div id="prompt-message"></div>
+              <input name="status" type="text" />
+              <input name="comment" type="text" />
+              <input type="submit" value="Ok" />
+              <input type="button" name="cancel" value="Cancel" />
+            </form>
+          </div>
+        </td>
       </tr>
 
-      {%endif%} {%endfor%}
+      {%endfor%}
     </tbody>
   </table>
 </div>
@@ -84,17 +107,23 @@
 <hr class="mb-4" />
 <script>
   $("#myTable").DataTable({
-    ordering: false,
-    order: [[1, "desc"]],
+    ordering: true,
+    //order: [[1, "asc"]],
     pageLength: 20,
-    paging: false,
+    paging: true,
     filter: true,
-    deferRender: true,
+    //deferRender: true,
     //scrollY: 1200,
     scrollCollapse: true,
     scroller: true,
     select: true,
-    //bSort: false,
+    bSort: false,
   });
+
+  document.getElementById("show-button").onclick = function () {
+    showPrompt("Enter updated Status<br> A, L, P", function (value) {
+      alert("You entered: " + value);
+    });
+  };
 </script>
 {% endblock content %}

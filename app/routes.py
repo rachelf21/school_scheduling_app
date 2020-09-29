@@ -1,17 +1,20 @@
 from flask import render_template, url_for, jsonify, request, redirect, flash, send_file, Response
 import datetime
+import secrets
+import os
+from PIL import Image
 from datetime import date
-from app import app
-from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm, AddLessonForm, AttendanceRecordForm, DismissalSelectForm
-from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance, Dismissal, Week
+from app import app, db, engine, bcrypt
+from app.forms import StudentAttendanceForm, ClassAttendanceForm, TodayForm, AddLessonForm, AttendanceRecordForm, DismissalSelectForm, RegistrationForm, LoginForm, UpdateAccountForm
+from app.models import Group, Student, Schedule, Course, Period, Lessons, Attendance, Dismissal, Week, Users
 import json
 import pandas as pd
-from app import db, engine
 from sqlalchemy.exc import IntegrityError, DataError
 from functools import wraps
 from app.schedule import Full_Schedule
 from app.automate import Automate
 from app.utilities import Util
+from flask_login import login_user, current_user, logout_user, login_required
 
 current_week ='A'
 sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
@@ -19,7 +22,10 @@ sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th']
 schedule = ''
 title = ''
 latest_lessons = []
-#test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")    
+#test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")   
+
+
+ 
 def retrieve_students(info):
     emails = []
     names = []
@@ -29,7 +35,18 @@ def retrieve_students(info):
         names.append(s.name)
     return emails, names    
   
-    
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/img/profile_pics', picture_fn)
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn   
 #%%
 #https://stackoverflow.com/questions/29725217/password-protect-one-webpage-in-flask-app
 
@@ -73,7 +90,66 @@ def get_latest_lesson(courseid2):
 #%%
 
 
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('classes_anon'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = Users(username=form.username.data, email=form.email.data, password=hashed_pwd)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('classes_anon'))
+    form = LoginForm()
+    if form.validate_on_submit():
+            user = Users.query.filter_by(username = form.username.data).first()
+            if user and bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('classes_anon'))
+            else:
+                flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@app.route("/account", methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='img/profile_pics/' + current_user.image_file)
+    return render_template('account.html', title='Account',
+                           image_file=image_file, form=form)
+
+#%%
 @app.route('/addLesson/<classid>/<courseid>/<dow>/<per>/<lessonid>', methods=['GET', 'POST'])
+@login_required
 def addLesson(classid, courseid, dow, per,lessonid):
     cat='0'
     classinfo = Group.query.all()
@@ -99,9 +175,10 @@ def addLesson(classid, courseid, dow, per,lessonid):
         cat='Add'
     else:
         cat="Plan"
-    return render_template("addLesson.html", form = form, cat=cat, lessonid=lessonid) 
+    return render_template("addLesson.html", form = form, cat=cat, lessonid=lessonid, teacher=current_user.username) 
 
 @app.route('/update_lessons/<lessonid>', methods=['GET', 'POST'])
+@login_required
 def udpate_lessons(lessonid):
     date = request.form['date']
     scheduleid =  request.form['scheduleid']
@@ -116,10 +193,11 @@ def udpate_lessons(lessonid):
     total = request.form['total']
     content = request.form['content']
     topic = "lesson"
+    teacher = current_user.username
         
     if lessonid == 'a':
-        df = pd.DataFrame(columns = ['lessondate','scheduleid', 'periodid', 'start_time', 'end_time', 'subject', 'room', 'grade', 'classid', 'courseid', 'total', 'content'])
-        entry = pd.Series([date, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content], index=df.columns)
+        df = pd.DataFrame(columns = ['lessondate','scheduleid', 'periodid', 'start_time', 'end_time', 'subject', 'room', 'grade', 'classid', 'courseid', 'total', 'content', 'teacher'])
+        entry = pd.Series([date, scheduleid, periodid, start_time, end_time, subject, room, grade, classid, courseid, total, content, teacher], index=df.columns)
         df = df.append(entry, ignore_index=True)
         df = df.set_index('periodid')
         df.fillna('', inplace=True)
@@ -128,15 +206,15 @@ def udpate_lessons(lessonid):
 
     else:
         topic = "plan for " + courseid
-        query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "';"
+        query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "' and teacher = '" + teacher +"';"
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(query)
     return render_template("confirmation.html" , topic=topic)
 #%%
-
-
 @app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
+@login_required
 def attendance(classname, courseid, dow, per): 
+    teacher=current_user.username
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
     period = dow[2:]+per
     att_form = ClassAttendanceForm(request.form)
@@ -146,11 +224,12 @@ def attendance(classname, courseid, dow, per):
     att_form.end_time.data = Period.query.filter_by(periodid=period).first().end_time
     room = Group.query.filter_by(classid=classname).first().room
     att_form.room.data=room
+    att_form.teacher.data = teacher
     class_att_records=[]
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
     for s in students:
-        amt = len(Attendance.query.filter_by(email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+        amt = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
         student_form = StudentAttendanceForm()
         student_form.count = amt
         student_form.email = s.email
@@ -169,16 +248,55 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count)
+        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher)
+
+#started this for other teachers, but then decided this wasn't a good approach
+# @app.route('/attendance/<teacher>/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
+# def attendance2(teacher, classname, courseid, dow, per): 
+#     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
+#     period = dow[2:]+per
+#     att_form = ClassAttendanceForm(request.form)
+#     att_form.title.data = "Attendance " + classname
+#     title = "Attendance " + classname
+#     att_form.start_time.data = Period.query.filter_by(periodid=period).first().start_time
+#     att_form.end_time.data = Period.query.filter_by(periodid=period).first().end_time
+#     room = Group.query.filter_by(classid=classname).first().room
+#     att_form.room.data=room
+#     class_att_records=[]
+#     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
+#     count = len(students)
+#     for s in students:
+#         amt = len(Attendance2.query.filter_by(email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+#         student_form = StudentAttendanceForm()
+#         student_form.count = amt
+#         student_form.email = s.email
+#         student_form.student_name = s.name
+#         student_form.comment = ""
+#         #temp_student = Fake(s.email, s.name, "P","")
+#         #class_att_records.append(temp_student)
+#         att_form.students.append_entry(student_form)        
+#     # if att_form.validate():
+#     #     print("form validated")
+#     #     email = student_form.email.data
+#     #     student = student_form.student.data
+#     #     status = student_form.status.data
+#     #     comment = student_form.comment.data
+#     #     test = Fake(email, student, status, comment)  
+#     #     add_to_database(test)
+#     #     return "<h1> Attendance has been recorded </h1>"
+#     else:
+#         return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
 @app.route('/update_attendance', methods=['GET', 'POST'])
+@login_required
 def udpate_attendance():
     att_date = request.form['date']
     scheduleid = request.form['scheduleid']
     classid = request.form['courseid'][0:5]
     courseid = request.form['courseid']
+    teacher = current_user.username
     email = ''
     status = ''
     comment = ''
@@ -188,10 +306,8 @@ def udpate_attendance():
     comments = []
     
     print("form has been validated")
-    df = pd.DataFrame(columns = ['att_date','scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
-    # entry = pd.Series([att_date, scheduleid, classid, courseid, 'rfriedman@mdyschool.org', 'P', 'present'],index=df.columns)   
-    # df = df.append(entry, ignore_index=True)
-    # df = df.set_index('email')
+    df = pd.DataFrame(columns = ['teacher', 'att_date','scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
+
 
     f = request.form
     for key in f.keys():
@@ -212,7 +328,7 @@ def udpate_attendance():
     
     i = 0
     for x in emails:
-        entry = pd.Series([att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]], index=df.columns)
+        entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]], index=df.columns)
         df = df.append(entry, ignore_index=True)
         i+=1
     df = df.set_index('email')
@@ -228,12 +344,12 @@ def edit_attendance(date, courseid, email, status, comment):
     name = Student.query.filter_by(email = email).first().name
     att_date = date
     print(email, att_date, status, comment, courseid)
-    query = "UPDATE attendance set status = '" + status +"', comment = '" + comment + "' where email = '" + email +"' and att_date = '" + att_date +"' and courseid = '" + courseid + "';"
+    query = "UPDATE attendance set status = '" + status +"', comment = '" + comment + "' where email = '" + email +"' and att_date = '" + att_date +"' and courseid = '" + courseid + "' and teacher ='" + current_user.username  +"';"
     print(query)
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
 
-    topic = "attendance change for " + name
+    topic = "attendance staus of " + status + " for " + name 
     return render_template("confirmation.html", topic=topic)
     
 #%%
@@ -452,13 +568,26 @@ def classes():
 
 
 @app.route('/classes_anon')
+@login_required
 def classes_anon():
-    group = Group.query.all()
+    courses = Course.query.filter(~Course.subject.like('Lunch%')).filter(~Course.subject.like('Recess%')).all()
     schedule = Schedule.query.all()
-    attendance = Attendance.query.all()
+    today = date.today().weekday()
+    if today == 0:
+        dow = 'A_M'
+    elif today == 1:
+        dow = 'A_T'
+    elif today == 2:
+        dow = 'A_W'
+    elif today == 3:
+        dow = 'A_Th'
+    elif today == 4:
+        dow = 'A_F'
+    else: 
+        dow = 'A_M'
     #room = Group.query(Group.room).filter_by(classid='7-101')
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
-    return render_template('classes_anon.html', group = group, schedule=schedule, attendance=attendance)
+    return render_template('classes_anon.html', courses=courses, schedule=schedule, dow=dow)
 
 @app.route('/get_students/<access>/<classname>')
 def get_students(access, classname):
@@ -494,62 +623,103 @@ def get_students(access, classname):
                 return render_template('students-denied.html', students=students, title=title ,room=room, subtitle=subtitle, grade=grade)
 #%%
 @app.route('/records', methods=["GET" , "POST"])
+@login_required
 def records():
     title = 'Attendance Records'
-    classes = Course.query.all()
+    classes = Course.query.filter_by(teacher=current_user.username).filter(~Course.subject.like('Lunch')).filter(~Course.subject.like('Recess')).all()
+    print(classes)
+    teacher = current_user.username
     form = AttendanceRecordForm()
-    return render_template('records.html', title=title, classes=classes, form=form)
+    return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher)
 
 
 @app.route('/check_absences/<courseid>/<lessondate>')
+@login_required
 def check_absences(courseid,lessondate):
+    teacher = current_user.username
     category = 'class'
-    attendance = Attendance.query.filter_by(courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
-    absences = Attendance.query.filter_by(courseid=courseid).filter_by(att_date = lessondate, status='A').count()
+    attendance = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
+    absences = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate, status='A').count()
     return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences)
         
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
+@login_required
 def track_attendance(category):
-    absences = 0
-    student_name = ''
-    student_class = ''
-    courseid = ''
-    student = ''
-    date = ''
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     
-    if category == 'class':
-        courseid = request.form['courseid']
-        attendance = Attendance.query.filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()
-        absences = Attendance.query.filter_by(courseid = courseid, status = 'A').count()
-            
-    elif category == 'student':
-        student = request.form['student_list']
-        student_name = Student.query.filter_by(email = student).first().name
-        print(student_name)
-        student_class = Student.query.filter_by(email = student).first().classid        
-        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
-        absences = Attendance.query.filter_by(email = student, status = 'A').count()
-           
-    elif category == 'date':
-        date = request.form['date']
-        attendance = Attendance.query.filter_by(att_date = date).order_by(Attendance.attid).all()   
-        absences =  Attendance.query.filter_by(att_date = date, status = 'A').count() 
-
-    elif category == 'classdate':
-        date = request.form['date']
-        courseid = request.form['courseid']
-        attendance = Attendance.query.filter_by(att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()   
-        absences =  Attendance.query.filter_by(att_date = date, courseid = courseid, status = 'A').count() 
-        
     else:
-        student = category
-        student_name = Student.query.filter_by(email = student).first().name
-        print(student_name)
-        student_class = Student.query.filter_by(email = student).first().classid
-        attendance = Attendance.query.filter_by(email = student).order_by(Attendance.attid.desc()).all()
-        absences = Attendance.query.filter_by(email = student, status = 'A').count()
+        teacher = current_user.username
+        absences = 0
+        student_name = ''
+        student_class = ''
+        courseid = ''
+        student = ''
+        date = ''
+        
+        if category == 'class':
+            view = request.form['view']
+            courseid = request.form['courseid']
+            
+            absences = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status = 'A').count()
     
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences)
+            if view=="absences":
+                attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status = 'A').order_by(Attendance.att_date.desc(), Attendance.name).all()
+            else:
+                attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()
+            
+                
+        elif category == 'student':
+            view = request.form['view']
+            student = request.form['student_list']
+            student_name = Student.query.filter_by(email = student).first().name
+            print(student_name)
+            student_class = Student.query.filter_by(email = student).first().classid        
+            absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
+            
+            if view=="absences":
+                attendance = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').order_by(Attendance.attid.desc()).all()
+            else:
+                attendance = Attendance.query.filter_by(teacher=teacher, email = student).order_by(Attendance.attid.desc()).all()
+    
+               
+        elif category == 'date':
+            view = request.form['view']
+            date = request.form['date']
+            attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all()   
+            absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').count() 
+            
+            if view=="absences":
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').order_by(Attendance.attid).all() 
+            else:
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all() 
+            
+    
+        elif category == 'classdate':
+            view = request.form['view']
+            date = request.form['date']
+            if not date:
+                date = datetime.date.today()
+            courseid = request.form['courseid']
+            absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
+            
+            if view=="absences":
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
+            else:
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()  
+                
+        else:
+            student = category
+            student_name = Student.query.filter_by(email = student).first().name
+            print(student_name)
+            student_class = Student.query.filter_by(email = student).first().classid
+            absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
+      
+            attendance = Attendance.query.filter_by(teacher=teacher, email = student, status='A').order_by(Attendance.attid.desc()).all()
+    
+    
+        
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences)
 #%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
@@ -607,18 +777,23 @@ def get_day(day):
     return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list)
 #%%
 @app.route('/today')
+@login_required
+@requires_auth_admin 
 def today():
-    global current_week
-    global latest_lessons
-    current_week = Week.query.first().today  
-    util = Util()
-    dow = util.get_dow()
-    if current_week ==  'A':
-        sched_list = sched_list_A
+    if current_user.username != 'rfriedman':
+        return render_template('denied.html')
     else:
-        sched_list = sched_list_B
-    display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+        global current_week
+        global latest_lessons
+        current_week = Week.query.first().today  
+        util = Util()
+        dow = util.get_dow()
+        if current_week ==  'A':
+            sched_list = sched_list_A
+        else:
+            sched_list = sched_list_B
+        display_schedule(dow)
+        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
 
 
 
@@ -651,22 +826,27 @@ def index():
     return render_template('index.html')
 
 @app.route('/about')
+@requires_auth_admin
 def about():
     return render_template('about.html')  
 
 @app.route('/lessons/<day>')
+@login_required
 @requires_auth_admin
 def lessons(day):
-    global current_week
-    current_week = Week.query.first().today
-    return_all = 0
-    title = "My Lessons"
-    if day=='all':
-        return_all=1
-        lessons = Lessons.query.order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
+    if current_user.username != 'rfriedman':
+        return render_template('denied.html')
     else:
-        lessons = Lessons.query.filter_by(courseid=day).order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
-    return render_template('lessons.html', title = title, lessons = lessons, return_all=return_all, current_week=current_week)  
+        global current_week
+        current_week = Week.query.first().today
+        return_all = 0
+        title = "My Lessons"
+        if day=='all':
+            return_all=1
+            lessons = Lessons.query.filter_by(teacher=current_user.username).order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
+        else:
+            lessons = Lessons.query.filter_by(courseid=day, teacher=current_user.username).order_by(Lessons.lessondate.desc(),Lessons.periodid).all()
+        return render_template('lessons.html', title = title, lessons = lessons, return_all=return_all, current_week=current_week)  
 
 @app.route('/lunch_menu') 
 def lunch_menu():     
@@ -678,16 +858,18 @@ def denied():
     return render_template('denied.html')
 
 @app.route('/edit_lesson/<lessonid>/<content>')
+@login_required
 def edit_lesson(lessonid, content):
+    teacher=current_user.username
     #sql_df = pd.read_sql_query("Select * from period" , engine, index_col='periodid')
 
-    return render_template('edit.html', lessonid=lessonid, content=content)
+    return render_template('edit.html', lessonid=lessonid, content=content,teacher=teacher)
 
 @app.route('/update_lesson/<lessonid>/<newcontent>')
+@login_required
 def update_lesson(lessonid, newcontent):
-    query = "UPDATE lessons set content = '" + newcontent + "' WHERE lessonid = '" + lessonid + "';"
-    print(lessonid)
-    print(newcontent)
+    teacher = current_user.username
+    query = "UPDATE lessons set content = '" + newcontent + "' WHERE lessonid = '" + lessonid + "' and teacher ='" +teacher +"';"
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
     return render_template("confirmation.html", topic="updated lesson")

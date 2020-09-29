@@ -45,6 +45,7 @@
 - [ ] remove sidebar from pages
 - [x] add Edit button on attendance page to edit attendance record, for individual student
 - [x] add present/absent/late/clear icons to attendance page
+- [x] **add users and user authentication**
 
 ### HTML PAGES
 

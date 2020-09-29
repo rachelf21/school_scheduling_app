@@ -1,45 +1,136 @@
-{% extends "base.html" %} {% block content %}
-<div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
-  <div id="innerdiv" style="margin-left: auto; margin-right: auto">
-    <h1 class="mb-4 text-center font-weight-normal">Attendance Tracking</h1>
-    <div>
+{% extends "base-denied.html" %} {% block content %}
+<style>
+  .card:hover {
+    /*background-color: #afdefb !important;*/
+    background-color: #e0ffff !important;
+  }
+</style>
+<script>
+  var teacher_classes = [];
+</script>
+{% for c in classes %}
+<script>
+  var classs = "{{c.courseid}}";
+  teacher_classes.push(classs);
+  console.log(classs);
+</script>
+{% endfor %}
+
+<style>
+  ul {
+    list-style-type: none;
+  }
+</style>
+<script src="/static/js/records.js"></script>
+<!-- <div id="outerdiv" style="border: 1px solid red; width: 100%; display: flex; justify-content: center; text-align: center">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto; width: 90%; border: 1px blue solid"> -->
+<h1 class="mb-4 text-center font-weight-normal">Attendance Tracking</h1>
+
+<div style="border: 0px solid green; text-align: right; width: 500px; margin: auto">
+  <div class="card" style="width: 22 rem">
+    <div class="card-body">
       <form action="/track_attendance/class" method="post" name="form">
         {{ form.hidden_tag() }}
-        <legend class="border-bottom mb-4 text-muted">Select by class</legend>
-        <div class="row no-gutters">
-          <div class="col col-md-7">{{ form.courseid(class="form-control form-control-md") }}</div>
-          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
-        </div>
-      </form>
 
-      <form action="/track_attendance/student" method="post" name="form">
-        {{ form.hidden_tag() }}
-        <legend class="border-bottom mt-4 mb-2 text-muted">Select by student</legend>
-        <div class="row no-gutters">
-          <div class="col col-md-7">{{ form.student_list(class="form-control form-control-md") }}</div>
-          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
-        </div>
-      </form>
-      <form action="/track_attendance/date" method="post" name="form">
-        {{ form.hidden_tag() }}
-        <legend class="border-bottom mt-4 mb-2 text-muted">Select by date</legend>
-        <div class="row no-gutters mb-4">
-          <div class="col col-md-7">{{ form.date(class="form-control form-control-md") }}</div>
-          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
-        </div>
-      </form>
+        <div class="row" style="border: 0px solid blue; width: 460px; margin: auto; position: relative">
+          <div style="border: 0px solid red" class="col-xs-4" style="position: absolute; bottom: 0px">
+            {{form.view(class="form-control form-control-md text-left mb-0 mt-2")}}
+          </div>
 
-      <form action="/track_attendance/classdate" method="post" name="form">
-        {{ form.hidden_tag() }}
-        <legend class="border-bottom mt-4 mb-2 text-muted">Select by class and date</legend>
-        <div class="row no-gutters mb-4">
-          <div class="col col-md-7 mb-2">{{ form.date(class="form-control form-control-md") }}</div>
-          <div class="col col-md-7">{{ form.courseid(class="form-control form-control-md") }}</div>
-          <div class="col col-md-3">{{ form.save(class="btn btn-primary btn-md form-control-lg") }}</div>
+          <div style="border: 0px solid red" class="col">
+            <h3 class="card-title">Select by class</h3>
+
+            <div class="row no-gutters" style="border: 0px solid green; display: flex; justify-content: flex-end">
+              <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.courseid(class="form-control form-control-md") }}</div>
+              <div class="col-xs-3">{{ form.submit(class="btn btn-primary btn-md form-control-md") }}</div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
   </div>
+
+  <div class="card mt-4" style="width: 22 rem">
+    <div class="card-body">
+      <form action="/track_attendance/date" method="post" name="form">
+        {{ form.hidden_tag() }}
+
+        <div class="row" style="border: 0px solid blue; width: 460px; margin: auto; position: relative">
+          <div style="border: 0px solid red" class="col-xs-4" style="position: absolute; bottom: 0px">
+            {{form.view(class="form-control form-control-md text-left mb-0 mt-2")}}
+          </div>
+
+          <div style="border: 0px solid red" class="col">
+            <h3 class="card-title">Select by date</h3>
+
+            <div class="row no-gutters" style="border: 0px solid green; display: flex; justify-content: flex-end">
+              <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.date(class="form-control form-control-md") }}</div>
+              <div class="col-xs-3">{{ form.submit(class="btn btn-primary btn-md form-control-md") }}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4" style="width: 22 rem">
+    <div class="card-body">
+      <form action="/track_attendance/classdate" method="post" name="form">
+        {{ form.hidden_tag() }}
+
+        <div class="row" style="border: 0px solid blue; width: 460px; margin: auto; position: relative">
+          <div style="border: 0px solid red" class="col-xs-4" style="position: absolute; bottom: 0px">
+            {{form.view(class="form-control form-control-md text-left mb-0 mt-2")}}
+          </div>
+
+          <div style="border: 0px solid red" class="col">
+            <h3 class="card-title">
+              Select by class <br />
+              and date
+            </h3>
+
+            <div class="row no-gutters" style="border: 0px solid green; display: flex; justify-content: flex-end">
+              <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.date(class="form-control form-control-md") }}</div>
+              <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.courseid(class="form-control form-control-md") }}</div>
+              <div class="col-xs-3">{{ form.submit(class="btn btn-primary btn-md form-control-md") }}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4" style="width: 22 rem">
+    <div class="card-body">
+      <form action="/track_attendance/student" method="post" name="form">
+        {{ form.hidden_tag() }}
+
+        <div class="row" style="border: 0px solid blue; width: 460px; margin: auto; position: relative">
+          <div style="border: 0px solid red" class="col-xs-4" style="position: absolute; bottom: 0px">
+            {{form.view(class="form-control form-control-md text-left mb-0 mt-2")}}
+          </div>
+
+          <div style="border: 0px solid red" class="col">
+            <h3 class="card-title">Select by student</h3>
+
+            <div class="row no-gutters" style="border: 0px solid green; display: flex; justify-content: flex-end">
+              <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.student_list(class="form-control form-control-md") }}</div>
+              <div class="col-xs-3">{{ form.submit(class="btn btn-primary btn-md form-control-md") }}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- </div>
+</div> -->
+  <hr class="mb-4" />
 </div>
-<hr class="mb-4" />
+<script>
+  var select = document.getElementsByName("courseid");
+  for (index in teacher_classes) {
+    select[0].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
+    select[1].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
+  }
+</script>
 {% endblock content %}
