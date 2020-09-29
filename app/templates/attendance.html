@@ -1,7 +1,7 @@
 {% extends "base-denied.html" %} {% block scale %}
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=3.0, minimum-scale=.04"
+  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=3.0, minimum-scale=.04 shrink-to-fit=yes"
 />
 {% endblock %}
 {%block title%} MDY Attendance {%endblock%}     
@@ -131,9 +131,9 @@
         <th style="display: none">Email</th>
         <th> </th>
         <th>A</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Comment</th>
+        <th class='text-center'>Name</th>
+        <th class='text-center'>Status</th>
+        <th class = 'text-center'>Comment</th>
         <th style="display:none"></th>
       </tr>
 
@@ -154,8 +154,8 @@
             </a></td>
           <td> {{ student.student_name}}</td>
           
-          <td>
-            <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> -- </a></div>
+          <td class='text-center'>
+            <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> --- </a></div>
             <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
             <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:HotPink" class="fa fa-times fa-2x"></i></a></div>
             <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
