@@ -1,5 +1,5 @@
 {% extends "base.html" %} 
-{% block title %}MDY Schedule{% endblock %} 
+{% block title %}MDY Schedule {{dow}}{% endblock %} 
 {% block content %}
 
 <script>
@@ -35,31 +35,25 @@
     <script>
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
       var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+      var current_period =  "{{current_period}}";
+      console.log("currnet period is" + current_period);
       //var per = parseInt({{ schedule.sort}})
     </script>
     <tr>
       <td>
         <script>
+          var sched = "{{schedule.period.periodid}}";
+          if(sched == current_period){
+            document.currentScript.parentElement.parentElement.style.background = "#00FFFF";
+          }
+          console.log("{{schedule.period.periodid}}")
           if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
           else document.write("L");
         </script>
       </td>
       <td>{{ schedule.period.start_time}}</td>
       <td>{{ schedule.period.end_time}}</td>
-      <!-- <td>
-        <script>
-          if ("{{ schedule.course.classid}}" == "0-0") {
-            document.write("");
-          } else
-          {
-            var c = "{{ schedule.course.classid}}";
-            var t = '<a href="/get_students/'+c+'">'+c+'</a>';
-            document.write(t);
-          }
-          if (per[{{loop.index}}] == -1) document.write("L");
-          if (per[{{loop.index}}] == 8) document.write("R");
-        </script>
-      </td> -->
+
       <td>
         <script>
           if ("{{ schedule.course.subject}}" == "0") {

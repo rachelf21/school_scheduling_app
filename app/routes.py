@@ -407,9 +407,10 @@ def display_schedule(dow):
         print("sched courseid=", s.courseid)
         latest_lesson = get_latest_lesson(s.courseid)
         latest_lessons.append(latest_lesson)
-   
-    print(latest_lessons)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+    
+    current_period = Util().get_current_period()
+    
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period)
 
 #%%
 @app.route('/schedule_with_lessons/<dow>')
@@ -495,7 +496,8 @@ def display_full_schedule():
     schedule.get_times()
     start_times = schedule.start_times 
     end_times = schedule.end_times
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, )
+    current_period = Util().get_current_period()
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period)
     
 
 # @app.route('/today/<classname>/<dow>/<per>')
@@ -758,7 +760,9 @@ def get_week(wk):
     
     display_schedule(dow)
     
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list,latest_lessons=latest_lessons)
+    current_period = Util().get_current_period()
+    
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list,latest_lessons=latest_lessons, current_period = current_period)
 
 #%%
 @app.route('/daily_schedule/<day>')
@@ -775,7 +779,10 @@ def get_day(day):
     dow =  wk+"_"+day
     print("dow", dow)
     display_schedule(dow)
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list)
+    
+    current_period = Util().get_current_period()
+    
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period)
 #%%
 @app.route('/today')
 @login_required
@@ -794,7 +801,10 @@ def today():
         else:
             sched_list = sched_list_B
         display_schedule(dow)
-        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+        
+        current_period = Util().get_current_period()
+        
+        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period)
 
 
 

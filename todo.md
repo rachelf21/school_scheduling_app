@@ -46,6 +46,10 @@
 - [x] add Edit button on attendance page to edit attendance record, for individual student
 - [x] add present/absent/late/clear icons to attendance page
 - [x] **add users and user authentication**
+- [ ] hide input field from student names, show names only, adjust styling
+- [ ] change page titles to include classs of attendance
+- [x] highlight current period on full schedule and on daily schedules
+- [ ] change colors for absences when display all attendance records
 
 ### HTML PAGES
 

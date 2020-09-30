@@ -3,8 +3,9 @@
   name="viewport"
   content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06, shrink-to-fit=yes"
 />
-{% endblock %} {% block title %}MDY Schedule{% endblock %} {% block content %}
-<script src="/static/js/full_schedule.js"></script>
+{% endblock %} {% block title %}MDY Weekly Schedule{% endblock %} {% block content %}
+<script src="/static/js/schedule.js"></script>
+
 <div class="d-flex justify-content-around" style="border: 0px solid red">
   <button id="next" class="btn btn-sm" onclick="get_prev()" style="display: block" disabled>
     <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
@@ -14,12 +15,11 @@
     <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
   </button>
 </div>
+
 <script>
-  console.log("hello there");
-  var wk = "{{current_week}}";
-  var dow = ["A_M", "A_T", "A_W", "A_Th"]; //change this to wk variable later
-  var per = [0, 1, 2, 3, 4, 5, "L", 6, 7, 8, 9, 10];
+  var current_week = "{{current_week}}";
 </script>
+
 <style>
   a {
     color: black;
@@ -38,6 +38,7 @@
     height: 100%;
   }
 </style>
+
 <div class="table-responsive">
   <table
     id="myTable"
@@ -55,10 +56,8 @@
 
     <tbody>
       {%for n in range(11)%}
-
       <tr>
         <script>
-          var paleyellow = "rgb(252, 255, 217)";
           var curr_per = per[{{n}}+1];
           if (curr_per == 'L' || curr_per == '8'){
             document.currentScript.parentElement.style.background = "Gainsboro";
@@ -76,20 +75,10 @@
             >{{mon.courseid[n]}}
             <script>
               var parent = document.currentScript.parentElement;
-              console.log(parent);
               var schedid = "{{mon.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{mon.courseid[n]}}".substring(0, 5);
               var curr_course = "{{mon.courseid[n]}}";
-              if (curr_course.includes("Computers")) {
-                document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) {
-                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
-                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
-              }
-              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-              console.log(link_text);
-              parent.setAttribute("href", link_text);
-              parent.setAttribute("style", "display:block; width:100%; height:100%");
+              color_code("{{mon.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
@@ -98,19 +87,10 @@
             {{tues.courseid[n]}}
             <script>
               var parent = document.currentScript.parentElement;
-              console.log(parent);
               var schedid = "{{tues.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{tues.courseid[n]}}".substring(0, 5);
               var curr_course = "{{tues.courseid[n]}}";
-              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-              console.log(link_text);
-              if (curr_course.includes("Computers")) {
-                document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) {
-                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
-                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
-              }
-              parent.setAttribute("href", link_text);
+              color_code("{{tues.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
@@ -119,20 +99,10 @@
             {{wed.courseid[n]}}
             <script>
               var parent = document.currentScript.parentElement;
-              console.log(parent);
               var schedid = "{{wed.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{wed.courseid[n]}}".substring(0, 5);
               var curr_course = "{{wed.courseid[n]}}";
-              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-              console.log(link_text);
-              if (curr_course.includes("Computers")) {
-                document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) {
-                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
-                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
-              }
-
-              parent.setAttribute("href", link_text);
+              color_code("{{wed.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
@@ -141,19 +111,10 @@
             {{thurs.courseid[n]}}
             <script>
               var parent = document.currentScript.parentElement;
-              console.log(parent);
               var schedid = "{{thurs.scheduleid[n]}}".substring(0, 4);
               var curr_class = "{{thurs.courseid[n]}}".substring(0, 5);
               var curr_course = "{{thurs.courseid[n]}}";
-              var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-              console.log(link_text);
-              if (curr_course.includes("Computers")) {
-                document.currentScript.parentElement.parentElement.style.background = paleyellow;
-              } else if (curr_course.includes("STEM")) {
-                if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
-                else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
-              }
-              parent.setAttribute("href", link_text);
+              color_code("{{thurs.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
@@ -164,8 +125,9 @@
 </div>
 
 <script>
-  var current_week = "{{current_week}}";
   window.onload = function () {
+    AutoRefresh(300000);
+
     if (current_week == "A") {
       document.getElementById("weekA").classList.add("active");
       document.getElementById("weekB").classList.remove("active");
