@@ -1,8 +1,14 @@
 {% extends "base.html" %} 
 {% block title %}MDY Schedule {{dow}}{% endblock %} 
 {% block content %}
-
 <script>
+
+  function AutoRefresh(t) {
+    var date = new Date(new Date().getTime()).toLocaleTimeString();
+    console.log("Refreshed " + date);
+    setTimeout("location.reload(true);", t);
+  }
+  
   var dow = "{{dow}}";
 </script>
 
@@ -46,13 +52,13 @@
           if(sched == current_period){
             document.currentScript.parentElement.parentElement.style.background = "#00FFFF";
           }
-          console.log("{{schedule.period.periodid}}")
+          console.log("sched period periodid {{schedule.period.periodid}}")
           if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
           else document.write("L");
         </script>
       </td>
-      <td>{{ schedule.period.start_time}}</td>
-      <td>{{ schedule.period.end_time}}</td>
+      <td>{{ start_times[loop.index-1]}}</td>
+      <td>{{ end_times[loop.index-1]}}</td>
 
       <td>
         <script>
@@ -107,6 +113,7 @@
 <script>
   var current_week = "{{current_week}}";
   window.onload = function () {
+    AutoRefresh(300000);
     if (current_week == "A") {
       document.getElementById("weekA").classList.add("active");
       document.getElementById("weekB").classList.remove("active");

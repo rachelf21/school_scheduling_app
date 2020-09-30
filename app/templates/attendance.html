@@ -130,6 +130,7 @@
       <tr >
         <th style="display: none">Email</th>
         <th> </th>
+        <th>L</th>
         <th>A</th>
         <th class='text-center'>Name</th>
         <th class='text-center'>Status</th>
@@ -148,7 +149,9 @@
             <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:HotPink" class="fa fa-times"></i> </a>
             <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
           </td> 
-          
+          <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
+            {{student.count_late.data if student.count_late.data !=0}}
+          </a></td>         
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
               {{student.count.data if student.count.data !=0}}
             </a></td>

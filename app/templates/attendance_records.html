@@ -9,7 +9,7 @@
   <hr />
   <p></p>
   <h4 id="page_title" class="font-weight-normal mt-0 text-center"></h4>
-  <h4 class="font-weight-normal mb-2">Absences: {{absences}}</h4>
+  <h2 class="font-weight-normal mb-2">Absences: {{absences}} | Late: {{lates}}</h2>
 </div>
 <script>
   var title = "";
@@ -75,8 +75,19 @@
             document.write("{{ att.courseid}}".substring(6));
           </script>
         </td>
-        <td class="text-nowrap">{{ att.name}}</td>
-        <td class="text-center">{{ att.status}}</td>
+        <td class="text-nowrap"><a style="color: black" href="/track_attendance/{{ att.email}}">{{ att.name}}</a></td>
+        <td class="text-center">
+          <script>
+            current_student_status = "{{att.status}}";
+            var parent = document.currentScript.parentElement;
+            if (current_student_status == "A") {
+              parent.style.color = "red";
+            } else if (current_student_status == "L") {
+              parent.style.color = "blue";
+            }
+            document.write(current_student_status);
+          </script>
+        </td>
         <td>{{ att.comment}}</td>
         <td>
           <a

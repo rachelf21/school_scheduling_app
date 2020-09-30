@@ -22,6 +22,8 @@ sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th']
 schedule = ''
 title = ''
 latest_lessons = []
+start_times =[]
+end_times = []
 #test = Fake("esther@gmail.com" , "Lazlow, Esther", "A", "sick")   
 
 
@@ -230,9 +232,11 @@ def attendance(classname, courseid, dow, per):
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
     for s in students:
-        amt = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+        amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+        amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
         student_form = StudentAttendanceForm()
-        student_form.count = amt
+        student_form.count = amt_abs
+        student_form.count_late = amt_late        
         student_form.email = s.email
         student_form.student_name = s.name
         student_form.comment = ""
@@ -362,6 +366,8 @@ def display_schedule(dow):
     global title
     global current_week
     global latest_lessons
+    global start_times
+    global end_times
     
     title = ''
     lessons = Lessons.query.all()
@@ -399,18 +405,21 @@ def display_schedule(dow):
     elif dow == 'B_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
         title = 'Thursday (B)'
-    
+
+    start_times = []
+    end_times = []
     latest_lessons = []
     for s in schedule:
-        s.period.start_time = s.period.start_time.strftime("%#I:%M")
-        s.period.end_time = s.period.end_time.strftime("%#I:%M")
+        start_times.append(s.period.start_time.strftime("%#I:%M"))
+        end_times.append(s.period.end_time.strftime("%#I:%M"))
+        
         print("sched courseid=", s.courseid)
         latest_lesson = get_latest_lesson(s.courseid)
         latest_lessons.append(latest_lesson)
     
     current_period = Util().get_current_period()
-    
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period)
+       
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times)
 
 #%%
 @app.route('/schedule_with_lessons/<dow>')
@@ -654,6 +663,7 @@ def track_attendance(category):
     else:
         teacher = current_user.username
         absences = 0
+        lates=0
         student_name = ''
         student_class = ''
         courseid = ''
@@ -668,6 +678,8 @@ def track_attendance(category):
     
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status = 'A').order_by(Attendance.att_date.desc(), Attendance.name).all()
+            elif view=="lates":
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.courseid == courseid, Attendance.status.in_(['A','L'])).order_by(Attendance.att_date.desc(), Attendance.name).all()
             else:
                 attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()
             
@@ -679,9 +691,12 @@ def track_attendance(category):
             print(student_name)
             student_class = Student.query.filter_by(email = student).first().classid        
             absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
+            lates = Attendance.query.filter_by(teacher=teacher, email = student, status = 'L').count()
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').order_by(Attendance.attid.desc()).all()
+            elif view == "lates":
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()                
             else:
                 attendance = Attendance.query.filter_by(teacher=teacher, email = student).order_by(Attendance.attid.desc()).all()
     
@@ -691,9 +706,12 @@ def track_attendance(category):
             date = request.form['date']
             attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all()   
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').count() 
+            lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'L').count() 
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').order_by(Attendance.attid).all() 
+            elif view == "lates":
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()             
             else:
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all() 
             
@@ -705,24 +723,28 @@ def track_attendance(category):
                 date = datetime.date.today()
             courseid = request.form['courseid']
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
+            lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
+            elif view =="lates":
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()  
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()  
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
                 
         else:
             student = category
             student_name = Student.query.filter_by(email = student).first().name
             print(student_name)
             student_class = Student.query.filter_by(email = student).first().classid
-            absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
+            absences = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A'])).count()
+            lates = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['L'])).count()            
       
-            attendance = Attendance.query.filter_by(teacher=teacher, email = student, status='A').order_by(Attendance.attid.desc()).all()
+            attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()
     
     
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates)
 #%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
@@ -778,11 +800,12 @@ def get_day(day):
         sched_list = sched_list_B
     dow =  wk+"_"+day
     print("dow", dow)
-    display_schedule(dow)
     
+    display_schedule(dow)
+       
     current_period = Util().get_current_period()
     
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times)
 #%%
 @app.route('/today')
 @login_required
@@ -800,11 +823,13 @@ def today():
             sched_list = sched_list_A
         else:
             sched_list = sched_list_B
+        
         display_schedule(dow)
         
         current_period = Util().get_current_period()
         
-        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period)
+        
+        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times)
 
 
 

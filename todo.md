@@ -50,6 +50,7 @@
 - [ ] change page titles to include classs of attendance
 - [x] highlight current period on full schedule and on daily schedules
 - [ ] change colors for absences when display all attendance records
+- [ ] add late feature to attendance and display late count
 
 ### HTML PAGES
 

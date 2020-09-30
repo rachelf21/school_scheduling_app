@@ -27,7 +27,7 @@
 <h1 class="mb-4 text-center font-weight-normal">Attendance Records</h1>
 
 <div style="border: 0px solid green; text-align: right; width: 500px; margin: auto">
-  <div class="card" style="width: 22 rem">
+  <!-- <div class="card" style="width: 22 rem">
     <div class="card-body">
       <form action="/track_attendance/class" method="post" name="form">
         {{ form.hidden_tag() }}
@@ -48,7 +48,7 @@
         </div>
       </form>
     </div>
-  </div>
+  </div> -->
 
   <div class="card mt-4" style="width: 22 rem">
     <div class="card-body">
@@ -61,7 +61,7 @@
           </div>
 
           <div style="border: 0px solid red" class="col">
-            <h3 class="card-title">Select by date</h3>
+            <h3 class="card-title">View all classes</h3>
 
             <div class="row no-gutters" style="border: 0px solid green; display: flex; justify-content: flex-end">
               <div class="col-xs-8 ml-1 mr-1 mb-1">{{ form.date(class="form-control form-control-md") }}</div>
@@ -130,7 +130,7 @@
   var select = document.getElementsByName("courseid");
   for (index in teacher_classes) {
     select[0].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
-    select[1].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
+    //select[1].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
   }
 </script>
 {% endblock content %}

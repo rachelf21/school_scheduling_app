@@ -13,6 +13,7 @@ class StudentAttendanceForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=255)])
     student_name = StringField('Student')
     count = IntegerField("Absences")
+    count_late = IntegerField("Late")
     status = SelectField('Status', 
                       choices=[("",""),("P","P"),("A","A"),("L","L"),("O","O")],
                       coerce=str)
@@ -81,7 +82,7 @@ class AttendanceRecordForm(FlaskForm):
         student_list = SelectField('Select', 
                   choices=options)
     date = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
-    view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only')],default='absences')
+    view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only'),('lates', "Absence and Late")],default='absences')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     submit = SubmitField('Submit')
 
