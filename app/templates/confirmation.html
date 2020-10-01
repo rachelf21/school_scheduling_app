@@ -13,10 +13,26 @@
 <div class="text-center">
   <!-- <a href="/full_schedule" class="mb-2 mr-4 btn btn-primary btn-md">Weekly Schedule</a>
   <a href="/today" class="mb-2 mr-4 btn btn-primary btn-md">Today's Schedule</a> -->
-  <a href="/classes_anon" class="mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
-  <a href="/records" class="mb-2 mr-4 btn btn-primary btn-md">View Attendance</a>
+  <a id="my_classes" href="/classes_anon" class="mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
+  <a id="view_att" href="/track_attendance/_x{{date}}{{courseid}}" class="mb-2 mr-4 btn btn-primary btn-md">View Attendance</a>
 </div>
+<script>
+  var value = "{{value}}";
+  var current_user = "{{current_user}}";
+  if (value != "add_attendance" && value != "edit_attendance") {
+    element = document.getElementById("view_att");
+    element.setAttribute("style", "display:none");
+  }
+  if (value == "add_lesson" || value == "update_lesson" || value == "delete_lesson") {
+    element = document.getElementById("my_classes");
+    element.href = "/today";
+  }
 
+  if ((current_user = "rfriedman")) {
+    element = document.getElementById("my_classes");
+    element.href = "/today";
+  }
+</script>
 <hr class="mb-4" />
 <p class="mt-4 mb-4">&nbsp;</p>
 

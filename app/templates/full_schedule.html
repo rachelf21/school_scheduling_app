@@ -5,20 +5,19 @@
 />
 {% endblock %} {% block title %}MDY Weekly Schedule{% endblock %} {% block content %}
 <script src="/static/js/schedule.js"></script>
-
-<div class="d-flex justify-content-around" style="border: 0px solid red">
-  <button id="next" class="btn btn-sm" onclick="get_prev()" style="display: block" disabled>
-    <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
-  </button>
-  <h1 class="mt-1 4 text-center display-4">{{title}}</h1>
-  <button id="prev" class="btn btn-sm" onclick="get_next()" style="display: block" disabled>
-    <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
-  </button>
-</div>
-
 <script>
   var current_week = "{{current_week}}";
 </script>
+
+<div class="d-flex justify-content-around" style="border: 0px solid red">
+  <a id="next" class="btn btn-sm pt-4" style="display: block">
+    <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
+  </a>
+  <h1 class="mt-1 4 text-center display-4">{{title}}</h1>
+  <a id="prev" class="btn btn-sm pt-4" style="display: block">
+    <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
+  </a>
+</div>
 
 <style>
   a {
@@ -131,9 +130,13 @@
     if (current_week == "A") {
       document.getElementById("weekA").classList.add("active");
       document.getElementById("weekB").classList.remove("active");
+      document.getElementById("prev").href = "/set_week/B";
+      document.getElementById("next").href = "/set_week/B";
     } else if (current_week == "B") {
       document.getElementById("weekB").classList.add("active");
       document.getElementById("weekA").classList.remove("active");
+      document.getElementById("prev").href = "/set_week/A";
+      document.getElementById("next").href = "/set_week/A";
     }
   };
 </script>

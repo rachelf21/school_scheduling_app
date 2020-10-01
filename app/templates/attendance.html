@@ -11,6 +11,7 @@
   tr:hover {
     /*background-color: #AFDEFB !important;*/
     background-color: #e0ffff !important;
+    /*font-weight:bold;*/
 
   }
   .mont{
@@ -124,8 +125,8 @@
 <div id="attendance_table" class="mt-0">
     <table
       id="myTable"
-      class="table mx-auto w-auto table-striped table-hover table-bordered "
-      style="border: 0px DeepPink solid; width:auto; margin: 0px"
+      class="table mx-auto w-auto table-hover  row-border "
+      style="border: 0px Crimson solid; width:auto; margin: 0px"
     >
       <tr >
         <th style="display: none">Email</th>
@@ -146,7 +147,7 @@
           <td class="font-weight-normal text-nowrap"">
             <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
             <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
-            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:HotPink" class="fa fa-times"></i> </a>
+            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:Crimson" class="fa fa-times"></i> </a>
             <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
           </td> 
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
@@ -155,17 +156,17 @@
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
               {{student.count.data if student.count.data !=0}}
             </a></td>
-          <td> {{ student.student_name}} </td>
+          <td class="text-nowrap"> <div style="display:none">{{ student.student_name}} </div><div style="font-size:1.em" class="mont">{{ student.student_name.data}}</div></td>
           
           <td class='text-center'>
             <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> --- </a></div>
             <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
-            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:HotPink" class="fa fa-times fa-2x"></i></a></div>
+            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:Crimson" class="fa fa-times fa-2x"></i></a></div>
             <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
             <div style="display:none"> {{ student.status}} </div>
           </td>
           
-          <td>{{ student.comment(length=300)|safe}}</td>
+          <td style="width:200px">{{ student.comment(length=300)|safe}}</td>
           <td style="display:none">
             <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a>
           </td>

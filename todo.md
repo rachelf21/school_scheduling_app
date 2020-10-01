@@ -46,11 +46,14 @@
 - [x] add Edit button on attendance page to edit attendance record, for individual student
 - [x] add present/absent/late/clear icons to attendance page
 - [x] **add users and user authentication**
-- [ ] hide input field from student names, show names only, adjust styling
-- [ ] change page titles to include classs of attendance
+- [x] change page titles to include classs of attendance
 - [x] highlight current period on full schedule and on daily schedules
-- [ ] change colors for absences when display all attendance records
-- [ ] add late feature to attendance and display late count
+- [x] change colors for absences when display all attendance records
+- [x] add late feature to attendance and display late count
+- [ ] bottom borders for new classes on dates page
+- [x] different buttons on comfirmation page
+- [x] separate abs and late titles, change colors, mute titles
+- [x] hide input field from student names, show names only, adjust styling
 
 ### HTML PAGES
 

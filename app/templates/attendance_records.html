@@ -8,8 +8,13 @@
   <h1 id="h1" class="mb-0 font-weight-normal">Attendance Records</h1>
   <hr />
   <p></p>
-  <h4 id="page_title" class="font-weight-normal mt-0 text-center"></h4>
-  <h2 class="font-weight-normal mb-2">Absences: {{absences}} | Late: {{lates}}</h2>
+  <h2 id="page_title" class="font-weight-normal mt-0 text-center"></h2>
+  <h2 class="font-weight-normal mb-2">
+    <div style="display: flex; justify-content: center">
+      <div><span class="text-muted small"> ABSENCES </span> <span style="color: red" class="mr-4">{{absences}}</span></div>
+      <div><span class="text-muted small ml-4"> LATE </span> <span style="color: blue">{{lates}}</span></div>
+    </div>
+  </h2>
 </div>
 <script>
   var title = "";
@@ -22,6 +27,8 @@
   } else if (category == "date") {
     title = "{{date}}";
   } else if (category == "classdate") {
+    title = "{{courseid}}" + "<br>{{date}}";
+  } else if (category.substring(0, 2) == "_x") {
     title = "{{courseid}}" + "<br>{{date}}";
   } else {
     title = "{{student_name}} <br> {{student_class}}";
@@ -53,6 +60,19 @@
         <td>
           <script>
             var date = "{{ att.att_date}}".substring(5, 10);
+
+            var class_ = "{{ att.courseid}}".substring(0, 5);
+            {% if loop.nextitem is defined  %}
+              var next_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
+              console.log("current class = " + class_ + " and next class =" + next_class);
+              if (class_!=next_class){
+                console.log("new class below");
+                var element = document.currentScript.parentElement.parentElement;
+                element.style.borderBottomStyle = "solid"
+                element.style.borderBottomWidth="thick";
+                element.setAttribute('class', 'mb-4');
+              }
+            {% endif %}
             if (date.substring(0, 1) == 0) date = date.substring(1, 5);
             document.write(date);
           </script>
@@ -66,7 +86,7 @@
         </td>
         <td class="text-center">
           <script>
-            document.write("{{ att.courseid}}".substring(0, 5));
+            document.write(class_);
           </script>
         </td>
 
@@ -84,6 +104,8 @@
               parent.style.color = "red";
             } else if (current_student_status == "L") {
               parent.style.color = "blue";
+            } else if (current_student_status == "P") {
+              parent.style.color = "rgb(14, 173, 56)";
             }
             document.write(current_student_status);
           </script>
@@ -112,6 +134,15 @@
       {%endfor%}
     </tbody>
   </table>
+  <div style="text-align: center">
+    <a id="my_classes" href="/classes_anon" class="mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
+  </div>
+  <script>
+    if ("{{current_user}}" == "rfriedman") {
+      element = document.getElementById("my_classes");
+      element.href = "/today";
+    }
+  </script>
 </div>
 <!-- </div>
 </div> -->

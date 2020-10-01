@@ -20,6 +20,9 @@ function mark_present(id) {
   var n = document.getElementById("students-" + id + "-student_name");
   n.style.color = "black";
   n.setAttribute("style", "background-color: none");
+  var student_td = n.parentElement.parentElement;
+  student_td.setAttribute("style", "color: black; font-weight: normal; ");
+  student_td.classList.remove("mark");
   var checks = document.getElementsByName("check");
   checks[id].style.display = "block";
   var exes = document.getElementsByName("ex");
@@ -34,12 +37,14 @@ function mark_absent(id) {
   id = id - 1;
   s = document.getElementById("students-" + id + "-status");
   s.value = "A";
-  s.style.color = "DeepPink";
+  s.style.color = "Crimson";
   s.setAttribute("style", "background-color: " + PaleRed);
   n = document.getElementById("students-" + id + "-student_name");
-  n.style.color = "DeepPink";
+  n.style.color = "Crimson";
   n.setAttribute("style", "background-color: " + PaleRed);
-  //n.setAttribute("class", "mark");
+  var student_td = n.parentElement.parentElement;
+  student_td.setAttribute("style", "color: Crimson; font-weight: bold; "); //overriden by later style
+  //student_td.setAttribute("class", "mark");
   var checks = document.getElementsByName("check");
   checks[id].style.display = "none";
   var exes = document.getElementsByName("ex");
@@ -59,6 +64,9 @@ function mark_late(id) {
   var n = document.getElementById("students-" + id + "-student_name");
   n.style.color = "black";
   n.setAttribute("style", "background-color: none");
+  var student_td = n.parentElement.parentElement;
+  student_td.setAttribute("style", "color: rgb(3, 132, 252); font-weight: normal; ");
+  student_td.classList.remove("mark");
   var checks = document.getElementsByName("check");
   checks[id].style.display = "none";
   var exes = document.getElementsByName("ex");
@@ -81,6 +89,9 @@ function mark_clear(id) {
   var n = document.getElementById("students-" + id + "-student_name");
   n.style.color = "black";
   n.setAttribute("style", "background-color: none");
+  var student_td = n.parentElement.parentElement;
+  student_td.setAttribute("style", "color: black; font-weight: medium; ");
+  student_td.classList.remove("mark");
   var checks = document.getElementsByName("check");
   checks[id].style.display = "none";
   var exes = document.getElementsByName("ex");
@@ -94,6 +105,7 @@ function mark_clear(id) {
 var toggle = 1;
 function present(count) {
   toggle = -toggle;
+
   var checks = document.getElementsByName("check");
   var exes = document.getElementsByName("ex");
   var lates = document.getElementsByName("late");
@@ -104,18 +116,24 @@ function present(count) {
     var n = document.getElementById("students-" + i + "-student_name");
     s.setAttribute("style", "background-color: none");
     n.setAttribute("style", "background-color: none");
+    var student_td = n.parentElement.parentElement;
+
     if (toggle < 0) {
       s.value = "P";
       checks[i].style.display = "block";
       exes[i].style.display = "none";
       lates[i].style.display = "none";
       empties[i].style.display = "none";
+      student_td.setAttribute("style", "color: black; font-weight: normal; ");
+      student_td.classList.remove("mark");
     } else {
       s.value = "";
       exes[i].style.display = "none";
       checks[i].style.display = "none";
       lates[i].style.display = "none";
       empties[i].style.display = "block";
+      student_td.setAttribute("style", "color: black; font-weight: medium; ");
+      student_td.classList.remove("mark");
     }
   }
 }
@@ -141,9 +159,9 @@ function change_color(e) {
   var selected = ele.value;
 
   if (selected == "A") {
-    ele.style.color = "DeepPink";
+    ele.style.color = "Crimson";
     ele.setAttribute("class", "mark");
-    n.style.color = "DeepPink";
+    n.style.color = "Crimson";
     n.setAttribute("class", "mark");
   } else if (selected == "L") {
     ele.style.color = "blue";

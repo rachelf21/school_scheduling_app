@@ -212,7 +212,7 @@ def udpate_lessons(lessonid):
         query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "' and teacher = '" + teacher +"';"
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(query)
-    return render_template("confirmation.html" , topic=topic)
+    return render_template("confirmation.html" , topic=topic, value="add_lesson", current_user = current_user.username)
 #%%
 @app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
 @login_required
@@ -341,7 +341,7 @@ def udpate_attendance():
     #print(df) 
     df.to_sql('attendance', engine, if_exists="append")
     topic = "attendance for "+ courseid 
-    return render_template("confirmation.html", topic = topic)
+    return render_template("confirmation.html", topic = topic, value="add_attendance",date=att_date, courseid=courseid, current_user = current_user.username)
 
 #%%
 @app.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')
@@ -355,7 +355,7 @@ def edit_attendance(date, courseid, email, status, comment):
         conn.execute(query)
 
     topic = "attendance staus of " + status + " for " + name 
-    return render_template("confirmation.html", topic=topic)
+    return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, current_user = current_user.username)
     
 #%%
 #%%
@@ -542,7 +542,8 @@ def display_full_schedule():
 @app.route('/results')
 def results():
     return render_template('results.html')
-    
+ 
+#this is not used   
 @app.route('/confirmation/<filename>')
 def confirmation(filename):
     print(filename)
@@ -711,7 +712,7 @@ def track_attendance(category):
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').order_by(Attendance.attid).all() 
             elif view == "lates":
-                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()             
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).order_by(Attendance.attid).all()             
             else:
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all() 
             
@@ -721,9 +722,11 @@ def track_attendance(category):
             date = request.form['date']
             if not date:
                 date = datetime.date.today()
-            courseid = request.form['courseid']
+
+            courseid = request.form['courseid']     
+
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
-            lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
+            lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'L').count() 
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
@@ -732,6 +735,16 @@ def track_attendance(category):
             else:
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
                 
+        
+        elif category[0:2]== '_x':
+            date = category[2:12]
+            courseid = category[12:]
+            
+            absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
+            lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'L').count() 
+            
+            attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
+        
         else:
             student = category
             student_name = Student.query.filter_by(email = student).first().name
@@ -744,7 +757,7 @@ def track_attendance(category):
     
     
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, current_user=current_user.username)
 #%%
 @app.route('/weekly_schedule/<wk>')
 def get_week(wk):
@@ -908,7 +921,7 @@ def update_lesson(lessonid, newcontent):
     query = "UPDATE lessons set content = '" + newcontent + "' WHERE lessonid = '" + lessonid + "' and teacher ='" +teacher +"';"
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
-    return render_template("confirmation.html", topic="updated lesson")
+    return render_template("confirmation.html", topic="updated lesson", value="update_lesson", current_user = current_user.username)
 
 
 @app.route('/delete_lesson/<lessonid>')
@@ -920,7 +933,7 @@ def delete_lesson(lessonid):
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
         print('lesson has been deleted')
-    return render_template('confirmation.html', topic=topic)
+    return render_template('confirmation.html', topic=topic, value="delete_lesson", current_user = current_user.username)
 
 #%%
 @app.route('/dismissal_form')
@@ -1003,8 +1016,8 @@ def set_week(letter):
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
     topic = "Week " + letter
-    return render_template("confirmation.html", topic=topic)
-    #return redirect("/full_schedule")
+    #return render_template("confirmation.html", topic=topic)
+    return redirect("/full_schedule")
 
 #%%
 @app.route('/zoom_schedule')
