@@ -178,7 +178,7 @@ def addLesson(classid, courseid, dow, per,lessonid):
         cat='Add'
     else:
         cat="Plan"
-    return render_template("addLesson.html", form = form, cat=cat, lessonid=lessonid, teacher=current_user.username) 
+    return render_template("addLesson.html", form = form, cat=cat, lessonid=lessonid, teacher=current_user.username, curren_user = current_user.username, value="add_lesson") 
 
 @app.route('/update_lessons/<lessonid>', methods=['GET', 'POST'])
 @login_required
@@ -212,7 +212,7 @@ def udpate_lessons(lessonid):
         query = "UPDATE lessons set plan = '" + content + "' WHERE lessonid = '" + lessonid + "' and teacher = '" + teacher +"';"
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(query)
-    return render_template("confirmation.html" , topic=topic, value="add_lesson", current_user = current_user.username)
+    return render_template("confirmation.html" , topic=topic, value="edit_lesson", current_user = current_user.username)
 #%%
 @app.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
 @login_required

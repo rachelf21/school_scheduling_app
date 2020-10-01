@@ -104,12 +104,13 @@
       </td>
       <td class="text-nowrap">
         <script>
+          var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var s = "{{ schedule.course.subject}}" ;
           if (s == "Computers" || s == "STEM") {
             var x = "/lessons/"+course;
                     document.write('<a href="' + x + '">View</a>  &nbsp;|  ');
                   }
-
+                  var c = "{{ schedule.course.classid}}";
                   var t = '<a href="/addLesson/' + c + '/' + courseid + '/' + dow + '/' +p + '/a">' + "&nbsp; Add" + "</a>";
                   if (s == "Computers" || s == "STEM")  {
                     document.write(t);
