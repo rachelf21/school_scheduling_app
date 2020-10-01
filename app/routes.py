@@ -341,7 +341,11 @@ def udpate_attendance():
     #print(df) 
     df.to_sql('attendance', engine, if_exists="append")
     topic = "attendance for "+ courseid 
-    return render_template("confirmation.html", topic = topic, value="add_attendance",date=att_date, courseid=courseid, current_user = current_user.username)
+    #return render_template("confirmation.html", topic = topic, value="add_attendance",date=att_date, courseid=courseid, current_user = current_user.username)
+    #date2 = date.strftime("%Y-%m/%d")
+    cat = '_x'+att_date+courseid
+    flash('Your attendance for class ' + courseid + ' has been recorded.', 'success')
+    return redirect(url_for('track_attendance', category=cat))
 
 #%%
 @app.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')

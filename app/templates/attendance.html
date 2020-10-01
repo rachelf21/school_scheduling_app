@@ -140,8 +140,8 @@
       </tr>
 
       {% for student in att_form.students %}
+      
       <tr>
-
           <td style="display: none">{{ student.email}}</td>
           
           <td class="font-weight-normal text-nowrap"">
@@ -170,8 +170,8 @@
           <td style="display:none">
             <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a>
           </td>
-
         </tr>
+       
      {% endfor %}
 
       <script>

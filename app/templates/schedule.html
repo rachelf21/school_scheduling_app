@@ -24,7 +24,7 @@
 <div class="table-responsive">
 <table
   id="myTable"
-  class="table mx-auto  table-striped table-hover table-bordered text-center mt-4 pt-4  w-auto table-fixed " 
+  class="table mx-auto   table-hover row-border text-center mt-4 pt-4  w-auto table-fixed " 
   style="border:0px solid green; width:auto; margin: 0px auto"
 >
   <thead>
@@ -46,15 +46,25 @@
       //var per = parseInt({{ schedule.sort}})
     </script>
     <tr>
-      <td>
+      <td class="h4">
         <script>
           var sched = "{{schedule.period.periodid}}";
+          if (per[{{loop.index}}] != -1) {
+          document.write(per[{{loop.index}}]);
+          }
+            else {
+              document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
+              document.write("L");
+            }
+            if (per[{{loop.index}}] ==8) {  
+              document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
+            }
+
           if(sched == current_period){
-            document.currentScript.parentElement.parentElement.style.background = "#00FFFF";
+            document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";
           }
           console.log("sched period periodid {{schedule.period.periodid}}")
-          if (per[{{loop.index}}] != -1) document.write(per[{{loop.index}}]);
-          else document.write("L");
+
         </script>
       </td>
       <td>{{ start_times[loop.index-1]}}</td>
@@ -72,20 +82,23 @@
           var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var p = per[{{loop.index}}];
           var c = "{{ schedule.course.classid}}";
+          var icon = "<i class = 'fa fa-edit'> </i>";
           var courseid = "{{ schedule.course.courseid}}";         
           //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
-          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c + "</a>";
-          if ("{{ schedule.course.subject}}" == "0") {
+          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c + "&nbsp;  &nbsp;" + icon + "</a>";
+          var course = "{{ schedule.course.subject}}" ;
+          if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
             document.write("");
           } else document.write(t);
         </script>
       </td>
       <td>
         <script>
-          if ("{{ schedule.course.subject}}" != "0") {
-          if ({{ schedule.course.room}} ==500)
-          document.write('Gym');
-          else document.write("{{ schedule.course.room}}");
+          if (course != "0"  && per[{{loop.index}}] != -1 && per[{{loop.index}}] != 8) {
+             document.write("{{ schedule.course.room}}");       
+          }
+          else {
+            document.write("");
           }
         </script>
       </td>
@@ -104,6 +117,7 @@
                 </script>
                  </script> 
                 </td>
+
               </tr>
               {%endfor%}
   </tbody>
