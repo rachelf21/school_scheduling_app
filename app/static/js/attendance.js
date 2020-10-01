@@ -37,13 +37,13 @@ function mark_absent(id) {
   id = id - 1;
   s = document.getElementById("students-" + id + "-status");
   s.value = "A";
-  s.style.color = "Crimson";
+  s.style.color = "rgb(220, 20, 60)";
   s.setAttribute("style", "background-color: " + PaleRed);
   n = document.getElementById("students-" + id + "-student_name");
-  n.style.color = "Crimson";
+  n.style.color = "rgb(220, 20, 60)";
   n.setAttribute("style", "background-color: " + PaleRed);
   var student_td = n.parentElement.parentElement;
-  student_td.setAttribute("style", "color: Crimson; font-weight: bold; "); //overriden by later style
+  student_td.setAttribute("style", "color: rgb(220, 20, 60); font-weight: bold; "); //overriden by later style
   //student_td.setAttribute("class", "mark");
   var checks = document.getElementsByName("check");
   checks[id].style.display = "none";
@@ -159,9 +159,9 @@ function change_color(e) {
   var selected = ele.value;
 
   if (selected == "A") {
-    ele.style.color = "Crimson";
+    ele.style.color = "rgb(220, 20, 60)";
     ele.setAttribute("class", "mark");
-    n.style.color = "Crimson";
+    n.style.color = "rgb(220, 20, 60)";
     n.setAttribute("class", "mark");
   } else if (selected == "L") {
     ele.style.color = "blue";

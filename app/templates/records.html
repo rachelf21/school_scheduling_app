@@ -132,5 +132,11 @@
     select[0].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
     //select[1].options[index] = new Option(teacher_classes[index], teacher_classes[index]);
   }
+
+  console.log("{{teacher}}");
+  if ("{{teacher}}" == "rfriedman") {
+    element = document.getElementById("my_classes");
+    element.href = "/today";
+  }
 </script>
 {% endblock content %}

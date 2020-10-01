@@ -64,9 +64,9 @@
             var class_ = "{{ att.courseid}}".substring(0, 5);
             {% if loop.nextitem is defined  %}
               var next_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
-              console.log("current class = " + class_ + " and next class =" + next_class);
+              //console.log("current class = " + class_ + " and next class =" + next_class);
               if (class_!=next_class){
-                console.log("new class below");
+                //console.log("new class below");
                 var element = document.currentScript.parentElement.parentElement;
                 element.style.borderBottomStyle = "solid"
                 element.style.borderBottomWidth="thick";
@@ -95,7 +95,7 @@
             document.write("{{ att.courseid}}".substring(6));
           </script>
         </td>
-        <td class="text-nowrap"><a style="color: black" href="/track_attendance/{{ att.email}}">{{ att.name}}</a></td>
+        <td class="text-nowrap"><a style="color: black" href="/track_attendance/{{ att.email}}" target="_blank">{{ att.name}}</a></td>
         <td class="text-center">
           <script>
             current_student_status = "{{att.status}}";
@@ -135,9 +135,10 @@
     </tbody>
   </table>
   <div style="text-align: center">
-    <a id="my_classes" href="/classes_anon" class="mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
+    <a id="my_classes" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
   </div>
   <script>
+    console.log("{{current_user}}");
     if ("{{current_user}}" == "rfriedman") {
       element = document.getElementById("my_classes");
       element.href = "/today";

@@ -64,7 +64,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="{{ url_for('classes_anon') }}">
+          <a  class="navbar-brand" href="{{ url_for('classes_anon') }}">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
           </a>
           <a class="navbar-brand mr-4" href="{{ url_for('classes_anon') }}">MDY Teacher</a>
@@ -86,7 +86,7 @@
 
 
             <ul class="navbar-nav mr-auto ">
-              <a class="nav-item nav-link mr-2 text-nowrap" href="{{ url_for('classes_anon') }}">My Classes</a>
+              <a id="my_classes"class="nav-item nav-link mr-2 text-nowrap" href="{{ url_for('classes_anon') }}">My Classes</a>
               <a class="nav-item nav-link mr-2 text-nowrap" href="/records">Attendance Records</a>
               <a class="nav-item nav-link mr-2" href="/dismissal_form">Dismissal</a>
 

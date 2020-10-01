@@ -126,7 +126,7 @@
     <table
       id="myTable"
       class="table mx-auto w-auto table-hover  row-border "
-      style="border: 0px Crimson solid; width:auto; margin: 0px"
+      style="border: 0px rgb(220, 20, 60) solid; width:auto; margin: 0px"
     >
       <tr >
         <th style="display: none">Email</th>
@@ -147,7 +147,7 @@
           <td class="font-weight-normal text-nowrap"">
             <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
             <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
-            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:Crimson" class="fa fa-times"></i> </a>
+            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:rgb(220, 20, 60)" class="fa fa-times"></i> </a>
             <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
           </td> 
           <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
@@ -161,7 +161,7 @@
           <td class='text-center'>
             <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> --- </a></div>
             <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
-            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:Crimson" class="fa fa-times fa-2x"></i></a></div>
+            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:rgb(220, 20, 60)" class="fa fa-times fa-2x"></i></a></div>
             <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
             <div style="display:none"> {{ student.status}} </div>
           </td>
@@ -192,7 +192,13 @@
 </div>
  
 </form>
-
+<script>
+  console.log("{{teacher}}")
+  if ("{{teacher}}" == "rfriedman") {
+    element = document.getElementById("my_classes");
+    element.href = "/today";
+  }
+</script>
 
 <p class='mt-4 mb-4'>&nbsp;</p>
 
