@@ -229,8 +229,15 @@ def attendance(classname, courseid, dow, per):
     att_form.room.data=room
     att_form.teacher.data = teacher
     class_att_records=[]
+    
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
+
+    
+    if (teacher == 'rfriedman' and courseid == '7-211-Computers'):
+        students = Student.query.filter_by(classid=classname).filter(~Student.email.in_(["hben-dayan497@stu.mdyschool.org","ialfaks946@stu.mdyschool.org","vhaber778@stu.mdyschool.org"])).order_by(Student.name).all()
+        count = len(students)
+        amount = amount-3
     for s in students:
         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
@@ -253,7 +260,7 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher)
+        return render_template('attendance_cards.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher)
 
 #started this for other teachers, but then decided this wasn't a good approach
 # @app.route('/attendance/<teacher>/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
@@ -642,12 +649,15 @@ def get_students(access, classname):
 @app.route('/records', methods=["GET" , "POST"])
 @login_required
 def records():
-    title = 'Attendance Records'
-    classes = Course.query.filter_by(teacher=current_user.username).filter(~Course.subject.like('Lunch')).filter(~Course.subject.like('Recess')).all()
-    print(classes)
-    teacher = current_user.username
-    form = AttendanceRecordForm()
-    return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher)
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    else:
+        title = 'Attendance Records'
+        classes = Course.query.filter_by(teacher=current_user.username).filter(~Course.subject.like('Lunch')).filter(~Course.subject.like('Recess')).all()
+        print(classes)
+        teacher = current_user.username
+        form = AttendanceRecordForm()
+        return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher, current_user = current_user.username)
 
 
 @app.route('/check_absences/<courseid>/<lessondate>')
@@ -657,7 +667,7 @@ def check_absences(courseid,lessondate):
     category = 'class'
     attendance = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
     absences = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate, status='A').count()
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences)
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences, teacher=teacher, current_user = current_user.username)
         
 @app.route('/track_attendance/<category>',  methods=["GET" , "POST"])
 @login_required
@@ -733,11 +743,11 @@ def track_attendance(category):
             lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'L').count() 
             
             if view=="absences":
-                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.attid, Attendance.name).all() 
             elif view =="lates":
-                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()  
+                attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.attid, Attendance.name).all()  
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all() 
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc() , Attendance.attid, Attendance.name).all() 
                 
         
         elif category[0:2]== '_x':

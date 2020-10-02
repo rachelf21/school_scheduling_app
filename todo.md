@@ -54,6 +54,7 @@
 - [x] different buttons on comfirmation page
 - [x] separate abs and late titles, change colors, mute titles
 - [x] hide input field from student names, show names only, adjust styling
+- [x] display names in card format
 
 ### HTML PAGES
 

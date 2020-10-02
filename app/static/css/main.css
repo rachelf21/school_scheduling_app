@@ -125,6 +125,18 @@ a.article-title:hover {
   min-width: 100%;
   min-height: 100%;
 }
+
+.btn-circle.btn-sm {
+  width: 30px;
+  height: 30px;
+  padding: 0px 0px;
+  border-radius: 15px;
+  font-size: 16px;
+  text-align: center;
+  background-size: auto;
+  text-align: center;
+}
+
 /*
 body {
   font-family: "Titillium Web", sans-serif;

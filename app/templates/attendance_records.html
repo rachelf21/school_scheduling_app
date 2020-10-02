@@ -35,14 +35,14 @@
   }
   console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;
-  hideCover();
+  // hideCover();
 </script>
 
 <div class="table-responsive">
   <table
     id="myTable"
-    class="table mx-auto w-auto table-striped table-hover table-bordered table-fixed mb-4"
-    style="border: 0px red solid; width: auto; margin: 0px auto"
+    class="table mx-auto w-auto table-striped table-hover table-fixed mb-4"
+    style="width: auto; margin: 0px auto; border-collapse: collapse"
   >
     <thead class="small">
       <th>Date</th>
@@ -68,9 +68,12 @@
               if (class_!=next_class){
                 //console.log("new class below");
                 var element = document.currentScript.parentElement.parentElement;
-                element.style.borderBottomStyle = "solid"
-                element.style.borderBottomWidth="thick";
-                element.setAttribute('class', 'mb-4');
+                element.id = "td"+{{loop.index}}+'n';
+                console.log(element.id);
+                element.style.borderBottomColor = "red !important";
+                element.style.borderBottomStyle = "solid !important"
+                element.style.borderBottomWidth="thick !important";
+                //element.setAttribute('class', 'mb-4 !important');
               }
             {% endif %}
             if (date.substring(0, 1) == 0) date = date.substring(1, 5);
@@ -152,7 +155,7 @@
 <hr class="mb-4" />
 <script>
   $("#myTable").DataTable({
-    ordering: true,
+    //ordering: true,
     //order: [[1, "asc"]],
     pageLength: 20,
     paging: true,
@@ -170,5 +173,20 @@
       alert("You entered: " + value);
     });
   };
+
+  for(i =1; i< {{attendance | length}}; i++){
+    console.log(i);
+    var element = document.getElementById("td"+i+"n");
+    if (element){
+      console.log(element);
+      //element.style.borderColor = "red";
+      element.setAttribute("style", "border: 1px solid red !important");
+      element.setAttribute("style", "color:blue");
+      element.setAttribute("class", "pb-4");
+      //element.setAttribute("style", "background-color:yellow")
+      //element.style.borderStyle = "solid !important"
+      //element.style.borderWidth="thick !important";
+    }
+  }
 </script>
 {% endblock content %}

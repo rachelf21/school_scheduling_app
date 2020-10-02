@@ -20,7 +20,7 @@
   }  
 </style>
 
-<script src = "/static/js/attendance.js"></script>
+<script src = "/static/js/attendance_cards.js"></script>
 
 <script>
   var teacher = "{{teacher}}";
@@ -37,9 +37,10 @@
 
 
   window.onload = function () {  
+      console.log('attendance cards')
     for (i=0; i<count; i++){
       var s = document.getElementById("students-" + i + "-status");
-      s.addEventListener("click", change_color);
+      //s.addEventListener("click", change_color);
     }
   };
 
@@ -111,7 +112,9 @@
     </div>
 
     <div class = "container" style="display:flex; align-items:baseline; justify-content: space-around;">
+
     <div class='text-left text-muted font-weight-normal pb-0' style="margin-top: auto;" ><script>document.write("Teacher: " + teacher)</script></div>
+    
     <div style="border:0px solid red">
       <a class="btn btn-primary btn-md mt-2 mb-1 mr-2 " style="color:azure" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
     </div>
@@ -120,60 +123,59 @@
 
 
 
-<div class="table-responsive">
 
-<div id="attendance_table" class="mt-0">
-    <table
-      id="myTable"
-      class="table mx-auto w-auto table-hover  row-border "
-      style="border: 0px rgb(220, 20, 60) solid; width:auto; margin: 0px"
-    >
-      <tr >
-        <th style="display: none">Email</th>
-        <th> </th>
-        <th>L</th>
-        <th>A</th>
-        <th class='text-center'>Name</th>
-        <th class='text-center'>Status</th>
-        <th class = 'text-center'>Comment</th>
-        <th style="display:none"></th>
-      </tr>
 
-      {% for student in att_form.students %}
-      
-      <tr>
-          <td style="display: none">{{ student.email}}</td>
+  
+  <div class = "container" style="margin:auto; ">    
+
+    {% for student in att_form.students %}
+<div id="cards_container" class="mt-2 mr-2 ml-2" style="display:flex; justify-content:center">
+
+      <div class="card pt-0 pb-0" style="width:20em; background: whitesmoke" id="card{{loop.index-1}}">
+          <span style="display: none">{{ student.email}}</span>
           
-          <td class="font-weight-normal text-nowrap"">
-            <a title="clear" class="a btn-sm" onclick='mark_clear("{{loop.index}}")'><i name="clear_icon" style="color: Gold" class="fa fa-eraser" alt="clear"></i> </a>
-            <a title="late" class="a btn-sm" onclick='mark_late("{{loop.index}}")'><i name = "late_icon" style="color:DeepSkyBlue" class="fa fa-bell-slash-o"></i> </a>
-            <a title="absent" class="a btn-sm" onclick='mark_absent("{{loop.index}}")'><i name = "absent_icon" style="color:rgb(220, 20, 60)" class="fa fa-times"></i> </a>
-            <a title="present" class="a btn-sm" onclick='mark_present("{{loop.index}}")'><i name = "present_icon" style="color:LightSeaGreen" class="fa fa-check"></i> </a>
-          </td> 
-          <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
-            {{student.count_late.data if student.count_late.data !=0}}
-          </a></td>         
-          <td ><a class="text-muted" style="font-size: 1.0em; font-family: 'Neucha', cursive; color:black " title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
-              {{student.count.data if student.count.data !=0}}
-            </a></td>
-          <td class="text-nowrap"> <div style="display:none">{{ student.student_name}} </div><div style="font-size:1.em" class="mont">{{ student.student_name.data}}</div></td>
+
+
+        <div class="card-body" > 
+
+            <div class="row" style="display:flex; justify-content:space-between">
+                
+                <div id="stats">
+
+                    <div style="display:none">{{ student.student_name}} </div>
+                    <div style="display:none"> {{ student.status}} </div>
+                    <div style="width:200px; display:none">{{ student.comment(length=300)|safe}}</div>
+
+                    <div class="ml-2 h6" style="font-size:1.1em">{{ student.student_name.data}}
+                        <a class="ml-2 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive; color:blue " title="total late" target="_blank" href="/track_attendance/{{ student.email.data}}">
+                      L {{student.count_late.data if student.count_late.data !=0}}
+                    </a><a class="ml-2 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive;" title="total abs" target="_blank" href="/track_attendance/{{ student.email.data}}">
+                    A {{student.count.data if student.count.data !=0}}
+                      </a></div>
+
+
+                  </div>
+
+
+
+
+                <div id="buttons">
+                    <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_present("{{loop.index}}")'>P</button> 
+                    <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_absent("{{loop.index}}")'>A</button> 
+                    <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_late("{{loop.index}}")'>L</button> 
+
+                </div>
+
+            </div>
           
-          <td class='text-center'>
-            <div name = "empty" style="display:block; width:100%"><a onclick='mark_present("{{loop.index}}")'> <i class="fa fa-minus-square fa-2x" style="color:rgba(200,200,200,.5"></i> </a></div>
-            <div name = "late" style="display:none"><a onclick='mark_clear("{{loop.index}}")'><i style="color:DeepSkyBlue" class="fa fa-bell-slash-o fa-2x"></i></a></div>
-            <div name = "ex" style="display:none"><a onclick='mark_late("{{loop.index}}")'><i style="color:rgb(220, 20, 60)" class="fa fa-times fa-2x"></i></a></div>
-            <div name = "check" style="display:none"><a onclick='mark_absent("{{loop.index}}")'><i style="color:LightSeaGreen" class="fa fa-check fa-2x"></i></a></div>
-            <div style="display:none"> {{ student.status}} </div>
-          </td>
-          
-          <td style="width:200px">{{ student.comment(length=300)|safe}}</td>
-          <td style="display:none">
-            <a class="a btn-sm mt-2 mb-1 form-control-sm"  onclick='edit_attendance("{{loop.index}}","{{ student.email.data}}")'><i class="fa fa-pencil" aria-hidden="true"></i></a>
-          </td>
-        </tr>
+        </div>
+        
+    </div>
+        
+</div>
        
      {% endfor %}
-
+</div>
       <script>
         $("#myTable").DataTable({
           pageLength: 20,
@@ -186,11 +188,8 @@
           bSort: false,
         });
      </script>
-    </table>
 
-  </div>
-</div>
- 
+
 </form>
 <script>
   console.log("{{teacher}}")
