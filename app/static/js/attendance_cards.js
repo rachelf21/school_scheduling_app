@@ -124,6 +124,7 @@ function mark_clear(id) {
 }
 
 var toggle = 1;
+var comment_on = 0;
 function present(count) {
   toggle = -toggle;
 
@@ -156,11 +157,37 @@ function present(count) {
       s.value = "";
       card.style.background = "whitesmoke";
       present_icon.style.background = "rgba(200, 200, 200,.5)";
+      absent_icon.style.background = "rgba(200, 200, 200,.5)";
+      late_icon.style.background = "rgba(200, 200, 200,.5)";
 
       //student_td.setAttribute("style", "color: black; font-weight: medium; ");
       //student_td.classList.remove("mark");
     }
   }
+}
+
+function add_comment(id) {
+  console.log("comment");
+  var element = document.getElementById("card_comment_" + id);
+  var student = document.getElementById("students-" + parseInt(id - 1) + "-student_name");
+  var comment = prompt("Enter commment for " + student.value);
+  if (comment === null) {
+    return;
+  } else {
+    element.childNodes[0].innerHTML = comment;
+    element.style.display = "block";
+    var c = document.getElementById("students-" + parseInt(id - 1) + "-comment");
+    c.value = comment;
+  }
+}
+
+function delete_comment(id) {
+  console.log("comment");
+  var element = document.getElementById("card_comment_" + id);
+  element.childNodes[0].innerHTML = "";
+  element.style.display = "none";
+  var c = document.getElementById("students-" + parseInt(id - 1) + "-comment");
+  c.value = "";
 }
 
 function edit_attendance(id, email) {

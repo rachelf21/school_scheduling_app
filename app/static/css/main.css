@@ -137,6 +137,16 @@ a.article-title:hover {
   text-align: center;
 }
 
+.btn-circle.btn-xsm {
+  width: 14px;
+  height: 14px;
+  padding: 0px 0px;
+  border-radius: 15px;
+  font-size: 9px;
+  text-align: center;
+  background-size: auto;
+  text-align: center;
+}
 /*
 body {
   font-family: "Titillium Web", sans-serif;

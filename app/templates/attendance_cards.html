@@ -131,12 +131,12 @@
     {% for student in att_form.students %}
 <div id="cards_container" class="mt-2 mr-2 ml-2" style="display:flex; justify-content:center">
 
-      <div class="card pt-0 pb-0" style="width:20em; background: whitesmoke" id="card{{loop.index-1}}">
+      <div class="card pt-0 pb-0 no-gutters" style="width:24em; background: whitesmoke" id="card{{loop.index-1}}">
           <span style="display: none">{{ student.email}}</span>
           
 
 
-        <div class="card-body" > 
+        <div class="card-body pt-2 pb-2 mt-0" > 
 
             <div class="row" style="display:flex; justify-content:space-between">
                 
@@ -159,10 +159,11 @@
 
 
 
-                <div id="buttons">
+                <div id="buttons" class="ml-2">
                     <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_present("{{loop.index}}")'>P</button> 
                     <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_absent("{{loop.index}}")'>A</button> 
                     <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_late("{{loop.index}}")'>L</button> 
+                    <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='add_comment("{{loop.index}}")'>+</button> 
 
                 </div>
 
@@ -170,6 +171,11 @@
           
         </div>
         
+        <div style="display:none;  " class = "card-footer pt-1 pb-1 text-muted" id = "card_comment_{{loop.index}}"><span style="font-size: 1em; font-family: 'Lora', serif;">comment</span>
+            
+       <span style="float:right" class="mr-0">                    
+           <button id="delete_comment{{loop.index}}" title="Delete comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-xsm"  onclick='delete_comment("{{loop.index}}")'>X</button> 
+       </span> </div>
     </div>
         
 </div>
