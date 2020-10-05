@@ -187,6 +187,9 @@ class Attendance(db.Model):
     def __repr__(self):
         return f"Attendance('{self.att_date}', '{self.teacher}','{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
     
+    def as_dict(self):
+        return {'date': self.att_date ,'teacher': self.teacher, 'scheduleid': self.scheduleid, 'courseid':self.courseid, 'email':self.email, 'status':self.status, 'comment':self.comment}
+    
 
 #%% started this table for other teachers, but then decided this wasn't a good approach
 # class Attendance2(db.Model):

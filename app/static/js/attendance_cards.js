@@ -125,6 +125,7 @@ function mark_clear(id) {
 
 var toggle = 1;
 var comment_on = 0;
+
 function present(count) {
   toggle = -toggle;
 
@@ -132,6 +133,7 @@ function present(count) {
   var exes = document.getElementsByName("ex");
   var lates = document.getElementsByName("late");
   var empties = document.getElementsByName("empty");
+  $("#all").css("background", "whitesmoke");
 
   for (i = 0; i < count; i++) {
     var s = document.getElementById("students-" + i + "-status");
@@ -151,6 +153,8 @@ function present(count) {
       present_icon.style.background = "rgb(92, 184, 92)";
       absent_icon.style.background = "rgba(200, 200, 200,.5)";
       late_icon.style.background = "rgba(200, 200, 200,.5)";
+      $("#all").css("background", "rgba(200, 200, 200,.5)");
+
       //student_td.setAttribute("style", "color: black; font-weight: normal; ");
       //student_td.classList.remove("mark");
     } else {
@@ -159,6 +163,7 @@ function present(count) {
       present_icon.style.background = "rgba(200, 200, 200,.5)";
       absent_icon.style.background = "rgba(200, 200, 200,.5)";
       late_icon.style.background = "rgba(200, 200, 200,.5)";
+      $("#all").css("background", "rgb(92, 184, 92)");
 
       //student_td.setAttribute("style", "color: black; font-weight: medium; ");
       //student_td.classList.remove("mark");

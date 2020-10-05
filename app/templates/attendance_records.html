@@ -35,6 +35,8 @@
   }
   console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;
+  var endtable = 1;
+
   // hideCover();
 </script>
 
@@ -42,7 +44,7 @@
   <table
     id="myTable"
     class="table mx-auto w-auto table-striped table-hover table-fixed mb-4"
-    style="width: auto; margin: 0px auto; border-collapse: collapse"
+    style="background: whitesmoke; width: auto; margin: 0px auto; border-collapse: collapse"
   >
     <thead class="small">
       <th>Date</th>
@@ -63,18 +65,19 @@
 
             var class_ = "{{ att.courseid}}".substring(0, 5);
             {% if loop.nextitem is defined  %}
-              var next_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
+              var prev_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
               //console.log("current class = " + class_ + " and next class =" + next_class);
-              if (class_!=next_class){
-                //console.log("new class below");
+              if (class_!=prev_class){
+                console.log("new table");
+                endtable = 1;
                 var element = document.currentScript.parentElement.parentElement;
-                element.id = "td"+{{loop.index}}+'n';
+                element.id = "tr{{loop.index}}";
                 console.log(element.id);
-                element.style.borderBottomColor = "red !important";
-                element.style.borderBottomStyle = "solid !important"
-                element.style.borderBottomWidth="thick !important";
-                //element.setAttribute('class', 'mb-4 !important');
               }
+             {% else %}
+                endtable = 0;
+
+
             {% endif %}
             if (date.substring(0, 1) == 0) date = date.substring(1, 5);
             document.write(date);
@@ -141,8 +144,8 @@
     <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
   </div>
   <script>
-    console.log("{{current_user}}");
-    if ("{{current_user}}" == "rfriedman") {
+    console.log("{{teacher}}");
+    if ("{{teacher}}" == "rfriedman") {
       element = document.getElementById("my_classes2");
       element.href = "/today";
       element = document.getElementById("my_classes");
@@ -156,7 +159,7 @@
 <script>
   $("#myTable").DataTable({
     //ordering: true,
-    //order: [[1, "asc"]],
+    order: [[4, "asc"]],
     pageLength: 20,
     paging: true,
     filter: true,
@@ -165,7 +168,7 @@
     scrollCollapse: true,
     scroller: true,
     select: true,
-    bSort: false,
+    bSort: true,
   });
 
   document.getElementById("show-button").onclick = function () {
@@ -173,20 +176,5 @@
       alert("You entered: " + value);
     });
   };
-
-  for(i =1; i< {{attendance | length}}; i++){
-    console.log(i);
-    var element = document.getElementById("td"+i+"n");
-    if (element){
-      console.log(element);
-      //element.style.borderColor = "red";
-      element.setAttribute("style", "border: 1px solid red !important");
-      element.setAttribute("style", "color:blue");
-      element.setAttribute("class", "pb-4");
-      //element.setAttribute("style", "background-color:yellow")
-      //element.style.borderStyle = "solid !important"
-      //element.style.borderWidth="thick !important";
-    }
-  }
 </script>
 {% endblock content %}

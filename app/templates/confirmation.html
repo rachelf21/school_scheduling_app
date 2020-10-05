@@ -18,7 +18,7 @@
 </div>
 <script>
   var value = "{{value}}";
-  var current_user = "{{current_user}}";
+  var current_user = "{{current_user.username}}";
   console.log("value=" + value);
   if (value != "add_attendance" && value != "edit_attendance") {
     element = document.getElementById("view_att");

@@ -55,6 +55,8 @@
 - [x] separate abs and late titles, change colors, mute titles
 - [x] hide input field from student names, show names only, adjust styling
 - [x] display names in card format
+- [x] ajax to retrieve classes for specified date only
+- [x] add backgrounds
 
 ### HTML PAGES
 

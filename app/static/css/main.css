@@ -126,6 +126,17 @@ a.article-title:hover {
   min-height: 100%;
 }
 
+.btn-circle.btn-md {
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  border-radius: 20px;
+  font-size: 16px;
+  text-align: center;
+  background-size: auto;
+  text-align: center;
+}
+
 .btn-circle.btn-sm {
   width: 30px;
   height: 30px;
@@ -147,6 +158,36 @@ a.article-title:hover {
   background-size: auto;
   text-align: center;
 }
+
+/* sm */
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 1.9em;
+  }
+  h2 {
+    font-size: 1.6em;
+  }
+  .nav-item {
+    font-size: 1.1em !important;
+  }
+}
+
+.bg {
+  background: url("/static/img/bg2.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+html {
+  background: url("/static/img/bg2.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 /*
 body {
   font-family: "Titillium Web", sans-serif;

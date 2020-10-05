@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, DateField, TimeField, IntegerField, FieldList, FormField, HiddenField, SelectField, PasswordField, SubmitField, BooleanField, TextAreaField, RadioField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from app.models import Course, Student, Group, Users
 from wtforms.fields.html5 import DateField
 from flask_login import current_user
@@ -17,7 +17,7 @@ class StudentAttendanceForm(FlaskForm):
     status = SelectField('Status', 
                       choices=[("",""),("P","P"),("A","A"),("L","L"),("O","O")],
                       coerce=str)
-    comment = StringField(u"Comment", render_kw={'class': 'form-control', 'cols': 100})
+    comment = StringField(u"Comment", render_kw={'class': 'form-control', 'cols': 200})
     edit = SubmitField('Edit')
     save = SubmitField('Save')
 
@@ -76,7 +76,20 @@ class AttendanceRecordForm(FlaskForm):
     courseid = SelectField('Select', 
                       choices=options)
     options=[]
-    students = Student.query.order_by(Student.name).all()
+   
+    try:
+        teacher = current_user.username
+    except:
+        teacher = 'jsmith2'
+        
+    results = Course.query.distinct(Course.classid).filter_by(teacher=teacher).all()
+    print(results)
+    classes=[]
+    for classs in results:
+        classes.append(classs.classid)
+        
+    students = Student.query.filter(Student.classid.in_(classes)).order_by(Student.name).all()
+    
     for s in students:
         options.append([s.email, s.name])
         student_list = SelectField('Select', 
@@ -84,7 +97,7 @@ class AttendanceRecordForm(FlaskForm):
     date = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
     view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only'),('lates', "Absence and Late")],default='lates')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    btnSubmit = SubmitField('Submit')
 
     
 class DismissalSelectForm(FlaskForm):
@@ -169,3 +182,12 @@ class UpdateAccountForm(FlaskForm):
             user = Users.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
+                
+class CovidTrackingForm(FlaskForm):
+       zipcode = IntegerField("Zip Code", validators=[NumberRange(min=10000, max=19999, message='Invalid zip code for this neighborhood')])
+       boro = SelectField('Borough', 
+                      choices=[("","--Select--"),("Bronx","Bronx"),("Brooklyn","Brooklyn"),("Manhattan","Manhattan"),("Queens","Queens"),("Staten Island","Staten Island")],
+                      coerce=str)
+       submit = SubmitField('Submit')
+
+                

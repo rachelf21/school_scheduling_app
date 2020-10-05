@@ -1,0 +1,22 @@
+{% extends "base-denied.html" %} {% block title %} MDY Attendance Records {% endblock %} {% block content %}
+
+<script src="/static/js/records.js"></script>
+
+<!-- <div id="outerdiv" style="display: flex; text-align: center">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
+<div style="text-align: center">
+  <h1 id="h1" class="mb-0 font-weight-normal">Attendance Records</h1>
+  <hr />
+  <p></p>
+  <h2 id="page_title" class="font-weight-normal mt-0 text-center"></h2>
+  <h2 class="font-weight-normal mb-2">
+    <div style="display: flex; justify-content: center">
+      <div><span class="text-muted small"> ABSENCES </span> <span style="color: red" class="mr-4">{{absences}}</span></div>
+      <div><span class="text-muted small ml-4"> LATE </span> <span style="color: blue">{{lates}}</span></div>
+    </div>
+  </h2>
+</div>
+<script>
+  var tables = {{tables | safe}};
+</script>
+" {% endblock content %}
