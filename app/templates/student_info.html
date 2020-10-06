@@ -1,7 +1,7 @@
 {% extends "base-denied.html" %} {% block title %}MDY Student Info{% endblock %} {% block content %}
 
 <div style="text-align: center">
-  <h2 class="pt-2 font-weight-normal">Student Dismissal Info</h2>
+  <h2 class="pt-2 font-weight-normal">Student Info</h2>
 </div>
 
 <style>
@@ -24,16 +24,20 @@
     style="border: 0px red solid; margin: 0 auto; width: 75% !important"
   > -->
 <div id="student" class="table-responsive pt-3">
-  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+  <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-bordered table-fixed"
+    style="background: white; border: 0px red solid; width: auto"
+  >
     <th><h4>STUDENT</h4></th>
     <th>Email</th>
     <th>Class</th>
-    <th>Mode</th>
-    <th>Number</th>
+    <th>Dismissal Mode</th>
+    <th>Dismissal Number</th>
     <th>Siblings</th>
 
     <tr>
-      <td class="font-weight-bold mark"><h4>{{ student_info.name}}</h4></td>
+      <td class="font-weight-bold"><h4>{{ student_info.name}}</h4></td>
       <td>{{ student_info.email}}</td>
       <td>{{student_info.section}}</td>
       <td>{{ student_info.mode}}</td>
@@ -44,7 +48,11 @@
 </div>
 
 <div id="mom" class="table-responsive pt-3">
-  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+  <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-bordered table-fixed"
+    style="background: white; border: 0px red solid; width: auto"
+  >
     <th>MOM</th>
     <th>Mom Cell</th>
     <th>Mom Email</th>
@@ -58,7 +66,11 @@
 </div>
 
 <div id="dad" class="table-responsive pt-3">
-  <table id="myTable" class="table mx-auto w-auto table-striped table-bordered table-fixed" style="border: 0px red solid; width: auto">
+  <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-bordered table-fixed"
+    style="background: white; border: 0px red solid; width: auto"
+  >
     <th>DAD</th>
     <th>Dad Cell</th>
     <th>Dad Email</th>
@@ -69,6 +81,9 @@
       <td>{{ student_info.dad_email}}</td>
     </tr>
   </table>
+  <div style="text-align: center; margin: auto; max-width: 800px; border: 0px solid red">
+    <a href="/track_attendance/{{ student_info.email}}">View Attendance</a>
+  </div>
 </div>
 <hr class="mb-4" />
 {% endblock content %}

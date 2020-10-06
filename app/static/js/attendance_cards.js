@@ -32,9 +32,11 @@ function mark_present(id) {
   if (present_icon.style.background == "rgb(92, 184, 92)") {
     present_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
+    card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
     present_icon.style.background = "rgb(92, 184, 92)";
     card.style.background = "HoneyDew";
+    card.style.borderColor = "rgba(0, 255, 0, 0.5)";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
   }
@@ -62,9 +64,11 @@ function mark_absent(id) {
     //217, 83, 79
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
+    card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
     absent_icon.style.background = "rgb(220, 20, 60)";
     card.style.background = "MistyRose";
+    card.style.borderColor = "rgba(255, 0, 0, 0.2)";
     present_icon.style.background = "rgba(200, 200, 200,.5)";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
   }
@@ -91,9 +95,11 @@ function mark_late(id) {
   if (late_icon.style.background == "rgb(2, 117, 216)") {
     late_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
+    card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
     late_icon.style.background = "rgb(2, 117, 216)";
-    card.style.background = "AliceBlue";
+    card.style.background = "Lightcyan";
+    card.style.borderColor = "rgba(0, 0, 255, 0.2)";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     present_icon.style.background = "rgba(200, 200, 200,.5)";
   }
@@ -145,11 +151,14 @@ function present(count) {
 
     s.setAttribute("style", "background-color: none");
     n.setAttribute("style", "background-color: none");
+    n.setAttribute("style", "border-color: rgba(0, 0, 0, 0.125)");
+
     //var student_td = n.parentElement.parentElement;
 
     if (toggle < 0) {
       s.value = "P";
       card.style.background = "HoneyDew";
+      card.style.borderColor = "rgba(100, 255, 0, .5)";
       present_icon.style.background = "rgb(92, 184, 92)";
       absent_icon.style.background = "rgba(200, 200, 200,.5)";
       late_icon.style.background = "rgba(200, 200, 200,.5)";
@@ -160,6 +169,7 @@ function present(count) {
     } else {
       s.value = "";
       card.style.background = "whitesmoke";
+      card.style.borderColor = "rgba(0, 0, 0, 0.125)";
       present_icon.style.background = "rgba(200, 200, 200,.5)";
       absent_icon.style.background = "rgba(200, 200, 200,.5)";
       late_icon.style.background = "rgba(200, 200, 200,.5)";

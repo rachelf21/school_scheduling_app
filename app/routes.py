@@ -795,8 +795,9 @@ def track_attendance(category):
             attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()
     
     
+        teacher=current_user.username
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher)
 #%%
 @app.route('/get_classes_today', methods = ['POST'])
 def get_classes_today():
@@ -1139,7 +1140,7 @@ def zoom_schedule():
                      
 #%%
 @app.route('/student_info/<student>')
-@requires_auth
+@login_required
 def student_info(student):
     print('student from within student function' , student)
     student_info = Dismissal.query.filter_by(email=student).first()

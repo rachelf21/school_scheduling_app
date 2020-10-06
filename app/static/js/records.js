@@ -2,6 +2,16 @@ function test() {
   console.log("working");
 }
 
+function convert_date(mydate) {
+  const d = new Date(mydate + "T00:00:00.000-05:00");
+  const ye = new Intl.DateTimeFormat("en-US", { year: "numeric" }).format(d);
+  const mo = new Intl.DateTimeFormat("en-US", { month: "long" }).format(d);
+  const da = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(d);
+
+  formatted_date = `${mo} ${da}, ${ye}`;
+  return formatted_date;
+}
+
 function populate_classes(e) {
   console.log("populating classes");
   var all_classes = [];
@@ -46,7 +56,7 @@ function populate_classes(e) {
 }
 
 $("document").ready(function () {
-  console.log($("#date").value);
+  console.log("date " + $("#date").value);
 });
 
 var Attendance = {};

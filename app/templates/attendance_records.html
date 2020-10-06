@@ -26,10 +26,14 @@
     title = "{{student_name}}<br> {{student_class}}";
   } else if (category == "date") {
     title = "{{date}}";
+    title = convert_date(title) + "<br>All Classes";
+    console.log("converted date " + title);
   } else if (category == "classdate") {
-    title = "{{courseid}}" + "<br>{{date}}";
+    var formatted_date = convert_date("{{date}}");
+    title = formatted_date + "<br>{{courseid}}";
   } else if (category.substring(0, 2) == "_x") {
-    title = "{{courseid}}" + "<br>{{date}}";
+    var formatted_date = convert_date("{{date}}");
+    title = formatted_date + "<br>{{courseid}}";
   } else {
     title = "{{student_name}} <br> {{student_class}}";
   }
@@ -40,7 +44,7 @@
   // hideCover();
 </script>
 
-<div class="table-responsive">
+<div class="table-responsive" style="max-width: 900px; margin: auto">
   <table
     id="myTable"
     class="table mx-auto w-auto table-striped table-hover table-fixed mb-4"
@@ -101,7 +105,12 @@
             document.write("{{ att.courseid}}".substring(6));
           </script>
         </td>
-        <td class="text-nowrap"><a style="color: black" href="/track_attendance/{{ att.email}}" target="_blank">{{ att.name}}</a></td>
+
+        <td class="text-nowrap">
+          <a id="active_student{{loop.index}}" style="color: black" href="/track_attendance/{{ att.email}}" target="_blank"
+            >{{ att.name}}</a
+          >
+        </td>
         <td class="text-center">
           <script>
             current_student_status = "{{att.status}}";
@@ -119,6 +128,8 @@
         <td>{{ att.comment}}</td>
         <td>
           <a
+            id="edit"
+            style="display: inlne"
             class="a btn-sm mt-2 mb-1 form-control-sm"
             onclick='edit_attendance("{{loop.index}}", "{{ att.att_date}}","{{ att.courseid}}", "{{ att.email}}","{{att.name}}", "{{ att.status}}", "{{ att.comment}}"  )'
             ><i class="fa fa-pencil" aria-hidden="true"></i
@@ -144,7 +155,7 @@
     <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
   </div>
   <script>
-    console.log("{{teacher}}");
+    console.log("teacher: {{teacher}}");
     if ("{{teacher}}" == "rfriedman") {
       element = document.getElementById("my_classes2");
       element.href = "/today";
@@ -177,4 +188,5 @@
     });
   };
 </script>
+
 {% endblock content %}

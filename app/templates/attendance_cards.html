@@ -145,7 +145,7 @@
                     <div style="display:none"> {{ student.status}} </div>
                     <div style="width:200px; display:none">{{ student.comment(length=300)|safe}}</div>
 
-                    <div class="ml-2 h6" style="font-size:1.1em">{{ student.student_name.data}}
+                    <div class="ml-2 h6" style="font-size:1.1em"><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name.data}}</a>
                         <a class="ml-2 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive; color:blue " title="total late" target="_blank" href="/track_attendance/{{ student.email.data}}">
                           {% if student.count_late.data !=0 %}
                               L {{student.count_late.data }}

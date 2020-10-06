@@ -106,8 +106,6 @@
 
               <a class="nav-item nav-link mr-2 text-nowrap" href="/today">Today</a>
               <a class="nav-item nav-link mr-2 text-nowrap" href="/full_schedule">Schedule</a>
-
-              <a class="nav-item nav-link mr-2 text-nowrap" href="{{ url_for('classes_anon') }}">My Classes</a>
               <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">ClassInfo</a>
 
               <!-- <li class="nav-link nav-item dropdown mr-2">
@@ -130,12 +128,30 @@
 
               <a class="nav-item nav-link mr-2" a href="/lessons/all">Lessons</a>
               <a class="nav-item nav-link mr-2" href="/records"> Attendance Records</a>
+              <a class="nav-item nav-link mr-2" href="/covid">Covid</a>
+
+              <a id="weekA" class="nav-item nav-link" href="/set_week/A">Wk A</a>
+              <a id="weekB" class="nav-item nav-link" href="/set_week/B">Wk B</a>
             </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              <a id="weekA" class="nav-item nav-link" href="/set_week/A">Week A</a>
-              <a id="weekB" class="nav-item nav-link" href="/set_week/B">Week B</a>
-            </div>
+          </div>
+
+          <!-- Navbar Right Side -->
+
+          <div class="navbar-nav">
+            {% if current_user.is_authenticated %}
+            <script>
+              console.log("is authenticated");
+              get_user("{{teacher}}");
+            </script>
+            <a class="nav-item nav-link" href="{{ url_for('account') }}"> {{ current_user.username }}</a>
+            <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <script>
+              console.log("is not authenticated");
+            </script>
+            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+            <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
           </div>
         </div>
       </nav>
