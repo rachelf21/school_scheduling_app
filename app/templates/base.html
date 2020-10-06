@@ -145,12 +145,11 @@
       <!--style="margin: 0 auto; width: 75% !important"-->
 
       <div class="row" style="border: 0px solid blue">
-        <div class="col-md-9 mt-2" style="border: 0px red solid">
+        <div class="col-md-12 mt-2" style="border: 0px red solid">
           {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
           <div class="alert alert-{{ category }}">{{ message }}</div>
           {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
         </div>
-        {% extends "sidebar_schedule.html"%}
       </div>
     </main>
   </body>

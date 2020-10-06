@@ -51,95 +51,97 @@
 </div>
 <!--close test div-->
 
-<div id="results_div" class="mt-4" style="border: 0px solid red; display: block; text-align: center">
-  <div class="row">
-    <h2 class="col">{{title}}</h2>
-  </div>
-  <!--end heading Results-->
-  <div class="row" style="border: 0px solid blue">
-    <h4 class="col">{{pos}}</h4>
-    {{all_boro |safe}}
-  </div>
-  <!--close boro table-->
-
-  <div id="table_wrapper" class="row justify-content-center">
-    <div id="div_table" class="col-md-8" style="border: 0px red solid">
-      <table
-        id="myTable"
-        class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive text-center"
-        style="border: 0px yellow solid"
-      >
-        <thead>
-          <th>Zip</th>
-          <th>Neighborhood</th>
-          <th>Boro</th>
-          <th>Percent Positive</th>
-          <th>Total Covid Tests</th>
-        </thead>
-        <tbody>
-          {% for row in all_zip %}
-          <tr>
-            <script>
-              var x = {{loop.index}}-1;
-            </script>
-            <td>
-              <script>
-                document.write(all_zip[x][0]);
-              </script>
-            </td>
-            <td class="text-left">
-              <script>
-                document.write(all_zip[x][1]);
-              </script>
-            </td>
-            <td>
-              <script>
-                document.write(all_zip[x][2]);
-              </script>
-            </td>
-            <td>
-              <script>
-                var pos = parseFloat(all_zip[x][3]);
-                console.log(pos);
-                var s = document.createElement("span");
-                s.innerHTML = pos;
-                document.currentScript.parentElement.appendChild(s);
-                //document.write("<span type='num'> " + pos + "</span>");
-              </script>
-            </td>
-            <td>
-              <script>
-                document.write(all_zip[x][4]);
-              </script>
-            </td>
-          </tr>
-          {%endfor%}
-        </tbody>
-      </table>
+<div class="container" style="border:0px solid blue">
+  <div id="results_div" class="mt-4" style="display: block; border: 0px solid red; text-align: center">
+    <div class="row">
+      <h2 class="col">{{title}}</h2>
     </div>
-    <!--end table div-->
+    <!--end heading Results-->
+    <div class="row" style="border: 0px solid blue">
+      <h4 class="col display-4">{{pos}}</h4>
+      {{all_boro |safe}}
+    </div>
+    <!--close boro table-->
+
+    <div id="table_wrapper" class="row justify-content-center">
+      <div id="div_table" class="col-md-8" style="border: 0px red solid">
+        <table
+          id="myTable"
+          class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive text-center"
+          style="border: 0px yellow solid; background:whitesmoke"
+        >
+          <thead>
+            <th>Zip</th>
+            <th>Neighborhood</th>
+            <th>Boro</th>
+            <th>Percent Positive</th>
+            <th>Total Covid Tests</th>
+          </thead>
+          <tbody>
+            {% for row in all_zip %}
+            <tr>
+              <script>
+                var x = {{loop.index}}-1;
+              </script>
+              <td>
+                <script>
+                  document.write(all_zip[x][0]);
+                </script>
+              </td>
+              <td class="text-left">
+                <script>
+                  document.write(all_zip[x][1]);
+                </script>
+              </td>
+              <td>
+                <script>
+                  document.write(all_zip[x][2]);
+                </script>
+              </td>
+              <td>
+                <script>
+                  var pos = parseFloat(all_zip[x][3]);
+                  console.log(pos);
+                  var s = document.createElement("span");
+                  s.innerHTML = pos;
+                  document.currentScript.parentElement.appendChild(s);
+                  //document.write("<span type='num'> " + pos + "</span>");
+                </script>
+              </td>
+              <td>
+                <script>
+                  document.write(all_zip[x][4]);
+                </script>
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
+      <!--end table div-->
+    </div>
+    <!--end table wrapper div-->
   </div>
-  <!--end table wrapper div-->
+  <!--close results div-->
 </div>
-<!--close results div-->
+  <script>
+    $("#myTable").DataTable({
+      pageLength: 50,
+      paging: true,
+      filter: true,
+      deferRender: true,
+      //scrollY: 1200,
+      scrollCollapse: true,
+      scroller: true,
+      ordering: true,
+      select: true,
+      bSort: false,
+      ordering: true,
+      aoColumns: [{ sType: "numeric" }, null, null, { sType: "numeric" }, { sType: "numeric" }],
+      order: [[3, "desc"]],
+    });
+  </script>
 
-<script>
-  $("#myTable").DataTable({
-    pageLength: 50,
-    paging: true,
-    filter: true,
-    deferRender: true,
-    //scrollY: 1200,
-    scrollCollapse: true,
-    scroller: true,
-    ordering: true,
-    select: true,
-    bSort: false,
-    ordering: true,
-    aoColumns: [{ sType: "numeric" }, null, null, { sType: "numeric" }, { sType: "numeric" }],
-    order: [[3, "desc"]],
-  });
-</script>
-
-<!--close outer container-->
-{%endblock content %}
+  <!--close outer container-->
+  {%endblock content %}
+</div>

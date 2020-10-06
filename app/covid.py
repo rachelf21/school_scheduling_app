@@ -83,7 +83,7 @@ class CovidTracker:
     
     def get_latest_pos_rate_tests(self, count=0):
         if count == 0:
-            result = self.pos_tests_data['PERCENT_POSITIVE'].iloc[-1]*100
+            result = round(self.pos_tests_data['PERCENT_POSITIVE'].iloc[-1]*100,2)
         else:
             result = self.pos_tests_data[['DATE','PERCENT_POSITIVE']].tail(count)
             result = result.reset_index(drop=True)

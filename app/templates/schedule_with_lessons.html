@@ -6,10 +6,10 @@
     var dow = "{{dow}}";
   </script>
 
-<div class="d-flex justify-content-around" style="border:0px solid red;"> 
-<button id="next" class='btn btn-sm' onclick="get_prev()" style="display:block"> <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </button>
+<div class="container d-flex justify-content-around" style="border:0px solid red;"> 
+<a id="next" class='btn btn-sm pt-4' onclick="get_prev()" style="display:block"> <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </a>
 <h1 class="mt-1 text-center  display-4" >{{title}}</h1>
-<button id="prev" class='btn btn-sm' onclick="get_next()" style="display:block"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></button>
+<a id="prev" class='btn btn-sm pt-4' onclick="get_next()" style="display:block"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></a>
 </div>
 <h5 class="mt-1 text-center font-weight-normal" ><a id="get_condensed">View condensed</a></h5>
 
@@ -17,7 +17,7 @@
 <table
   id="myTable"
   class="table mx-auto  table-striped table-hover table-bordered text-center mt-4 pt-4  w-auto table-fixed " 
-  style="border:0px solid green; width:auto; margin: 0px auto; table-layout:fixed;"
+  style="background: whitesmoke; border:0px solid green; width:auto; margin: 0px auto; table-layout:fixed;"
 >
   <thead>
     <th>Per</th>
