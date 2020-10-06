@@ -126,25 +126,16 @@
           </script>
         </td>
         <td>{{ att.comment}}</td>
-        <td>
-          <a
-            id="edit"
-            style="display: inlne"
-            class="a btn-sm mt-2 mb-1 form-control-sm"
-            onclick='edit_attendance("{{loop.index}}", "{{ att.att_date}}","{{ att.courseid}}", "{{ att.email}}","{{att.name}}", "{{ att.status}}", "{{ att.comment}}"  )'
-            ><i class="fa fa-pencil" aria-hidden="true"></i
-          ></a>
-
-          <button id="show-button" style="display: none" /><i class="fa fa-pencil" aria-hidden="true"></i>
-          <div id="prompt-form-container" style="display: none">
-            <form id="prompt-form">
-              <div id="prompt-message"></div>
-              <input name="status" type="text" />
-              <input name="comment" type="text" />
-              <input type="submit" value="Ok" />
-              <input type="button" name="cancel" value="Cancel" />
-            </form>
-          </div>
+        <td style="text-align:center">
+            <a
+            id="edit{{loop.index}}"
+            title="edit"
+            class="a btn-sm"
+            onclick='set_values("{{loop.index}}", "{{ att.att_date}}","{{ att.courseid}}", "{{ att.email}}","{{att.name}}", "{{ att.status}}", "{{ att.comment}}" )'
+            data-toggle="modal"
+            data-target="#editModal"
+            ><i name="edit" style="color:black" class="fa fa-pencil"></i>
+          </a>
         </td>
       </tr>
 
@@ -182,11 +173,63 @@
     bSort: true,
   });
 
-  document.getElementById("show-button").onclick = function () {
-    showPrompt("Enter updated Status<br> A, L, P", function (value) {
-      alert("You entered: " + value);
-    });
-  };
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit Attendance Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times; </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="md-form mb-1">
+          <div class="form-group form-row">
+          <label for="current_name" class="col-3" /> Student </label>
+          <input id="current_name" style="max-width: 300px" class="col form-control validate" disabled />
+          </div>
+
+
+          <div class="form-group form-row">
+            <div class="col-3"><label for="new_status">Status</label></div>
+            <div class="col"><select style="width: 60px" type="text" id="new_status" class="form-control validate"  autofocus />
+              <option>P</option>
+              <option>A</option>
+              <option>L</option>
+            </select></div>
+          </div>
+          <div class="form-group form-row">
+            <div class="col-3"><label for="new_comment">Comment</label></div>
+            <div class="col"><input style="width: 300px" type="text" id="new_comment" class="form-control validate"  /></div>
+          </div>
+
+
+          <div style="display: none">
+            <input id="current_id" class="form-control validate" />
+            <input id="current_date" class="form-control validate" />
+            <input id="current_courseid" class="form-control validate" />
+            <input id="current_email" class="form-control validate" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance2()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#editModal").on("shown.bs.modal", function () {
+    $("#new_status").focus();
+    setTimeout(function () {
+      $("#new_status").focus();
+    }, 1000);
+  });
 </script>
 
 {% endblock content %}

@@ -100,7 +100,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = Users(username=form.username.data, email=form.email.data, password=hashed_pwd)
+        user = Users(username=form.username.data, email=form.email.data, password=hashed_pwd, last=form.last.data, first=form.last.data, title=form.title.data)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -220,6 +220,7 @@ def udpate_lessons(lessonid):
 def attendance(classname, courseid, dow, per): 
     teacher=current_user.username
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
+    User = Users.query.filter_by(username=teacher).first()
     period = dow[2:]+per
     att_form = ClassAttendanceForm(request.form)
     att_form.title.data = "Attendance " + classname
@@ -261,7 +262,7 @@ def attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance_cards.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher)
+        return render_template('attendance_cards.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User)
 
 #started this for other teachers, but then decided this wasn't a good approach
 # @app.route('/attendance/<teacher>/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])

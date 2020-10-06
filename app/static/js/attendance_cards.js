@@ -181,18 +181,31 @@ function present(count) {
   }
 }
 
-function add_comment(id) {
-  console.log("comment");
+function set_value_comment(id) {
   var element = document.getElementById("card_comment_" + id);
+  document.getElementById("current_id").value = id;
+  console.log("comment " + id);
   var student = document.getElementById("students-" + parseInt(id - 1) + "-student_name");
-  var comment = prompt("Enter commment for " + student.value);
-  if (comment === null) {
+  var comment_element = document.getElementById("students-" + parseInt(id - 1) + "-comment");
+  var n = document.getElementById("current_name");
+  n.value = student.value;
+  console.log(n.value);
+}
+
+function add_comment() {
+  var comment = document.getElementById("new_comment").value;
+  if (comment === null || comment == "") {
+    console.log("null commment");
     return;
   } else {
+    var id = document.getElementById("current_id").value;
+    var element = document.getElementById("card_comment_" + id);
+    console.log("element " + element);
     element.childNodes[0].innerHTML = comment;
+    console.log("comment = " + comment);
     element.style.display = "block";
-    var c = document.getElementById("students-" + parseInt(id - 1) + "-comment");
-    c.value = comment;
+    var comment_element = document.getElementById("students-" + parseInt(id - 1) + "-comment");
+    comment_element.value = comment;
   }
 }
 

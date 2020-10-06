@@ -5,6 +5,41 @@
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Create an Account</legend>
+
+        <div class="form-group form-row">
+          <div class="col-3">
+            {{ form.title.label(class="form-control-label") }} {% if form.title.errors %} {{ form.title(class="form-control form-control-lg
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.title.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.title(class="form-control form-control-lg") }} {% endif %}
+          </div>
+
+          <div class="col">
+            {{ form.first.label(class="form-control-label") }} {% if form.first.errors %} {{ form.first(class="form-control form-control-lg
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.first.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.first(class="form-control form-control-lg") }} {% endif %}
+          </div>
+          <div class="col">
+            {{ form.last.label(class="form-control-label") }} {% if form.last.errors %} {{ form.last(class="form-control form-control-lg
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.last.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.last(class="form-control form-control-lg") }} {% endif %}
+          </div>
+        </div>
+
         <div class="form-group">
           {{ form.username.label(class="form-control-label") }} {% if form.username.errors %} {{ form.username(class="form-control
           form-control-lg is-invalid") }}
@@ -15,6 +50,7 @@
           </div>
           {% else %} {{ form.username(class="form-control form-control-lg") }} {% endif %}
         </div>
+
         <div class="form-group">
           {{ form.email.label(class="form-control-label") }} {% if form.email.errors %} {{ form.email(class="form-control form-control-lg
           is-invalid") }}
@@ -25,6 +61,7 @@
           </div>
           {% else %} {{ form.email(class="form-control form-control-lg") }} {% endif %}
         </div>
+
         <div class="form-group">
           {{ form.password.label(class="form-control-label") }} {% if form.password.errors %} {{ form.password(class="form-control
           form-control-lg is-invalid") }}

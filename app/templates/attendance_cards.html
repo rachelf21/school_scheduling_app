@@ -116,7 +116,7 @@
 
     <div id="teacher_buttons" class = "container" style="display:flex; align-items:baseline; justify-content: space-between;">
 
-    <div class='text-left text-muted font-weight-normal pb-0' style="margin-top: auto;" ><script>document.write("Teacher: " + teacher)</script></div>
+    <div class='text-left text-muted font-weight-normal pb-0' style="margin-top: auto;" >{{User.title}} {{User.first}} {{User.last}}</script></div>
     
     <div style="border:0px solid red">
       <a id='all' class="btn mt-2 mb-1 mr-2 btn-circle btn-md" style="color:azure; background:rgb(92, 184, 92)" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg") }}</div>
@@ -167,7 +167,9 @@
                     <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_present("{{loop.index}}")'>P</button> 
                     <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_absent("{{loop.index}}")'>A</button> 
                     <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_late("{{loop.index}}")'>L</button> 
-                    <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='add_comment("{{loop.index}}")'>+</button> 
+                    <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='set_value_comment("{{loop.index}}")'             
+                    data-toggle="modal"
+                    data-target="#commentModal">+</button> 
 
                 </div>
 
@@ -204,5 +206,54 @@
 
 </div> <!--end div enclosing top of form and attendance cards-->
 <p class='mt-4 mb-4'>&nbsp;</p>
+
+
+<!-- Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalTitle">Add a comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times; </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="md-form mb-1">
+          <div class="form-group form-row">
+          <label for="current_name" class="col-3" /> Student </label>
+          <input id="current_name" style="max-width: 300px" class="col form-control validate" disabled />
+          </div>
+
+          <div class="form-group form-row">
+            <label class="col-3" for="new_comment">Comment</label>
+            <input style="max-width: 300px" type="text" id="new_comment" class="col form-control validate" value="" />
+          </div>
+
+
+          <div style="display: none">
+            <input id="current_id" class="form-control validate" />
+            <input id="current_date" class="form-control validate" />
+            <input id="current_courseid" class="form-control validate" />
+            <input id="current_email" class="form-control validate" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_comment()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#editModal").on("shown.bs.modal", function () {
+    $("#new_status").focus();
+    setTimeout(function () {
+      $("#new_status").focus();
+    }, 1000);
+  });
+</script>
 
 {%endblock%}

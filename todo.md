@@ -57,8 +57,7 @@
 - [x] display names in card format
 - [x] ajax to retrieve classes for specified date only
 - [x] add backgrounds
-- [x] change displayed heading dates to text format
-- [ ] replace javascript alerts for edit status, add comment to modal popup
+- [x] replace javascript alerts for edit status, add comment to modal popup
 
 ### HTML PAGES
 

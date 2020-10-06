@@ -14,6 +14,9 @@ class Users(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True} 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
+    last = db.Column(db.String(25))
+    first = db.Column(db.String(25))
+    title = db.Column(db.String(5))
     image_file = db.Column(db.String(120), nullable=False, default='default.jpg')
     email = db.Column(db.String(255), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
@@ -22,7 +25,7 @@ class Users(db.Model, UserMixin):
 
 
     def __repr__(self):
-        return f"User('{self.id}', '{self.username}', '{self.email}' )"
+        return f"User('{self.id}', '{self.username}', '{self.email}', '{self.first}', '{self.last}' )"
     
     
 #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
