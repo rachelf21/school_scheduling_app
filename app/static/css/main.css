@@ -1,7 +1,8 @@
 body {
   background: #fafafa;
-  color: #333333;
+  /*color: #333333;*/
   margin-top: 5rem;
+  color: #1e2a5d;
 }
 
 h1,
@@ -10,7 +11,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #444444;
+  color: #1e2a5d;
 }
 
 .bg-steel {
@@ -124,6 +125,12 @@ a.article-title:hover {
   flex-shrink: 0;
   min-width: 100%;
   min-height: 100%;
+}
+
+.mont {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
 }
 
 .btn-circle.btn-md {
