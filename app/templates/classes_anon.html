@@ -100,6 +100,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button
+          id="period_ok_button"
           type="button"
           class="btn btn-primary"
           data-dismiss="modal"
@@ -117,6 +118,14 @@
     setTimeout(function () {
       $("#current_period").focus();
     }, 1000);
+  });
+
+  $(document).on("keyup", function (event) {
+    //Check if modal is visible and key code
+    if ($("#exampleModalLong").is(":visible") && event.keyCode === 13) {
+      //Programatically click the button
+      $("#period_ok_button").click();
+    }
   });
 </script>
 {%endblock content%}

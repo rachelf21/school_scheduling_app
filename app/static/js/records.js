@@ -93,7 +93,9 @@ function set_values(id, date, courseid, email, name, status, comment) {
 function edit_attendance2() {
   console.log("edit_attendance2 ");
   var new_status = document.getElementById("new_status").value.toUpperCase();
-  var new_comment = document.getElementById("new_comment").value + " -edited";
+  var new_comment = document.getElementById("new_comment").value;
+  new_comment = new_comment.replace(/'/g, "");
+  console.log("new comment = " + new_comment);
   var date = document.getElementById("current_date").value;
   var courseid = document.getElementById("current_courseid").value;
   var email = document.getElementById("current_email").value;

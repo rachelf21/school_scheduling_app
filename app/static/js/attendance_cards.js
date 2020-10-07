@@ -194,6 +194,7 @@ function set_value_comment(id) {
 
 function add_comment() {
   var comment = document.getElementById("new_comment").value;
+  //comment = comment.replace(/'/g, "");
   if (comment === null || comment == "") {
     console.log("null commment");
     return;

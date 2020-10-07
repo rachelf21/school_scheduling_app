@@ -130,7 +130,7 @@ a.article-title:hover {
   width: 40px;
   height: 40px;
   padding: 6px 0px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 16px;
   text-align: center;
   background-size: auto;
@@ -138,10 +138,10 @@ a.article-title:hover {
 }
 
 .btn-circle.btn-sm {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   padding: 0px 0px;
-  border-radius: 15px;
+  border-radius: 8px;
   font-size: 16px;
   text-align: center;
   background-size: auto;
@@ -158,6 +158,41 @@ a.article-title:hover {
   background-size: auto;
   text-align: center;
 }
+
+.present:hover {
+  /*background: rgba(0, 255, 0, 0.1) !important;*/
+  border: 1px solid rgba(0, 200, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: inset 0 0 2px #000000;
+  -webkit-box-shadow: inset 0 0 2px #000000;
+  box-shadow: inset 0 0 2px #000000;
+}
+
+.absent:hover {
+  /*background: rgba(250, 199, 211, 0.75) !important;*/
+  border: 1px solid rgba(200, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: inset 0 0 2px #000000;
+  -webkit-box-shadow: inset 0 0 2px #000000;
+  box-shadow: inset 0 0 2px #000000;
+}
+
+.late:hover {
+ /*background: rgba(199, 215, 250, 0.75) !important;*/
+  border: 1px solid rgba(0, 0, 200, 0.5);
+  color: rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: inset 0 0 2px #000000;
+  -webkit-box-shadow: inset 0 0 2px #000000;
+  box-shadow: inset 0 0 2px #000000;
+}
+
+.add:hover {
+  /*background: rgba(243, 245, 212, 0.87) !important;*/
+  border: 1px solid rgba(255, 255, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: inset 0 0 2px #000000;
+  -webkit-box-shadow: inset 0 0 2px #000000;
+  box-shadow: inset 0 0 2px #000000;
 
 /* sm */
 @media screen and (max-width: 768px) {

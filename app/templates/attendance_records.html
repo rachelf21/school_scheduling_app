@@ -217,7 +217,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance2()">OK</button>
+        <button id = "edit_ok_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance2()">OK</button>
       </div>
     </div>
   </div>
@@ -225,11 +225,20 @@
 
 <script>
   $("#editModal").on("shown.bs.modal", function () {
-    $("#new_status").focus();
+    $("#new_comment").focus();
     setTimeout(function () {
-      $("#new_status").focus();
+      $("#new_comment").focus();
     }, 1000);
   });
+
+  $(document).on("keyup", function (event) {
+    //Check if modal is visible and key code
+    if ($("#editModal").is(":visible") && event.keyCode === 13) {
+      //Programatically click the button
+      $("#edit_ok_button").click();
+    }
+  })
+
 </script>
 
 {% endblock content %}

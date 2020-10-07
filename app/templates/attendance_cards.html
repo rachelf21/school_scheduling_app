@@ -128,9 +128,9 @@
   <div id="student_cards" class = "container" style="margin:auto; ">    
 
     {% for student in att_form.students %}
-<div id="cards_container" class="mt-2 mr-2 ml-2" style="display:flex; justify-content:center">
+<div id="cards_container" class="mt-3 mr-2 ml-2" style="display:flex; justify-content:center">
 
-      <div class="card pt-0 pb-0 no-gutters" style="width:30em; background: whitesmoke" id="card{{loop.index-1}}">
+      <div class="card pt-0 pb-0 no-gutters" style="width:32em; background: whitesmoke" id="card{{loop.index-1}}">
           <span style="display: none">{{ student.email}}</span>
           
 
@@ -145,8 +145,8 @@
                     <div style="display:none"> {{ student.status}} </div>
                     <div style="width:200px; display:none">{{ student.comment(length=300)|safe}}</div>
 
-                    <div class="ml-2 h6" style="font-size:1.1em"><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name.data}}</a>
-                        <a class="ml-2 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive; color:blue " title="total late" target="_blank" href="/track_attendance/{{ student.email.data}}">
+                    <div class="ml-1 h6" style="font-size:1.1em"><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name.data}}</a>
+                        <a class="ml-3 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive; color:blue " title="total late" target="_blank" href="/track_attendance/{{ student.email.data}}">
                           {% if student.count_late.data !=0 %}
                               L {{student.count_late.data }}
                         {% endif %}
@@ -164,12 +164,12 @@
 
 
                 <div id="buttons" class="ml-2">
-                    <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_present("{{loop.index}}")'>P</button> 
-                    <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_absent("{{loop.index}}")'>A</button> 
-                    <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='mark_late("{{loop.index}}")'>L</button> 
-                    <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="btn btn-circle btn-sm"  onclick='set_value_comment("{{loop.index}}")'             
+                    <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white; " type="button" class="present btn btn-circle btn-sm mr-2"  onclick='mark_present("{{loop.index}}")'>P</button> 
+                    <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="absent btn btn-circle btn-sm mr-2"  onclick='mark_absent("{{loop.index}}")'>A</button> 
+                    <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="late btn btn-circle btn-sm mr-2"  onclick='mark_late("{{loop.index}}")'>L</button> 
+                    <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="add btn btn-circle btn-sm mr-2"  onclick='set_value_comment("{{loop.index}}")'             
                     data-toggle="modal"
-                    data-target="#commentModal">+</button> 
+                    data-target="#commentModal">C</button> 
 
                 </div>
 
@@ -241,19 +241,27 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_comment()">OK</button>
+        <button id="comment_ok_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_comment()">OK</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  $("#editModal").on("shown.bs.modal", function () {
-    $("#new_status").focus();
+  $("#commentModal").on("shown.bs.modal", function () {
+    $("#new_comment").focus();
     setTimeout(function () {
-      $("#new_status").focus();
+      $("#new_comment").focus();
     }, 1000);
   });
+
+  $(document).on("keyup", function(event) {  
+    //Check if modal is visible and key code
+    if ($("#commentModal").is(':visible') && event.keyCode === 13) {
+      //Programatically click the button
+      $("#comment_ok_button").click();
+    }
+  })
 </script>
 
 {%endblock%}

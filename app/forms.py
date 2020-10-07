@@ -143,7 +143,7 @@ class RegistrationForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=25)])
     first = StringField('First Name',
                            validators=[DataRequired(), Length(min=2, max=25)]) 
-    options = [('',''), ('Mr.','Mr.' ), ('Mrs.','Mrs.'),( 'Ms.','Ms.'), ('Miss','Miss'), ('Dr.','Dr.')]
+    options = [('',''),('Miss','Miss'),( 'Ms.','Ms.'), ('Mrs.','Mrs.'), ('Mr.','Mr.' ), ('Rabbi', 'Rabbi'), ('Dr.','Dr.')]
     title = SelectField('Title', choices=options)
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
