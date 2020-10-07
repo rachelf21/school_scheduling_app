@@ -5,7 +5,7 @@
 <!-- <div id="outerdiv" style="display: flex; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
 <div style="text-align: center">
-  <h1 id="h1" class="mb-0 font-weight-normal mont" style="font-size:3.2em">Attendance Records</h1>
+  <h1 id="h1" class="mb-0 font-weight-normal mont">Attendance Records</h1>
   <hr />
   <p></p>
   <h2 id="page_title" class="font-weight-normal mt-0 text-center"></h2>
@@ -35,7 +35,7 @@
     var formatted_date = convert_date("{{date}}");
     title = formatted_date + "<br>{{courseid}}";
   } else {
-    title = "{{student_name}} <br> {{student_class}}";
+    title = "{{student_name}} <br> {{courseid}}";
   }
   console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;
@@ -48,7 +48,7 @@
   <table
     id="myTable"
     class="table mx-auto w-auto table-striped table-hover table-fixed mb-4"
-    style="background: whitesmoke; width: auto; margin: 0px auto; border-collapse: collapse"
+    style="background: whitesmoke; width: auto; margin: 0px auto; border-collapse: collapse; color:black"
   >
     <thead class="small">
       <th>Date</th>

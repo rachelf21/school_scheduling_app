@@ -1,17 +1,10 @@
 from flask import Flask
-import timeit
-import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
-import time
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
 import os
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -32,11 +25,40 @@ engine = create_engine(DB_URL)
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login' #value is function for login, same as url_for
+login_manager.login_view = 'users.login' #value is function for login, same as url_for
 login_manager.login_message_category = 'info'
 
 from app import routes
 
+from app.users.routes import users
+app.register_blueprint(users)
+
+from app.attendance.routes import attendance
+app.register_blueprint(attendance)
+
+from app.dismissal.routes import dismissal
+app.register_blueprint(dismissal)
+
+from app.records.routes import records
+app.register_blueprint(records)
+
+from app.lessons.routes import lessons
+app.register_blueprint(lessons)
+
+from app.my_schedule.routes import my_schedule
+app.register_blueprint(my_schedule)
+
+from app.classes.routes import classes
+app.register_blueprint(classes)
+
+from app.students.routes import students
+app.register_blueprint(students)
+
+from app.covid.routes import covid
+app.register_blueprint(covid)
+
+# from app.main.routes import main
+# app.register_blueprint(main)
 # try:
 #     connection = psycopg2.connect(user = "postgres",
 #                                   password = "postgres",

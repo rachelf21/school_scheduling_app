@@ -58,6 +58,7 @@
     ></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <title>{% block title %}MDY Attendance{% endblock %}</title>
+    <script src="/static/js/base.js"></script>
   </head>
   <body class="bg">
     <header class="site-header">
@@ -106,7 +107,7 @@
 
               <a class="nav-item nav-link mr-2 text-nowrap" href="/today">Today</a>
               <a class="nav-item nav-link mr-2 text-nowrap" href="/full_schedule">Schedule</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('classes') }}">ClassInfo</a>
+              <a class="nav-item nav-link mr-2" href="{{ url_for('classes.classes_all') }}">ClassInfo</a>
 
               <!-- <li class="nav-link nav-item dropdown mr-2">
                 <a
@@ -143,14 +144,14 @@
               console.log("is authenticated");
               get_user("{{teacher}}");
             </script>
-            <a class="nav-item nav-link" href="{{ url_for('account') }}"> {{ current_user.username }}</a>
-            <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+            <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>
+            <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
             {% else %}
             <script>
               console.log("is not authenticated");
             </script>
-            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-            <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+            <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+            <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
             {% endif %}
           </div>
         </div>

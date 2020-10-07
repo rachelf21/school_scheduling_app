@@ -1,5 +1,6 @@
 from datetime import datetime
-from app import db, login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from app import app, db, login_manager
 from sqlalchemy.exc import IntegrityError
 from flask_login import UserMixin
 
@@ -23,6 +24,18 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     #attendance = db.relationship('Attendance', backref='teacher', lazy=True)
 
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'],expires_sec)
+        return s.dumps({'user_id':self.id}.decode('utf-8'))
+    
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Users.query.get(user_id)
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}', '{self.email}', '{self.first}', '{self.last}' )"
@@ -193,37 +206,6 @@ class Attendance(db.Model):
     def as_dict(self):
         return {'date': self.att_date ,'teacher': self.teacher, 'scheduleid': self.scheduleid, 'courseid':self.courseid, 'email':self.email, 'status':self.status, 'comment':self.comment}
     
-
-#%% started this table for other teachers, but then decided this wasn't a good approach
-# class Attendance2(db.Model):
-#     __tablename__ = "attendance2"
-#     __table_args__ = {'extend_existing': True}
-#     attid = db.Column(db.Integer, primary_key=True)  
-#     teacher = db.Column(db.String(50))
-#     att_date =db.Column(db.Date) #double check if right date field
-#     scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
-#     #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
-#     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
-#     email = db.Column(db.String(255), db.ForeignKey(Student.email))
-#     name = db.Column(db.String(65))    
-#     status = db.Column(db.String(1), nullable=False)
-#     comment = db.Column(db.String(255), nullable=False)
-    
-#     def __init__(self, teacher, att_date, scheduleid, classid, courseid, email, status, comment):
-#         self.att_date = att_date
-#         self.teacher = teacher
-#         self.scheduleid = scheduleid
-#         self.classid = classid
-#         self.courseid = courseid
-#         self.email = email        
-#         self.status = status
-#         self.comment = comment
-    
-#     def __repr__(self):
-#         return f"Attendance2('{self.att_date}', '{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
-    
-    
-
 #%%
 
 class Lessons(db.Model):
@@ -289,4 +271,4 @@ def add_to_database(test):
         db.session.add(test)
         db.session.commit()
     except IntegrityError as e:
-        print("DUPLICATE RECORD NOT ADDED")
+        print("DUPLICATE RECORD NOT ADDED", e)
