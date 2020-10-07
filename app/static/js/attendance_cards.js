@@ -35,8 +35,8 @@ function mark_present(id) {
     card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
     present_icon.style.background = "rgb(92, 184, 92)";
-    card.style.background = "HoneyDew";
-    card.style.borderColor = "rgba(0, 255, 0, 0.5)";
+    card.style.background = "#eeffee";
+    card.style.borderColor = "rgba(0, 255, 0, 0.65)";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
   }
@@ -157,8 +157,8 @@ function present(count) {
 
     if (toggle < 0) {
       s.value = "P";
-      card.style.background = "HoneyDew";
-      card.style.borderColor = "rgba(100, 255, 0, .5)";
+      card.style.background = "#eeffee";
+      card.style.borderColor = "rgba(0, 255, 0, .65)";
       present_icon.style.background = "rgb(92, 184, 92)";
       absent_icon.style.background = "rgba(200, 200, 200,.5)";
       late_icon.style.background = "rgba(200, 200, 200,.5)";
