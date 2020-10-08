@@ -120,18 +120,47 @@ class Schedule(db.Model):
     courseid2 = db.Column(db.String(25))
     course = db.relationship("Course", backref='course', lazy=True)    
     sort = db.Column(db.Integer)
+    teacher = db.Column(db.String(50))
     
-    def __init__(self,scheduleid, periodid, week, courseid, courseid2):
+    def __init__(self,scheduleid, periodid, week, courseid, classid2,courseid2, teacher):
+        self.scheduleid = scheduleid
+        self.periodid = periodid
+        self.week = week
+        self.classid2 = classid2
+        self.courseid = courseid
+        self.courseid2 = courseid2
+        self.teacher = teacher
+    
+    def __repr__(self):
+        return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid2}', '{self.teacher}')"
+    
+#%%
+class Schedule2(db.Model):
+    __tablename__ = "schedule2"
+    __table_args__ = {'extend_existing': True} 
+    id = db.Column(db.String(30), primary_key=True)
+    scheduleid = db.Column(db.String(8))
+    periodid = db.Column(db.String(8), db.ForeignKey(Period.periodid))
+    #period2 = db.relationship("Period", backref='period2', lazy=True)
+    week = db.Column(db.String(1))
+    courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))
+    courseid2 = db.Column(db.String(25))
+    #course = db.relationship("Course", backref='course', lazy=True)    
+    sort = db.Column(db.Integer)
+    teacher = db.Column(db.String(50))
+    
+    def __init__(self,scheduleid, periodid, week, courseid, classid2, courseid2, teacher):
         self.scheduleid = scheduleid
         self.periodid = periodid
         self.week = week
         self.courseid = courseid
+        self.classid2 = classid2
         self.courseid2 = courseid2
+        self.teacher = teacher
     
     def __repr__(self):
-        return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid2}')"
+        return f"Schedule2('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid2}', '{self.teacher}')"
     
-
 #%%
 class Student(db.Model):
     __tablename__ = "students"

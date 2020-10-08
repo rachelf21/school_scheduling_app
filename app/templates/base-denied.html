@@ -62,7 +62,9 @@
       }
     </script>
     <script src = "/static/js/base.js"></script>
-
+    <script>
+      get_user("{{teacher}}");
+    </script>
     <title>{%block title%}MDY Teacher{%endblock%}</title>
   </head>
   <body class="bg">
@@ -91,6 +93,7 @@
 
 
             <ul class="navbar-nav mr-auto ">
+              <a id="my_schedule" class="nav-item nav-link mr-2 text-nowrap" style="font-size:1.1em" href="/full_schedule">Schedule</a>
               <a id="my_classes"class="nav-item nav-link ml-2 mr-2 text-nowrap" style="font-size:1.1em" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
               <a class="nav-item nav-link mr-2 text-nowrap" style="font-size:1.1em" href="/records">Attendance Records</a>
               <a class="nav-item nav-link mr-2" style="font-size:1.1em" href="/dismissal_form">Dismissal</a>

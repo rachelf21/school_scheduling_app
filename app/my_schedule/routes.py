@@ -169,7 +169,37 @@ def schedule_with_lessons(dow):
     
 #%%
 @my_schedule.route('/full_schedule')
+@login_required
 def display_full_schedule():
+    global schedule
+    #x = Course.query.join(Group, Course.classid == Group.classid)
+    global title
+    global current_week
+    
+    lessons = Lessons.query.all()
+    
+    current_week = Week.query.first().today
+    title = 'My Schedule'
+   
+    schedule = Full_Schedule()
+    schedule.get_schedule(current_week)
+    #mon = list(schedule.mon_df)
+    mon = schedule.mon_df   
+    tues = schedule.tues_df
+    wed = schedule.wed_df
+    thurs = schedule.thurs_df
+    fri = schedule.fri_df
+    
+    schedule.get_times()
+    start_times = schedule.start_times 
+    end_times = schedule.end_times
+    current_period = Util().get_current_period()
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
+
+#%% this is only for rfriedman
+@my_schedule.route('/weekly_schedule')
+@login_required
+def display_weekly_schedule():
     global schedule
     #x = Course.query.join(Group, Course.classid == Group.classid)
     global title
@@ -187,12 +217,14 @@ def display_full_schedule():
     tues = schedule.tues_df
     wed = schedule.wed_df
     thurs = schedule.thurs_df
+    fri = schedule.fri_df
     
     schedule.get_times()
     start_times = schedule.start_times 
     end_times = schedule.end_times
     current_period = Util().get_current_period()
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
+    return render_template('weekly_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
+
     
 #%%
 @my_schedule.route('/daily_schedule/<day>')
@@ -306,13 +338,15 @@ def get_week(wk):
 
 #%%
 @my_schedule.route('/set_week/<letter>')    
+@login_required
 def set_week(letter):
     query = "UPDATE week SET today='" + letter + "';"
     with engine.begin() as conn:     # TRANSACTION
         conn.execute(query)
     topic = "Week " + letter
+    teacher=current_user.username
     #return render_template("confirmation.html", topic=topic)
-    return redirect("/full_schedule",teacher=current_user.username)
+    return redirect("/weekly_schedule")
 
 #%%
 @my_schedule.route('/zoom_schedule')

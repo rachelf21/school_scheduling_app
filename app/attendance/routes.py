@@ -13,6 +13,7 @@ attendance = Blueprint('attendance', '__name__')
 def take_attendance(classname, courseid, dow, per): 
     teacher=current_user.username
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
+    
     User = Users.query.filter_by(username=teacher).first()
     period = dow[2:]+per
     att_form = ClassAttendanceForm(request.form)
@@ -27,6 +28,8 @@ def take_attendance(classname, courseid, dow, per):
     print("classid2", classid2)
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
+    
+
     
     if (teacher == 'rfriedman' and courseid == '7-211-Computers'):
         students = Student.query.filter_by(classid=classname).filter(~Student.email.in_(["hben-dayan497@stu.mdyschool.org","ialfaks946@stu.mdyschool.org","vhaber778@stu.mdyschool.org"])).order_by(Student.name).all()
