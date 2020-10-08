@@ -71,6 +71,7 @@ class Course(db.Model):
     courseid = db.Column(db.String(25), primary_key=True)
     #classid = db.Column(db.String(8))
     classid = db.Column(db.String(8), db.ForeignKey(Group.classid))
+    #classid2 = db.Column(db.String(8))
     classcode = db.relationship("Group", backref='classcode', lazy=True)
     subject = db.Column(db.String(25))
     teacher = db.Column(db.String(25))
@@ -80,6 +81,7 @@ class Course(db.Model):
     def __init__(self,courseid, classid, subject, teacher, room):
         self.courseid = courseid
         self.classid = classid
+        #self.classid2 = classid
         self.subject = subject
         self.teacher = teacher
         self.room = room  
@@ -115,17 +117,19 @@ class Schedule(db.Model):
     period = db.relationship("Period", backref='period', lazy=True)
     week = db.Column(db.String(1))
     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))
+    courseid2 = db.Column(db.String(25))
     course = db.relationship("Course", backref='course', lazy=True)    
     sort = db.Column(db.Integer)
     
-    def __init__(self,scheduleid, periodid, week, courseid):
+    def __init__(self,scheduleid, periodid, week, courseid, courseid2):
         self.scheduleid = scheduleid
         self.periodid = periodid
         self.week = week
         self.courseid = courseid
+        self.courseid2 = courseid2
     
     def __repr__(self):
-        return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid}')"
+        return f"Schedule('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid2}')"
     
 
 #%%

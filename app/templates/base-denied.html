@@ -175,8 +175,10 @@
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
               <script>
+                console.log("in base-denied.html");
                 console.log("is authenticated");
                 get_user("{{teacher}}");
+                console.log(teacher = "{{teacher}}");
               </script>
               <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>
               <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>

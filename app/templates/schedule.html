@@ -18,7 +18,7 @@
 <a id="prev" class='btn btn-sm pt-4' onclick="get_next()" style="display:block"> <i class="fa fa-angle-right text-muted" style="font-size:36px"></i></a>
 </div>
 
-<h5 class="mt-1 text-center font-weight-normal" ><a id="get_details">View details</a></h5>
+<h5 class="mt-1 text-center font-weight-normal" ><a id="full_schedule" href="/full_schedule">Schedule</a> | <a id="get_details">Lessons</a></h5>
 
 <div class="table-responsive">
 <table
@@ -41,7 +41,7 @@
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
       var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
       var current_period =  "{{current_period}}";
-      console.log("currnet period is" + current_period);
+      //console.log("current period is" + current_period);
       //var per = parseInt({{ schedule.sort}})
     </script>
     <tr>
@@ -62,7 +62,7 @@
           if(sched == current_period){
             document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";
           }
-          console.log("sched period periodid {{schedule.period.periodid}}")
+          //console.log("sched period periodid {{schedule.period.periodid}}")
 
         </script>
       </td>
@@ -81,10 +81,11 @@
           var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var p = per[{{loop.index}}];
           var c = "{{ schedule.course.classid}}";
+          var c2 = "{{ schedule.course.classcode.classid2}}";
           var icon = "<i class = 'fa fa-edit'> </i>";
           var courseid = "{{ schedule.course.courseid}}";         
           //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
-          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c + "&nbsp;  &nbsp;" + icon + "</a>";
+          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c2 + "&nbsp;  &nbsp;" + icon + "</a>";
           var course = "{{ schedule.course.subject}}" ;
           if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
             document.write("");

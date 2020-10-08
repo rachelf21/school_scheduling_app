@@ -22,13 +22,20 @@ def records_form():
         
         date = datetime.date.today()
         todays_classes = []
+        todays_classes_display = []
         results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
         for classs in results:
             todays_classes.append(classs.courseid)
         
-        
+        student_classes = []
+        results_for_students = Course.query.distinct(Course.classid).filter_by(teacher=teacher).all()
+        for r in results_for_students:
+            student_classes.append(r.classid)
+            
+        student_list = Student.query.filter(Student.classid.in_(student_classes)).order_by(Student.name).all()
+        print(student_list)
         form = AttendanceRecordForm()
-        return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher, todays_classes=todays_classes)
+        return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher, todays_classes=todays_classes,todays_classes_display=todays_classes_display, student_list = student_list)
 
 
 @records.route('/check_absences/<courseid>/<lessondate>')
@@ -55,13 +62,15 @@ def track_attendance(category):
         student_name = ''
         student_class = ''
         courseid = ''
+        courseid2 = ''
         student = ''
         date = ''
         
         if category == 'class':
             view = request.form['view']
             courseid = request.form['courseid']
-            
+            classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+            courseid2 = classid2+courseid[5]
             absences = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status = 'A').count()
     
             if view=="absences":
@@ -91,7 +100,7 @@ def track_attendance(category):
 #---------------------------------------------------------------------------               
         elif category == 'date':
             view = request.form['view']
-            date = request.form['date']
+            date = request.form['date2']
             
             attendance = Attendance.query.filter_by(teacher=teacher, att_date =date).order_by(Attendance.attid).all()  
             
@@ -115,12 +124,15 @@ def track_attendance(category):
 #-----------------------------------------------------------------------------------    
         elif category == 'classdate':
             view = request.form['view']
-            date = request.form['date']
+            date = request.form['date1']
             if not date:
                 date = datetime.date.today()
             
             try:    
                 courseid = request.form['courseid']
+                classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+                courseid2 = classid2+courseid[5:]
+                print('courseid2=', courseid2)
             except:
                 return "Select a date first, then select the class"
             
@@ -139,6 +151,8 @@ def track_attendance(category):
         elif category[0:2]== '_x':
             date = category[2:12]
             courseid = category[12:]
+            classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+            courseid2 = classid2+courseid[5]
             
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
             lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'L').count() 
@@ -158,7 +172,7 @@ def track_attendance(category):
     
         teacher=current_user.username
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher)
 #%%
 @records.route('/get_classes_today', methods = ['POST'])
 def get_classes_today():
@@ -169,12 +183,24 @@ def get_classes_today():
         date=data['date']
         print(" date is " + date)
     teacher = current_user.username
+    
     todays_classes = []
+    todays_classes_display = []
+    
     results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
+    
     for classs in results:
+        todays_classes_display.append(classs.courseid+"B")
         todays_classes.append(classs.courseid)
+        
     print(todays_classes)
-    return json.dumps(todays_classes)
+    
+    todays_classes = json.dumps(todays_classes)
+    todays_classes_display = json.dumps(todays_classes_display)
+    
+    print(todays_classes_display)
+    print("todays classes = ", todays_classes)
+    return (todays_classes)
     
 
 #%%
@@ -196,7 +222,7 @@ def track_attendance_day():
         category = 'date'
         
         view = request.form['view']
-        date = request.form['date']
+        date = request.form['date2']
         
         attendance = Attendance.query.filter_by(teacher=teacher, att_date =date).order_by(Attendance.attid).all()  
         

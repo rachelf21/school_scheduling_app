@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request, redirect, flash, Blueprint
 from app import engine
 from app.attendance.forms import StudentAttendanceForm, ClassAttendanceForm
-from app.models import Group, Student, Period, Attendance, Users
+from app.models import Group, Student, Period, Attendance, Users, Course
 import pandas as pd
 from flask_login import current_user, login_required
 
@@ -23,7 +23,8 @@ def take_attendance(classname, courseid, dow, per):
     room = Group.query.filter_by(classid=classname).first().room
     att_form.room.data=room
     att_form.teacher.data = teacher
-    
+    classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+    print("classid2", classid2)
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
     
@@ -53,7 +54,7 @@ def take_attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance_cards.html', att_form=att_form, classid = classname, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User)
+        return render_template('attendance_cards.html', att_form=att_form, classid = classname, classid2 = classid2,dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
@@ -123,6 +124,10 @@ def edit_attendance(date, courseid, email, status, comment):
         conn.execute(query)
 
     topic = "attendance staus of " + status + " for " + name 
-    return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
+    
+    cat = '_x'+att_date+courseid
+    flash('Your attendance change for ' + name + ' has been updated to ' + status + '.', 'success')
+    return redirect(url_for('records.track_attendance', category=cat))
+    # return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
     
 #%%

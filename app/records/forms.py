@@ -23,7 +23,7 @@ class AttendanceRecordForm(FlaskForm):
     except:
         teacher = 'jsmith2'
         
-    results = Course.query.distinct(Course.classid).filter_by(teacher=teacher).all()
+    results = Course.query.distinct(Course.classid).filter_by(teacher='rfriedman').all()
     print(results)
     classes=[]
     for classs in results:
@@ -35,7 +35,9 @@ class AttendanceRecordForm(FlaskForm):
         options.append([s.email, s.name])
         student_list = SelectField('Select', 
                   choices=options)
-    date = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
+    date1 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
+    date2 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
+
     view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only'),('lates', "Absence and Late")],default='lates')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     btnSubmit = SubmitField('Submit')

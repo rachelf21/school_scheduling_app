@@ -37,7 +37,9 @@
             var my_day = "{{dow}}";
             //console.log("day= " + my_day);
           </script>
-          <td><a title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}">{{ courses.classid}}</a></td>
+          <td>
+            <a title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}">{{ courses.classcode.classid2}}</a>
+          </td>
           <td>{{courses.classcode.gender}}</td>
           <td>{{ courses.subject}}</td>
           <td>{{ courses.room}}</td>

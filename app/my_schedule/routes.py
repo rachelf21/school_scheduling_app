@@ -107,7 +107,7 @@ def display_schedule(dow):
     
     current_period = Util().get_current_period()
        
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 
 #%%
 @my_schedule.route('/schedule_with_lessons/<dow>')
@@ -165,7 +165,7 @@ def schedule_with_lessons(dow):
         latest_lessons.append(latest_lesson)
    
     print(latest_lessons)
-    return render_template('schedule_with_lessons.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons)
+    return render_template('schedule_with_lessons.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, teacher=current_user.username)
     
 #%%
 @my_schedule.route('/full_schedule')
@@ -192,7 +192,7 @@ def display_full_schedule():
     start_times = schedule.start_times 
     end_times = schedule.end_times
     current_period = Util().get_current_period()
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period)
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
     
 #%%
 @my_schedule.route('/daily_schedule/<day>')
@@ -213,7 +213,7 @@ def get_day(day):
        
     current_period = Util().get_current_period()
     
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 #%%
 @my_schedule.route('/today')
 @login_required
@@ -237,7 +237,7 @@ def today():
         current_period = Util().get_current_period()
         
         
-        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times)
+        return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 
 
 #%%
@@ -301,7 +301,7 @@ def get_week(wk):
     
     current_period = Util().get_current_period()
     
-    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list,latest_lessons=latest_lessons, current_period = current_period)
+    return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list,latest_lessons=latest_lessons, current_period = current_period, teacher=current_user.username)
 
 
 #%%
@@ -312,7 +312,7 @@ def set_week(letter):
         conn.execute(query)
     topic = "Week " + letter
     #return render_template("confirmation.html", topic=topic)
-    return redirect("/full_schedule")
+    return redirect("/full_schedule",teacher=current_user.username)
 
 #%%
 @my_schedule.route('/zoom_schedule')
@@ -324,5 +324,5 @@ def zoom_schedule():
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-    return render_template('zoom_schedule.html', schedule = schedule, title = title)
+    return render_template('zoom_schedule.html', schedule = schedule, title = title, teacher=current_user.username)
    

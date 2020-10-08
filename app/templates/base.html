@@ -134,25 +134,25 @@
               <a id="weekA" class="nav-item nav-link" href="/set_week/A">Wk A</a>
               <a id="weekB" class="nav-item nav-link" href="/set_week/B">Wk B</a>
             </div>
-          </div>
 
-          <!-- Navbar Right Side -->
+            <!-- Navbar Right Side -->
 
-          <div class="navbar-nav">
-            {% if current_user.is_authenticated %}
-            <script>
-              console.log("is authenticated");
-              get_user("{{teacher}}");
-            </script>
-            <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>
-            <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
-            {% else %}
-            <script>
-              console.log("is not authenticated");
-            </script>
-            <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
-            <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
-            {% endif %}
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+              <script>
+                console.log("is authenticated");
+                get_user("{{teacher}}");
+              </script>
+              <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+              {% else %}
+              <script>
+                console.log("is not authenticated");
+              </script>
+              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </nav>

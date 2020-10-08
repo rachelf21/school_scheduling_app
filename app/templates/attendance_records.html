@@ -1,6 +1,6 @@
 {% extends "base-denied.html" %} {% block title %} MDY Attendance Records {% endblock %} {% block content %}
 
-<script src="/static/js/records.js"></script>
+<script src="/static/js/attendance_records.js"></script>
 
 <!-- <div id="outerdiv" style="display: flex; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
@@ -19,25 +19,22 @@
 <script>
   var title = "";
   var category = "{{category}}";
-  console.log("category", category);
   if (category == "class") {
-    title = "{{courseid}}";
+    title = "{{courseid2}}";
   } else if (category == "student") {
     title = "{{student_name}}<br> {{student_class}}";
   } else if (category == "date") {
     title = "{{date}}";
     title = convert_date(title) + "<br>All Classes";
-    console.log("converted date " + title);
   } else if (category == "classdate") {
     var formatted_date = convert_date("{{date}}");
-    title = formatted_date + "<br>{{courseid}}";
+    title = formatted_date + "<br>{{courseid2}}";
   } else if (category.substring(0, 2) == "_x") {
     var formatted_date = convert_date("{{date}}");
-    title = formatted_date + "<br>{{courseid}}";
+    title = formatted_date + "<br>{{courseid2}}";
   } else {
-    title = "{{student_name}} <br> {{courseid}}";
+    title = "{{student_name}} <br> {{courseid2}}";
   }
-  console.log("Title", title);
   document.getElementById("page_title").innerHTML = title;
   var endtable = 1;
 
@@ -72,11 +69,11 @@
               var prev_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
               //console.log("current class = " + class_ + " and next class =" + next_class);
               if (class_!=prev_class){
-                console.log("new table");
+                //console.log("new table");
                 endtable = 1;
                 var element = document.currentScript.parentElement.parentElement;
                 element.id = "tr{{loop.index}}";
-                console.log(element.id);
+                //console.log(element.id);
               }
              {% else %}
                 endtable = 0;
@@ -107,7 +104,7 @@
         </td>
 
         <td class="text-nowrap">
-          <a id="active_student{{loop.index}}" style="color: black" href="/track_attendance/{{ att.email}}" target="_blank"
+          <a id="active_student{{loop.index}}" style="color: black" href="/track_attendance/{{ att.email}}"
             >{{ att.name}}</a
           >
         </td>
@@ -146,7 +143,7 @@
     <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
   </div>
   <script>
-    console.log("teacher: {{teacher}}");
+    //console.log("attendance records teacher: {{teacher}}");
     if ("{{teacher}}" == "rfriedman") {
       element = document.getElementById("my_classes2");
       element.href = "/today";
@@ -217,7 +214,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id = "edit_ok_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance2()">OK</button>
+        <button id = "edit_ok_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance()">OK</button>
       </div>
     </div>
   </div>

@@ -25,6 +25,7 @@
   var classid = "{{classid}}";
   var dow = "{{dow}}";
   var scheduleid = dow + "{{per}}";
+  var courseid_fortitle = "{{classid2}}" + "-" + "{{courseid}}".substring(6);
   var courseid = "{{courseid}}";
   var amount = "{{amount}}";
   var room = "{{room}}";
@@ -34,7 +35,7 @@
 
 
   window.onload = function () {  
-      console.log('attendance cards')
+    //console.log('attendance cards')
     for (i=0; i<count; i++){
       var s = document.getElementById("students-" + i + "-status");
       //s.addEventListener("click", change_color);
@@ -48,7 +49,7 @@
     <h1 class="mt-2 font-weight-normal mont" style="font-size:3.2em">Attendance</h1>
 
     <legend class="border-bottom mb-3 mont" >
-      <script> document.write(courseid +" (Rm " + room + ")"); </script>
+      <script> document.write(courseid_fortitle +" (Rm " + room + ")"); </script>
     </legend>
 </div>
 
@@ -142,7 +143,7 @@
                     <div style="display:none"> {{ student.status}} </div>
                     <div style="width:200px; display:none">{{ student.comment(length=300)|safe}}</div>
 
-                    <div class="ml-1 h6" style="font-size:1.1em"><a href="/student_info/{{student.email.data}}" style="color: black">{{ student.student_name.data}}</a>
+                    <div class="ml-1 h6" style="font-size:1.1em"><a href="/student_info/{{student.email.data}}" style="color: black" target="_blank">{{ student.student_name.data}}</a>
                         <a class="ml-3 text-muted" style="font-size: .8em; font-family: 'Neucha', cursive; color:blue " title="total late" target="_blank" href="/track_attendance/{{ student.email.data}}">
                           {% if student.count_late.data !=0 %}
                               L {{student.count_late.data }}
