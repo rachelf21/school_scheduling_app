@@ -1,7 +1,7 @@
 from flask import render_template, url_for, jsonify, request, redirect, Blueprint
 import datetime
 from app.records.forms import AttendanceRecordForm
-from app.models import Student, Course, Attendance, Group
+from app.models import Student, Course, Attendance, Group, Users
 import json
 from flask_login import current_user, login_required
 
@@ -42,10 +42,11 @@ def records_form():
 @login_required
 def check_absences(courseid,lessondate):
     teacher = current_user.username
+    user=Users.query.filter_by(username=teacher).first()
     category = 'class'
     attendance = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
     absences = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate, status='A').count()
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences, teacher=teacher)
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences, teacher=teacher, user=user)
 
 #%%        
 @records.route('/track_attendance/<category>',  methods=["GET" , "POST"])
@@ -132,9 +133,10 @@ def track_attendance(category):
             
             try:    
                 courseid = request.form['courseid']
-                classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
-                courseid2 = classid2+courseid[5:]
-                print('courseid2=', courseid2)
+                if courseid != 'No classes on this day':
+                    classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+                    courseid2 = classid2+courseid[5:]
+                    print('courseid2=', courseid2)
             except:
                 return "Select a date first, then select the class"
             
@@ -174,8 +176,9 @@ def track_attendance(category):
     
     
         teacher=current_user.username
+        user = Users.query.filter_by(username=teacher).first()
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2, user=user)
 #%%
 @records.route('/get_classes_today', methods = ['POST'])
 def get_classes_today():

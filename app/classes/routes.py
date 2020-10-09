@@ -18,6 +18,7 @@ def classes_all():
 @classes.route('/classes_anon')
 @login_required
 def classes_anon():
+    noclasses = 1
     courses = Course.query.filter(~Course.subject.like('Lunch%')).filter(~Course.subject.like('Recess%')).filter_by(teacher=current_user.username).all()
     print("len", len(courses))
     schedule = Schedule.query.all()
@@ -36,5 +37,7 @@ def classes_anon():
         dow = 'A_M'
     #room = Group.query(Group.room).filter_by(classid='7-101')
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
-    
-    return render_template('classes_anon.html', courses=courses, schedule=schedule, dow=dow, teacher=current_user.username)
+    if len(courses)==0:
+        noclasses = 0
+    print("noclasses =", noclasses)
+    return render_template('classes_anon.html', courses=courses, schedule=schedule, dow=dow, teacher=current_user.username, noclasses=noclasses)

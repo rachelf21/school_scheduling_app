@@ -34,8 +34,8 @@ def register():
         #subject = form.subject.data
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! Just add your classes and then you can log in.', 'success')
-        return redirect(url_for('users.register_classes', teacher=form.username.data))
+        flash('Your account has been created! Log in and then add your classes.', 'success')
+        return redirect(url_for('classes.classes_anon', teacher=form.username.data))
     return render_template('register.html', title='Register', form=form)
 
 #%%
@@ -43,6 +43,7 @@ def register():
 def register_classes(teacher):
     # if current_user.is_authenticated:
     #     return redirect(url_for('classes.classes_anon'))
+    user = Users.query.filter_by(username=teacher).first()
     form = RegisterClassesForm()
     if form.validate_on_submit():
         subject = form.subject.data
@@ -79,18 +80,28 @@ def register_classes(teacher):
             classes.append('8-203')
         if form.class8B111.data:
             classes.append('8-211')
-        print(classes)
+        #print(classes)
         
         for c in classes:
             room = Group.query.filter_by(classid=c).first().room
             print(c, "Rm:", room)
             course = Course(courseid=c+"-"+subject, classid=c, subject=subject, teacher=teacher, room=room)
-            db.session.add(course)
-        db.session.commit()
-        flash('You have successfully added your classes. You may log in now.', 'success')
-        return redirect(url_for('users.login'))
-    return render_template('register_classes.html', title='Register', form=form, teacher=teacher)
+            try:
+                print("in first try block")
+                db.session.add(course)
+                db.session.commit()
 
+            except:
+                print("in first except block")
+                db.session.flush()
+                db.session.rollback()
+                flash('Class already exists. Press Reset to add other classes.', 'danger')
+                return render_template('register_classes.html', title='Register Classes', form=form, teacher=teacher, user=user)
+            
+        flash('You have successfully added your classes. To add more classes, go to your account settings.', 'success')
+        return redirect(url_for('classes.classes_anon')) 
+            
+    return render_template('register_classes.html', title='Register Classes', form=form, teacher=teacher, user=user)
 
 
 
@@ -108,7 +119,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Login Unsuccessful. Please check your username and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 #%%
@@ -127,10 +138,10 @@ def account():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-        current_user.username = form.username.data
-        current_user.email = form.email.data
+        #current_user.username = form.username.data
+        #current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated!', 'success')
+        flash('Your profile picture has been updated!', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username

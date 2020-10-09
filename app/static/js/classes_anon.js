@@ -32,3 +32,13 @@ function set_values(classs, course) {
   var y = document.getElementById("current_subject");
   y.value = course;
 }
+
+$("document").ready(function () {
+  console.log("noclasses = " + noclasses);
+  if (noclasses == 0) {
+    console.log("no classes");
+    $("#no_classes").css("display", "block");
+  } else {
+    $("#no_classes").css("display", "none");
+  }
+});

@@ -38,7 +38,7 @@ function color_code(sched, period) {
   }
 
   var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-  //console.log(link_text);
+  console.log(link_text);
   parent.setAttribute("href", link_text);
   parent.setAttribute("style", "display:block; width:100%; height:100%");
   if (sched.substring(2) == period) {

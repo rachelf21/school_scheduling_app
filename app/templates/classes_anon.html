@@ -5,7 +5,11 @@
     background-color: #e0ffff !important;
   }
 </style>
+<script>
+  var noclasses = "{{noclasses}}";
+</script>
 <script src="/static/js/classes_anon.js"></script>
+
 <div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto" class="content-section">
     <div style="text-align: center">
@@ -13,6 +17,11 @@
       <div class="font-weight-normal mt-2 mb-4">
         <a href="/get_students/d/7">Grade 7 Students</a> | <a href="/get_students/d/8">Grade 8 Students</a>
       </div>
+    </div>
+
+    <div id="no_classes" class="alert alert-danger mb-4" style="display: none">
+      <h4>You have not set up your classes.</h4>
+      <a class="h4" href="/register_classes/{{teacher}}">Click here to add your classes.</a>
     </div>
     <table
       id="myTable"
@@ -33,12 +42,14 @@
           <script>
             var my_class = "{{ courses.classid}}";
             var my_course = "{{ courses.subject}}";
-            //console.log("class= " + my_class);
+            console.log("class= " + my_class);
             var my_day = "{{dow}}";
             //console.log("day= " + my_day);
           </script>
           <td>
-            <a title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}">{{ courses.classcode.classid2}}</a>
+            <a style="color: #1e2a5d" title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}"
+              >{{ courses.classcode.classid2}}</a
+            >
           </td>
           <td>{{courses.classcode.gender}}</td>
           <td>{{ courses.subject}}</td>
@@ -47,12 +58,12 @@
           <td>
             <a
               id="attendance{{loop.index}}"
-              title="attendance"
+              title="take attendance"
               class="a btn-sm"
               onclick="set_values('{{ courses.classid}}', '{{ courses.subject}}')"
               data-toggle="modal"
               data-target="#exampleModalLong"
-              ><i name="attendance" style="color: Blue" class="fa fa-edit fa-2x"></i>
+              ><i name="attendance" style="color: #1e2a5d" class="fa fa-edit fa-2x"></i>
             </a>
           </td>
         </tr>
@@ -63,7 +74,7 @@
       $("#myTable").DataTable({
         pageLength: 20,
         paging: false,
-        filter: false,
+        filter: true,
         deferRender: true,
         //scrollY: 1200,
         scrollCollapse: true,
@@ -73,6 +84,10 @@
         bSort: false,
       });
     </script>
+
+    <div style="text-align: right">
+      <a id="my_classes2" href="/records" class="mt-4 mb-2 btn btn-outline-primary btn-md">View Attendance Records</a>
+    </div>
   </div>
 </div>
 

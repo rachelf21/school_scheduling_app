@@ -4,9 +4,15 @@
 
 <!-- <div id="outerdiv" style="display: flex; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
-<div style="text-align: center">
+
+    <div style="max-width: 900px; margin: auto">
+      <div class="content-section">
+
+<div style="text-align: center;">
   <h1 id="h1" class="mb-0 display-4">Attendance Records</h1>
   <hr />
+  <h4 class="font-weight-light text-muted">Teacher: {{user.title}} {{user.first}} {{user.last}}</h4>
+
   <p></p>
   <h2 id="page_title" class="font-weight-normal mt-0 text-center"></h2>
   <h2 class="font-weight-normal mb-2">
@@ -140,9 +146,7 @@
       {%endfor%}
     </tbody>
   </table>
-  <div style="text-align: center">
-    <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-primary btn-md">My Classes</a>
-  </div>
+
   <script>
     //console.log("attendance records teacher: {{teacher}}");
     if ("{{teacher}}" == "rfriedman") {
@@ -156,6 +160,11 @@
 <!-- </div>
 </div> -->
 <hr class="mb-4" />
+<div style="text-align: center">
+  <a id="my_classes2" href="/records" class="mt-4 mr-4 mb-2 btn btn-outline-primary btn-md">Attendance Records</a>
+
+  <a id="my_classes2" href="/classes_anon" class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-md">My Classes</a>
+</div>
 <script>
   $("#myTable").DataTable({
     //ordering: true,
@@ -239,4 +248,6 @@
 
 </script>
 
+</div>
+</div>
 {% endblock content %}

@@ -36,23 +36,24 @@ class RegistrationForm(FlaskForm):
                 
 #%% 
 class RegisterClassesForm(FlaskForm):
-    class7B101 = BooleanField('7B-101')
-    class7B102 = BooleanField('7B-102')
-    class7B103 = BooleanField('7B-103')
-    class7B111 = BooleanField('7B-111')
+    class7B101 = BooleanField('7B-201')
+    class7B102 = BooleanField('7B-202')
+    class7B103 = BooleanField('7B-203')
+    class7B111 = BooleanField('7B-211')
     class7G101 = BooleanField('7G-101')
     class7G102 = BooleanField('7G-102')
     class7G103 = BooleanField('7G-103')
     class7G111 = BooleanField('7G-111')
     
-    class8B101 = BooleanField('8B-101')
-    class8B102 = BooleanField('8B-102')
-    class8B103 = BooleanField('8B-103')
-    class8B111 = BooleanField('8B-111')
+    class8B101 = BooleanField('8B-201')
+    class8B102 = BooleanField('8B-202')
+    class8B103 = BooleanField('8B-203')
+    class8B111 = BooleanField('8B-211')
     class8G101 = BooleanField('8G-101')
     class8G102 = BooleanField('8G-102')
     class8G103 = BooleanField('8G-103')
     class8G111 = BooleanField('8G-111')  
+    
     
     subject_options = [('Select', '--Select Subject--'),('ELA', 'ELA'), ('Computers', 'Computers'), ('Gemara', 'Gemara'), ('Halacha', 'Halacha'), ('Hashkafah', 'Hashkafah'), ('Humash', 'Humash'), ('Jewish History', 'Jewish History'), ('Judaic Studies', 'Judaic Studies'), ('Keria', 'Keria'), ('Math', 'Math'), ('Nabi', 'Nabi'), ('Parasha', 'Parasha'), ('Safah', 'Safah'), ('Safe', 'Safe'), ('Science', 'Science'), ('Social Studies', 'Social Studies'), ('Tamim', 'Tamim')]
     
@@ -62,8 +63,8 @@ class RegisterClassesForm(FlaskForm):
         if subject.data == 'Select':
             raise ValidationError('Please select a subject.')
         
-    add = SubmitField('Add another subject')
-    submit = SubmitField('Done!')
+    add = SubmitField('Reset')
+    submit = SubmitField('Add selected classes')
 
 
 
@@ -78,11 +79,11 @@ class LoginForm(FlaskForm):
 #%%
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
-                           validators=[DataRequired(), Length(min=4, max=25)],render_kw = {'disabled': 'disabled'})
+                           validators=[DataRequired(), Length(min=4, max=25)])
     email = StringField('Email',
-                        validators=[DataRequired(), Email()],render_kw = {'disabled': 'disabled'})
+                        validators=[DataRequired(), Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'gif'])])
-    submit = SubmitField('Upload')
+    submit = SubmitField('Apply selected picture')
 
     def validate_username(self, username):
         if username.data != current_user.username:

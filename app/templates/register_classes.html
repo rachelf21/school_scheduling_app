@@ -5,11 +5,13 @@
     -webkit-transform: scale(1.25);
   }
 </style>
-<div style="width: 400px; margin: auto">
+<div style="width: 500px; margin: auto">
   <div class="content-section">
     <form method="POST" action="">
       {{ form.hidden_tag() }}
       <legend class="border-bottom mb-4">Select Subject and Classes</legend>
+
+      <div><h4 class="mb-4" style="color: #1e2a5d">{{user.title}} {{user.first}} {{user.last}}</h4></div>
 
       <div class="form-group mb-4" style="max-width: 200px">
         <h5 class="text-muted">Subject</h5>
@@ -89,8 +91,8 @@
       <!--ends grade 7 fieldset-->
 
       <div class="form-group mt-4">
-        <a href="/register_classes/{{teacher}}" class="btn btn-outline-info mr-4">Add another subject</a> {{ form.submit(class="btn
-        btn-outline-info ml-4") }}
+        <a href="/register_classes/{{teacher}}" class="btn btn-outline-primary mr-4">Reset</a>
+        {{ form.submit(class="btn btn-outline-primary ml-4") }}
       </div>
     </form>
   </div>
