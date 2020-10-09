@@ -41,13 +41,15 @@
           {{ form.picture.label(class="pb-0") }} {{ form.picture(class="form-control-file form-control-lg") }} {% if form.picture.errors %}
           {% for error in form.picture.errors %}
           <span class="text-danger">{{ error }}</span>
-          {% endfor %} {% endif %} {{ form.submit(class="ml-3 btn btn-outline-info") }}
+          {% endfor %} {% endif %} {{ form.submit(class="ml-3 btn btn-outline-primary") }}
         </div>
       </fieldset>
     </form>
     <hr />
 
-    <a class="btn btn-lg btn-outline-info" href="/register_classes/{{teacher}}">Add classes</a>
+    <div style="text-align: right">
+      <a class="btn btn-lg btn-outline-primary" href="/register_classes/{{teacher}}">Add classes</a>
+    </div>
   </div>
 </div>
 {% endblock content %}
