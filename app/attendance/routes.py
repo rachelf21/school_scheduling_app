@@ -57,7 +57,7 @@ def take_attendance(classname, courseid, dow, per):
     #     add_to_database(test)
     #     return "<h1> Attendance has been recorded </h1>"
     else:
-        return render_template('attendance_cards.html', att_form=att_form, classid = classname, classid2 = classid2,dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User)
+        return render_template('attendance_cards.html', att_form=att_form, classid = classname, classid2 = classid2, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User, courseid2=classid2)
 
 #https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 

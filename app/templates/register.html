@@ -41,8 +41,9 @@
         </div>
 
         <div class="form-group">
-          {{ form.username.label(class="form-control-label") }} {% if form.username.errors %} {{ form.username(class="form-control
-          form-control-lg is-invalid") }}
+          {{ form.username.label(class="form-control-label") }}
+          <span class="text-muted" style="font-size: x-small">Use your mdy username, the portion before @mdyschool.org. </span> {% if
+          form.username.errors %} {{ form.username(class="form-control form-control-lg is-invalid") }}
           <div class="invalid-feedback">
             {% for error in form.username.errors %}
             <span>{{ error }}</span>
@@ -52,8 +53,9 @@
         </div>
 
         <div class="form-group">
-          {{ form.email.label(class="form-control-label") }} {% if form.email.errors %} {{ form.email(class="form-control form-control-lg
-          is-invalid") }}
+          {{ form.email.label(class="form-control-label") }}
+          <span class="text-muted" style="font-size: x-small">Use your mdy email address. </span>{% if form.email.errors %} {{
+          form.email(class="form-control form-control-lg is-invalid") }}
           <div class="invalid-feedback">
             {% for error in form.email.errors %}
             <span>{{ error }}</span>
@@ -87,7 +89,7 @@
     </form>
   </div>
   <div class="border-top pt-3">
-    <small class="text-muted"> Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a> </small>
+    <small class="text-muted"> Already Have An Account? <a class="ml-2" href="{{ url_for('users.login') }}">Sign In</a> </small>
   </div>
 </div>
 {% endblock content %}

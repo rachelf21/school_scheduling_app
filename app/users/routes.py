@@ -3,8 +3,8 @@ import secrets
 import os
 from PIL import Image
 from app import app, db, bcrypt, mail
-from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from app.models import Users
+from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, RegisterClassesForm
+from app.models import Users, Course, Group
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 users = Blueprint('users', __name__)
@@ -30,12 +30,69 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = Users(username=form.username.data, email=form.email.data, password=hashed_pwd, last=form.last.data, first=form.last.data, title=form.title.data)
+        user = Users(username=form.username.data, email=form.email.data, password=hashed_pwd, last=form.last.data, first=form.first.data, title=form.title.data)
+        #subject = form.subject.data
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('users.login'))
+        flash('Your account has been created! Just add your classes and then you can log in.', 'success')
+        return redirect(url_for('users.register_classes', teacher=form.username.data))
     return render_template('register.html', title='Register', form=form)
+
+#%%
+@users.route("/register_classes/<teacher>", methods=['GET', 'POST'])
+def register_classes(teacher):
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('classes.classes_anon'))
+    form = RegisterClassesForm()
+    if form.validate_on_submit():
+        subject = form.subject.data
+        classes = []
+        if form.class7G101.data:
+            classes.append('7-101')
+        if form.class7G102.data:
+            classes.append('7-102')
+        if form.class7G103.data:
+            classes.append('7-103')
+        if form.class7G111.data:
+            classes.append('7-111')
+        if form.class7B101.data:
+            classes.append('7-201')
+        if form.class7B102.data:
+            classes.append('7-202')
+        if form.class7B103.data:
+            classes.append('7-203')
+        if form.class7B111.data:
+            classes.append('7-211')
+        if form.class8G101.data:
+            classes.append('8-101')
+        if form.class8G102.data:
+            classes.append('8-102')
+        if form.class8G103.data:
+            classes.append('8-103')
+        if form.class8G111.data:
+            classes.append('8-111')
+        if form.class8B101.data:
+            classes.append('8-201')
+        if form.class8B102.data:
+            classes.append('8-202')
+        if form.class8B103.data:
+            classes.append('8-203')
+        if form.class8B111.data:
+            classes.append('8-211')
+        print(classes)
+        
+        for c in classes:
+            room = Group.query.filter_by(classid=c).first().room
+            print(c, "Rm:", room)
+            course = Course(courseid=c+"-"+subject, classid=c, subject=subject, teacher=teacher, room=room)
+            db.session.add(course)
+        db.session.commit()
+        flash('You have successfully added your classes. You may log in now.', 'success')
+        return redirect(url_for('users.login'))
+    return render_template('register_classes.html', title='Register', form=form, teacher=teacher)
+
+
+
 
 #%%
 @users.route("/login", methods=['GET', 'POST'])
@@ -64,6 +121,7 @@ def logout():
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
+    teacher = current_user.username
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -78,8 +136,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for('static', filename='img/profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='Account',
-                           image_file=image_file, form=form)
+    return render_template('account.html', title='Account', teacher=teacher, image_file=image_file, form=form)
 #%%
 def send_reset_email(user):
     token = user.get_reset_token()

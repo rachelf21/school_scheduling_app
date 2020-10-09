@@ -28,7 +28,7 @@ function mark_present(id) {
   var late_icon = document.getElementById("mark_late_" + parseInt(id + 1));
   var card = document.getElementById("card" + id);
 
-  console.log(present_icon);
+  //console.log(present_icon);
   if (present_icon.style.background == "rgb(92, 184, 92)") {
     present_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
@@ -59,7 +59,7 @@ function mark_absent(id) {
   var late_icon = document.getElementById("mark_late_" + parseInt(id + 1));
   var card = document.getElementById("card" + id);
 
-  console.log(absent_icon);
+  //console.log(absent_icon);
   if (absent_icon.style.background == "rgb(220, 20, 60)") {
     //217, 83, 79
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
@@ -91,7 +91,7 @@ function mark_late(id) {
   var late_icon = document.getElementById("mark_late_" + parseInt(id + 1));
   var card = document.getElementById("card" + id);
 
-  console.log(absent_icon);
+  //console.log(absent_icon);
   if (late_icon.style.background == "rgb(2, 117, 216)") {
     late_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
@@ -184,26 +184,26 @@ function present(count) {
 function set_value_comment(id) {
   var element = document.getElementById("card_comment_" + id);
   document.getElementById("current_id").value = id;
-  console.log("comment " + id);
+  //console.log("comment " + id);
   var student = document.getElementById("students-" + parseInt(id - 1) + "-student_name");
   var comment_element = document.getElementById("students-" + parseInt(id - 1) + "-comment");
   var n = document.getElementById("current_name");
   n.value = student.value;
-  console.log(n.value);
+  //console.log(n.value);
 }
 
 function add_comment() {
   var comment = document.getElementById("new_comment").value;
   //comment = comment.replace(/'/g, "");
   if (comment === null || comment == "") {
-    console.log("null commment");
+    //console.log("null commment");
     return;
   } else {
     var id = document.getElementById("current_id").value;
     var element = document.getElementById("card_comment_" + id);
-    console.log("element " + element);
+    //console.log("element " + element);
     element.childNodes[0].innerHTML = comment;
-    console.log("comment = " + comment);
+    //console.log("comment = " + comment);
     element.style.display = "block";
     var comment_element = document.getElementById("students-" + parseInt(id - 1) + "-comment");
     comment_element.value = comment;
@@ -211,7 +211,7 @@ function add_comment() {
 }
 
 function delete_comment(id) {
-  console.log("comment");
+  //("comment");
   var element = document.getElementById("card_comment_" + id);
   element.childNodes[0].innerHTML = "";
   element.style.display = "none";
@@ -221,11 +221,11 @@ function delete_comment(id) {
 
 function edit_attendance(id, email) {
   id = id - 1;
-  console.log(email);
+  //console.log(email);
   var changed_status = document.getElementById("students-" + id + "-status").value;
   var changed_comment = document.getElementById("students-" + id + "-comment").value;
   changed_comment = changed_comment.replace(/'/g, "") + " -edited";
-  console.log(changed_comment);
+  //console.log(changed_comment);
   window.location.href = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + changed_status + "/" + changed_comment;
 }
 

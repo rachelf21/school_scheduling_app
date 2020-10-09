@@ -1,0 +1,98 @@
+{% extends "base-denied.html" %} {% block content %}
+<style>
+  .checkbox-1x {
+    transform: scale(1.25);
+    -webkit-transform: scale(1.25);
+  }
+</style>
+<div style="width: 400px; margin: auto">
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <legend class="border-bottom mb-4">Select Subject and Classes</legend>
+
+      <div class="form-group mb-4" style="max-width: 200px">
+        <h5 class="text-muted">Subject</h5>
+        {% if form.subject.errors %} {{ form.subject(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.subject.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.subject(class="form-control") }} {% endif %}
+      </div>
+
+      <fieldset id="grade7" class="form-group">
+        <h5 class="text-muted">Grade 7</h5>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7B101(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7B101.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7G101(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7G101.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7B102(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7B102.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7G102(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7G102.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7B103(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7B103.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7G103(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7G103.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7B111(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7B111.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class7G111(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class7G111.label(class="form-check-label") }}</div>
+        </div>
+      </fieldset>
+      <!--ends grade 7 fieldset-->
+
+      <fieldset id="grade8" class="form-group pt-3 pb-3">
+        <h5 class="text-muted">Grade 8</h5>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8B101(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8B101.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8G101(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8G101.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8B102(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8B102.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8G102(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8G102.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8B103(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8B103.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8G103(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8G103.label(class="form-check-label") }}</div>
+        </div>
+
+        <div class="form-row pt-1">
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8B111(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8B111.label(class="form-check-label") }}</div>
+          <div class="col-1 pl-3" style="border: 0px solid red">{{ form.class8G111(class="checkbox-1x") }}</div>
+          <div class="col-3" style="border: 0px solid red">{{ form.class8G111.label(class="form-check-label") }}</div>
+        </div>
+      </fieldset>
+      <!--ends grade 7 fieldset-->
+
+      <div class="form-group mt-4">
+        <a href="/register_classes/{{teacher}}" class="btn btn-outline-info mr-4">Add another subject</a> {{ form.submit(class="btn
+        btn-outline-info ml-4") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

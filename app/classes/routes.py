@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, redirect, url_for
 from datetime import date
 from app.models import Group, Schedule, Course, Attendance
 from flask_login import current_user, login_required
@@ -18,7 +18,8 @@ def classes_all():
 @classes.route('/classes_anon')
 @login_required
 def classes_anon():
-    courses = Course.query.filter(~Course.subject.like('Lunch%')).filter(~Course.subject.like('Recess%')).all()
+    courses = Course.query.filter(~Course.subject.like('Lunch%')).filter(~Course.subject.like('Recess%')).filter_by(teacher=current_user.username).all()
+    print("len", len(courses))
     schedule = Schedule.query.all()
     today = date.today().weekday()
     if today == 0:
@@ -29,10 +30,11 @@ def classes_anon():
         dow = 'A_W'
     elif today == 3:
         dow = 'A_Th'
-    elif today == 4:
-        dow = 'A_F'
+    # elif today == 4:
+    #     dow = 'A_F'
     else: 
         dow = 'A_M'
     #room = Group.query(Group.room).filter_by(classid='7-101')
     #room = Group.query.with_entities(Group.room).filter_by(classid='7-101')
+    
     return render_template('classes_anon.html', courses=courses, schedule=schedule, dow=dow, teacher=current_user.username)

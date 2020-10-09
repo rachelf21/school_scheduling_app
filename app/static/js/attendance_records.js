@@ -37,7 +37,7 @@ function edit_attendance() {
   //console.log("edit_attendance ");
   var new_status = document.getElementById("new_status").value.toUpperCase();
   var new_comment = document.getElementById("new_comment").value;
-  //new_comment = new_comment.replace(/'/g, "");
+  new_comment = new_comment.replace(/'/g, "") + " -edited";
   //console.log("new comment = " + new_comment);
   var date = document.getElementById("current_date").value;
   var courseid = document.getElementById("current_courseid").value;

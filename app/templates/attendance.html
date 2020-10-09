@@ -45,15 +45,15 @@
 
 </script>
 
-<div class="container" style="text-align:center">
-    <h1 class="mt-2 font-weight-normal mont">Attendance</h1>
+<div class="container " style="text-align:center">
+    <h1 class="mt-2  display-4">Attendance</h1>
 
     <legend class="border-bottom mb-3 mont" >
       <script> document.write(courseid +" (Rm " + room + ")"); </script>
     </legend>
 </div>
 
-
+<div class="content-section">
 <form action="/update_attendance" method="post" name="att_form"> {{ att_form.hidden_tag() }}
 
   <div id="top_of_form" >
@@ -192,6 +192,7 @@
 </div>
  
 </form>
+</div>
 <script>
   console.log("{{teacher}}")
   if ("{{teacher}}" == "rfriedman") {

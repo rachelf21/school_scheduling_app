@@ -1,7 +1,7 @@
 from flask import render_template, url_for, jsonify, request, redirect, Blueprint
 import datetime
 from app.records.forms import AttendanceRecordForm
-from app.models import Student, Course, Attendance
+from app.models import Student, Course, Attendance, Group
 import json
 from flask_login import current_user, login_required
 
@@ -63,6 +63,7 @@ def track_attendance(category):
         student_class = ''
         courseid = ''
         courseid2 = ''
+        classid2 = ''
         student = ''
         date = ''
         
@@ -86,7 +87,8 @@ def track_attendance(category):
             student = request.form['student_list']
             student_name = Student.query.filter_by(email = student).first().name
             print(student_name)
-            student_class = Student.query.filter_by(email = student).first().classid        
+            student_class = Student.query.filter_by(email = student).first().classid  
+            classid2 = Group.query.filter_by(classid=student_class).first().classid2
             absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
             lates = Attendance.query.filter_by(teacher=teacher, email = student, status = 'L').count()
             
@@ -152,7 +154,7 @@ def track_attendance(category):
             date = category[2:12]
             courseid = category[12:]
             classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
-            courseid2 = classid2+courseid[5]
+            courseid2 = classid2+courseid[5:]
             
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'A').count() 
             lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, courseid = courseid, status = 'L').count() 
@@ -164,6 +166,7 @@ def track_attendance(category):
             student_name = Student.query.filter_by(email = student).first().name
             print(student_name)
             student_class = Student.query.filter_by(email = student).first().classid
+            classid2 = Group.query.filter_by(classid=student_class).first().classid2
             absences = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A'])).count()
             lates = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['L'])).count()            
       
@@ -172,7 +175,7 @@ def track_attendance(category):
     
         teacher=current_user.username
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher)
+        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2)
 #%%
 @records.route('/get_classes_today', methods = ['POST'])
 def get_classes_today():

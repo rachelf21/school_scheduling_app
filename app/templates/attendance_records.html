@@ -5,7 +5,7 @@
 <!-- <div id="outerdiv" style="display: flex; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto"> -->
 <div style="text-align: center">
-  <h1 id="h1" class="mb-0 font-weight-normal mont">Attendance Records</h1>
+  <h1 id="h1" class="mb-0 display-4">Attendance Records</h1>
   <hr />
   <p></p>
   <h2 id="page_title" class="font-weight-normal mt-0 text-center"></h2>
@@ -19,10 +19,11 @@
 <script>
   var title = "";
   var category = "{{category}}";
+  console.log("category: "+category);
   if (category == "class") {
     title = "{{courseid2}}";
   } else if (category == "student") {
-    title = "{{student_name}}<br> {{student_class}}";
+    title = "{{student_name}}<br> {{classid2}}";
   } else if (category == "date") {
     title = "{{date}}";
     title = convert_date(title) + "<br>All Classes";
@@ -33,7 +34,7 @@
     var formatted_date = convert_date("{{date}}");
     title = formatted_date + "<br>{{courseid2}}";
   } else {
-    title = "{{student_name}} <br> {{courseid2}}";
+    title = "{{student_name}} <br> {{classid2}}";
   }
   document.getElementById("page_title").innerHTML = title;
   var endtable = 1;

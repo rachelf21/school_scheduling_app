@@ -1,6 +1,6 @@
 {% extends "base-denied.html" %} {%block title%} MDY My Account {%endblock%} {% block content %}
 
-<h1 class="mb-4 text-center font-weight-normal">Account Info</h1>
+<h1 class="mb-4 text-center display-4">Account Info</h1>
 <div style="width: 500px; margin: auto">
   <div class="content-section">
     <div class="media">
@@ -36,15 +36,16 @@
           {% else %} {{ form.email(class="form-control form-control-lg") }} {% endif %}
         </div>
 
-        <div class="form-group">
+        <div class="form-group form-row">
           {{ form.picture.label() }} {{ form.picture(class="form-control-file form-control-lg") }} {% if form.picture.errors %} {% for error
           in form.picture.errors %}
-          <span class="text-danger">{{ error }}</span><br />
-          {% endfor %} {% endif %}
+          <span class="text-danger">{{ error }}</span>
+          {% endfor %} {% endif %} {{ form.submit(class="btn btn-outline-info") }}
         </div>
       </fieldset>
-      <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}</div>
     </form>
+
+    <a href="/register_classes/{{teacher}}">Add classes</a>
   </div>
 </div>
 {% endblock content %}
