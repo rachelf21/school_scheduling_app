@@ -56,8 +56,8 @@
       <th>Tuesday</th>
       <th>Wednesday</th>
       <th>Thursday</th>
-      <th>Per</th>
-      <th>Time</th>
+      <th>Fri<br />Per</th>
+      <th>Fri<br />Time</th>
       <th>Friday</th>
     </thead>
 
@@ -78,9 +78,11 @@
         </td>
         <td style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
         <td style="border-width: medium; vertical-align: middle">
-          <a
-            >{{mon.courseid2[n]}}
+          <a>
             <script>
+              var mon = "{{mon.courseid2[n]}}";
+              mon = mon.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(mon);
               var parent = document.currentScript.parentElement;
               var schedid = "{{mon.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{mon.courseid[n]}}".substring(0, 5);
@@ -92,8 +94,10 @@
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{tues.courseid2[n]}}
             <script>
+              var tues = "{{tues.courseid2[n]}}";
+              tues = tues.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(tues);
               var parent = document.currentScript.parentElement;
               var schedid = "{{tues.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{tues.courseid[n]}}".substring(0, 5);
@@ -105,8 +109,10 @@
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{wed.courseid2[n]}}
             <script>
+              var wed = "{{wed.courseid2[n]}}";
+              wed = wed.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(wed);
               var parent = document.currentScript.parentElement;
               var schedid = "{{wed.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{wed.courseid[n]}}".substring(0, 5);
@@ -118,8 +124,10 @@
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{thurs.courseid2[n]}}
             <script>
+              var thurs = "{{thurs.courseid2[n]}}";
+              thurs = thurs.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(thurs);
               var parent = document.currentScript.parentElement;
               var schedid = "{{thurs.scheduleid[n]}}".substring(0, 4);
               var curr_class = "{{thurs.courseid[n]}}".substring(0, 5);
@@ -158,8 +166,10 @@
 
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{fri.courseid2[n] if fri.courseid2[n] !=None }}
             <script>
+              var fri = "{{fri.courseid2[n] if fri.courseid2[n] !=None }}";
+              fri = fri.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(fri);
               if (curr_per < 8) {
                 var parent = document.currentScript.parentElement;
                 var schedid = "{{fri.scheduleid[n]}}".substring(0, 4);

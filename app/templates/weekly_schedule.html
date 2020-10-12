@@ -59,7 +59,7 @@
       <tr>
         <script>
           var curr_per = per[{{n}}+1];
-          if (curr_per == 'L' || curr_per == '8'){
+          if (curr_per == "L" || curr_per == '8'){
             document.currentScript.parentElement.style.background = "Gainsboro";
           }
         </script>
@@ -71,53 +71,61 @@
         </td>
         <td style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
         <td style="border-width: medium; vertical-align: middle">
-          <a
-            >{{mon.courseid2[n]}}
+          <a>
             <script>
+              var mon = "{{mon.courseid2[n]}}";
+              mon = mon.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(mon);
               var parent = document.currentScript.parentElement;
               var schedid = "{{mon.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{mon.courseid[n]}}".substring(0, 5);
-              var curr_course = "{{mon.courseid[n]}}";
               var classid = "{{mon.classid2[n]}}";
+              var curr_course = "{{mon.courseid[n]}}";
               color_code("{{mon.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{tues.courseid2[n]}}
             <script>
+              var tues = "{{tues.courseid2[n]}}";
+              tues = tues.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(tues);
               var parent = document.currentScript.parentElement;
               var schedid = "{{tues.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{tues.courseid[n]}}".substring(0, 5);
-              var curr_course = "{{tues.courseid[n]}}";
               var classid = "{{tues.classid2[n]}}";
+              var curr_course = "{{tues.courseid[n]}}";
               color_code("{{tues.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{wed.courseid2[n]}}
             <script>
+              var wed = "{{wed.courseid2[n]}}";
+              wed = wed.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(wed);
               var parent = document.currentScript.parentElement;
               var schedid = "{{wed.scheduleid[n]}}".substring(0, 3);
               var curr_class = "{{wed.courseid[n]}}".substring(0, 5);
-              var curr_course = "{{wed.courseid[n]}}";
               var classid = "{{wed.classid2[n]}}";
+              var curr_course = "{{wed.courseid[n]}}";
               color_code("{{wed.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
         </td>
         <td style="border-width: medium; vertical-align: middle">
           <a>
-            {{thurs.courseid2[n]}}
             <script>
+              var thurs = "{{thurs.courseid2[n]}}";
+              thurs = thurs.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
+              document.write(thurs);
               var parent = document.currentScript.parentElement;
               var schedid = "{{thurs.scheduleid[n]}}".substring(0, 4);
               var curr_class = "{{thurs.courseid[n]}}".substring(0, 5);
-              var curr_course = "{{thurs.courseid[n]}}";
               var classid = "{{thurs.classid2[n]}}";
+              var curr_course = "{{thurs.courseid[n]}}";
               color_code("{{thurs.scheduleid[n]}}", "{{current_period}}");
             </script>
           </a>
