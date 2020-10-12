@@ -33,6 +33,8 @@ class RegistrationForm(FlaskForm):
         user = Users.query.filter_by(email=email.data).first()        
         if user:
             raise ValidationError('Email already exists.')
+        if not "@mdyschool.org" in email.data:
+            raise ValidationError('Please use your mdyschool.org email account.')
                 
 #%% 
 class RegisterClassesForm(FlaskForm):
