@@ -18,7 +18,12 @@
   </a>
 </div>
 <h5 style="display: none" class="mt-1 text-center font-weight-normal"><a href="/today">Today</a></h5>
-<h1 class="text-center">Coming Soon</h1>
+<h6 id="no_sched" class="text-center alert alert-danger mb-4" style="max-width: 800px; margin: auto; color: red; display: none">
+  <!-- <a href="mailto:app-attendance@mdyschool.org" target="_blank" rel="noopener noreferrer"> -->
+  Email a copy of your schedule to app-attendance@mdyschool.org. <br />
+  You will then be able to take attendance by clicking on the class name.
+  <!-- </a> -->
+</h6>
 <style>
   a {
     color: black;
@@ -51,6 +56,9 @@
       <th>Tuesday</th>
       <th>Wednesday</th>
       <th>Thursday</th>
+      <th>Per</th>
+      <th>Time</th>
+      <th>Friday</th>
     </thead>
 
     <tbody>
@@ -58,7 +66,7 @@
       <tr>
         <script>
           var curr_per = per[{{n}}+1];
-          if (curr_per == 'L' || curr_per == '8'){
+          if (curr_per == "L" || curr_per == '8'){
             document.currentScript.parentElement.style.background = "Gainsboro";
           }
         </script>
@@ -121,6 +129,53 @@
             </script>
           </a>
         </td>
+        <td class="h2 font-weight-light" style="border-width: medium">
+          <script>
+            if (curr_per == 5) {
+              document.write("L");
+              document.currentScript.parentElement.style.background = "Gainsboro";
+            } else if (curr_per == "L") {
+              document.currentScript.parentElement.style.background = "whitesmoke";
+              document.write("5");
+            } else if (curr_per < 8) document.write(curr_per);
+            else document.currentScript.parentElement.style.background = "whitesmoke";
+          </script>
+        </td>
+        <td style="border-width: medium">
+          <script>
+            if (curr_per < 8 || curr_per == "L") {
+              document.write("{{fri_start_times[n]}}<br />-<br />{{fri_end_times[n]}}");
+              document.currentScript.parentElement.style.background = "whitesmoke";
+            }
+            if (curr_per == 8) {
+              document.currentScript.parentElement.style.background = "whitesmoke";
+            }
+            if (curr_per == 5) {
+              document.currentScript.parentElement.style.background = "Gainsboro";
+            }
+          </script>
+        </td>
+
+        <td style="border-width: medium; vertical-align: middle">
+          <a>
+            {{fri.courseid2[n] if fri.courseid2[n] !=None }}
+            <script>
+              if (curr_per < 8) {
+                var parent = document.currentScript.parentElement;
+                var schedid = "{{fri.scheduleid[n]}}".substring(0, 4);
+                var curr_class = "{{fri.courseid[n]}}".substring(0, 5);
+                var classid = "{{fri.classid2[n]}}";
+                var curr_course = "{{fri.courseid[n]}}";
+                color_code("{{fri.scheduleid[n]}}", "{{current_period}}");
+              } else {
+                document.currentScript.parentElement.parentElement.style.background = "whitesmoke";
+              }
+              if (curr_per == 5) {
+                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+              }
+            </script>
+          </a>
+        </td>
       </tr>
       {%endfor%}
     </tbody>
@@ -143,6 +198,14 @@
       document.getElementById("next").href = "/set_week/A";
     }
   };
+
+  if ({{no_schedule}} == 0) {
+    console.log("no schedule set up");
+    $("#no_sched").css("display", "block");
+  } else {
+    console.log("sched set up");
+    $("#no_sched").css("display", "none");
+  }
 </script>
 <hr class="mt-4 mb-4" />
 {% endblock content %}

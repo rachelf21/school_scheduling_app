@@ -175,6 +175,7 @@ def display_full_schedule():
     #x = Course.query.join(Group, Course.classid == Group.classid)
     global title
     global current_week
+    no_schedule=1
     
     lessons = Lessons.query.all()
     
@@ -189,12 +190,22 @@ def display_full_schedule():
     wed = schedule.wed_df
     thurs = schedule.thurs_df
     fri = schedule.fri_df
+
     
     schedule.get_times()
+    schedule.get_Fri_times()
     start_times = schedule.start_times 
     end_times = schedule.end_times
+    fri_start_times = schedule.fri_start_times
+    fri_end_times = schedule.fri_end_times
+    
+    if schedule.is_empty():
+        no_schedule=0
+    else:
+        no_schedule=1
+    
     current_period = Util().get_current_period()
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule)
 
 #%% this is only for rfriedman
 @my_schedule.route('/weekly_schedule')
@@ -223,7 +234,7 @@ def display_weekly_schedule():
     start_times = schedule.start_times 
     end_times = schedule.end_times
     current_period = Util().get_current_period()
-    return render_template('weekly_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
+    return render_template('weekly_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri = fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, current_period = current_period, teacher=current_user.username)
 
     
 #%%

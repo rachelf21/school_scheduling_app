@@ -32,17 +32,21 @@ function color_code(sched, period) {
     if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
     else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
   } else if (classid.includes("G")) {
-    document.currentScript.parentElement.parentElement.style.background = paleyellow;
+    if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
+    else document.currentScript.parentElement.parentElement.style.background = paleyellow;
   } else if (classid.includes("B")) {
-    document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+    if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
+    else document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
   }
+  //console.log("current period is " + curr_per);
+  if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
 
   var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-  console.log(link_text);
+  //console.log(link_text);
   parent.setAttribute("href", link_text);
   parent.setAttribute("style", "display:block; width:100%; height:100%");
   if (sched.substring(2) == period) {
-    console.log(sched.substring(2));
+    //console.log(sched.substring(2));
     document.currentScript.parentElement.parentElement.style.background = "#00FFFF";
   }
 }

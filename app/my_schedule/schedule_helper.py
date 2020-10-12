@@ -9,8 +9,11 @@ class Full_Schedule:
     tues_df = []
     wed_df = []
     thurs_df = []
+    fri_df = []
     start_times = []
     end_times=[]
+    fri_start_times = []
+    fri_end_times=[]    
     teacher = ''
     
     def set_week(self):
@@ -48,10 +51,15 @@ class Full_Schedule:
         # print(self.thurs_df)      
     
         self.fri_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_F%'  order by sort" , engine)   
-        self.fri_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
-        # print(self.thurs_df)     
+        self.fri_df["courseid2"].replace({"0-0-0": ""}, inplace=True) 
+
     
     # print(tuesday)
+    def is_empty(self):
+        if self.mon_df.empty and self.tues_df.empty and self.wed_df.empty and self.thurs_df.empty and self.fri_df.empty:
+            return True
+        else:
+            return False
 
     def get_times(self):
         for n in range(0,5):
@@ -71,3 +79,22 @@ class Full_Schedule:
             self.start_times.append(start)
             end = Period.query.filter(Period.periodid.like('%' + str(n+1))).first().end_time.strftime("%#I:%M")
             self.end_times.append(end)
+            
+    def get_Fri_times(self):
+        for n in range(0,4):
+            start = Period.query.filter(Period.periodid.like('%F' + str(n+1))).first().start_time.strftime("%#I:%M")
+            self.fri_start_times.append(start)
+            end = Period.query.filter(Period.periodid.like('%F' + str(n+1))).first().end_time.strftime("%#I:%M")
+            self.fri_end_times.append(end)
+            
+     
+        start = Period.query.filter(Period.periodid.like('%FL')).first().start_time.strftime("%#I:%M")
+        self.fri_start_times.append(start)
+        end = Period.query.filter(Period.periodid.like('%FL')).first().end_time.strftime("%#I:%M")
+        self.fri_end_times.append(end)
+        
+        for n in range(4,7):
+            start = Period.query.filter(Period.periodid.like('%F' + str(n+1))).first().start_time.strftime("%#I:%M")
+            self.fri_start_times.append(start)
+            end = Period.query.filter(Period.periodid.like('%F' + str(n+1))).first().end_time.strftime("%#I:%M")
+            self.fri_end_times.append(end)

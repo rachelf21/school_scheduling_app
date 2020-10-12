@@ -34,7 +34,7 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('Email already exists.')
         if not "@mdyschool.org" in email.data:
-            raise ValidationError('Please use your mdyschool.org email account.')
+            raise ValidationError('Email must be @mdyschool.org.')
                 
 #%% 
 class RegisterClassesForm(FlaskForm):
