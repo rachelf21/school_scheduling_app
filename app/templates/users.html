@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %} MDY Users {% endblock title %} {% block content %}
+<script>
+  var num_users = 0;
+</script>
+<div style="border: 0px solid red; text-align: center" class="container">
+  <h1 id="title" class="font-weight-normal mb-4">Users</h1>
+  <table
+    id="myTable"
+    class="table table-striped table-hover table-bordered"
+    style="border: 0px red solid; background: whitesmoke; width: auto; margin: auto"
+  >
+    <th>Count</th>
+    <th>username</th>
+    <th>id</th>
+    <th>Title</th>
+    <th>First</th>
+    <th>Last</th>
+    <th>Subject</th>
+
+    {% for user in users%}
+    <tr>
+      <td>{{loop.index}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.id}}</td>
+      <td>{{user.title}}</td>
+      <td>{{user.first}}</td>
+      <td>{{user.last}}</td>
+      <td>subject</td>
+    </tr>
+    <script>
+      num_users = {{loop.index}};
+    </script>
+    {% endfor %}
+  </table>
+</div>
+
+<script>
+  window.onload = function () {
+    AutoRefresh(300000);
+  };
+</script>
+
+<script>
+  function AutoRefresh(t) {
+    var date = new Date(new Date().getTime()).toLocaleTimeString();
+    console.log("Refreshed " + date);
+    $("#title").text(num_users + " Users");
+    setTimeout("location.reload(true);", t);
+  }
+</script>
+
+{% endblock content %}

@@ -129,7 +129,7 @@ def edit_attendance(date, courseid, email, status, comment):
     topic = "attendance staus of " + status + " for " + name 
     
     cat = '_x'+att_date+courseid
-    flash('Your attendance change for ' + name + ' has been updated to ' + status + '.', 'success')
+    flash('Your attendance status for ' + name + ' has been updated to ' + status + '.', 'success')
     return redirect(url_for('records.track_attendance', category=cat))
     # return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
     

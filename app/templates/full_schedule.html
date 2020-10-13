@@ -66,18 +66,20 @@
       <tr>
         <script>
           var curr_per = per[{{n}}+1];
-          if (curr_per == "L" || curr_per == '8'){
-            document.currentScript.parentElement.style.background = "Gainsboro";
+          if (curr_per == "L" ) {
+            //document.currentScript.parentElement.style.background = "Gainsboro";
           }
         </script>
 
-        <td class="display-4" style="border-width: medium">
+        <td name="periods" class="display-4" style="border-width: medium">
           <script>
             document.write(curr_per);
           </script>
         </td>
-        <td style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
-        <td style="border-width: medium; vertical-align: middle">
+
+        <td name="times" style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
+
+        <td name="monday" style="border-width: medium; vertical-align: middle">
           <a>
             <script>
               var mon = "{{mon.courseid2[n]}}";
@@ -89,10 +91,17 @@
               var classid = "{{mon.classid2[n]}}";
               var curr_course = "{{mon.courseid[n]}}";
               color_code("{{mon.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{mon.scheduleid[n]}}", "{{current_period}}");
+              color_recess();
+              write_linktocourse("{{mon.scheduleid[n]}}", "{{current_period}}");
+              if (curr_per == "L" || curr_course.includes("Recess")) {
+                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+              }
             </script>
           </a>
         </td>
-        <td style="border-width: medium; vertical-align: middle">
+
+        <td name="tuesday" style="border-width: medium; vertical-align: middle">
           <a>
             <script>
               var tues = "{{tues.courseid2[n]}}";
@@ -104,10 +113,17 @@
               var classid = "{{tues.classid2[n]}}";
               var curr_course = "{{tues.courseid[n]}}";
               color_code("{{tues.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{tues.scheduleid[n]}}", "{{current_period}}");
+              color_recess();
+              write_linktocourse("{{tues.scheduleid[n]}}", "{{current_period}}");
+              if (curr_per == "L" || curr_course.includes("Recess")) {
+                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+                document.currentScript.parentElement.parentElement.parentElement.style.background = "Gainsboro";
+              }
             </script>
           </a>
         </td>
-        <td style="border-width: medium; vertical-align: middle">
+        <td name="wednesday" style="border-width: medium; vertical-align: middle">
           <a>
             <script>
               var wed = "{{wed.courseid2[n]}}";
@@ -119,10 +135,16 @@
               var classid = "{{wed.classid2[n]}}";
               var curr_course = "{{wed.courseid[n]}}";
               color_code("{{wed.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{wed.scheduleid[n]}}", "{{current_period}}");
+              color_recess();
+              write_linktocourse("{{wed.scheduleid[n]}}", "{{current_period}}");
+              if (curr_per == "L" || curr_course.includes("Recess")) {
+                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+              }
             </script>
           </a>
         </td>
-        <td style="border-width: medium; vertical-align: middle">
+        <td name="thursday" style="border-width: medium; vertical-align: middle">
           <a>
             <script>
               var thurs = "{{thurs.courseid2[n]}}";
@@ -134,10 +156,16 @@
               var classid = "{{thurs.classid2[n]}}";
               var curr_course = "{{thurs.courseid[n]}}";
               color_code("{{thurs.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{thurs.scheduleid[n]}}", "{{current_period}}");
+              color_recess();
+              write_linktocourse("{{thurs.scheduleid[n]}}", "{{current_period}}");
+              if (curr_per == "L" || curr_course.includes("Recess")) {
+                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+              }
             </script>
           </a>
         </td>
-        <td class="h2 font-weight-light" style="border-width: medium">
+        <td name="fri_per" class="h2 font-weight-light" style="border-width: medium; vertical-align: middle">
           <script>
             if (curr_per == 5) {
               document.write("L");
@@ -149,13 +177,13 @@
             else document.currentScript.parentElement.style.background = "whitesmoke";
           </script>
         </td>
-        <td style="border-width: medium">
+        <td name="fri_times" style="border-width: medium; vertical-align: middle">
           <script>
             if (curr_per < 8 || curr_per == "L") {
               document.write("{{fri_start_times[n]}}<br />-<br />{{fri_end_times[n]}}");
               document.currentScript.parentElement.style.background = "whitesmoke";
             }
-            if (curr_per == 8) {
+            if (curr_per > 7) {
               document.currentScript.parentElement.style.background = "whitesmoke";
             }
             if (curr_per == 5) {
@@ -177,6 +205,12 @@
                 var classid = "{{fri.classid2[n]}}";
                 var curr_course = "{{fri.courseid[n]}}";
                 color_code("{{fri.scheduleid[n]}}", "{{current_period}}");
+                color_code_cs("{{fri.scheduleid[n]}}", "{{current_period}}");
+                color_recess();
+                write_linktocourse("{{fri.scheduleid[n]}}", "{{current_period}}");
+                if (curr_per == "L" || curr_course.includes("Recess")) {
+                  document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
+                }
               } else {
                 document.currentScript.parentElement.parentElement.style.background = "whitesmoke";
               }

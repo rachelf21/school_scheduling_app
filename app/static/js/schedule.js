@@ -25,22 +25,40 @@ function highlight_period(start_time, end_time) {
   }
 }
 
-function color_code(sched, period) {
+//computers or stem
+function color_code_cs(sched, period) {
   if (curr_course.includes("Computers")) {
     document.currentScript.parentElement.parentElement.style.background = paleyellow;
   } else if (curr_course.includes("STEM")) {
     if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
     else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
-  } else if (classid.includes("G")) {
-    if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
-    else document.currentScript.parentElement.parentElement.style.background = paleyellow;
-  } else if (classid.includes("B")) {
-    if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
-    else document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
   }
-  //console.log("current period is " + curr_per);
-  if (curr_per == "L") document.currentScript.parentElement.style.background = "Gainsboro !important";
+}
 
+//G or B
+function color_code(sched, period) {
+  if (classid.includes("G")) {
+    document.currentScript.parentElement.parentElement.style.background = paleyellow;
+  } else if (classid.includes("B")) {
+    document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+  }
+}
+
+//Lunch. unusued function. did not work.
+function color_lunch() {
+  if (curr_per == "L") document.currentScript.parentElement.style.backgroundColor = "Gainsboro !important";
+}
+
+//Recess - unused function. did not work.
+function color_recess() {
+  if (curr_course.includes("Recess")) {
+    console.log("Recess is now. Current period is " + curr_per);
+    element = document.currentScript.parentElement.parentElement;
+    element.style.background = "Gainsboro !important";
+  }
+}
+
+function write_linktocourse(sched, period) {
   var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
   //console.log(link_text);
   parent.setAttribute("href", link_text);

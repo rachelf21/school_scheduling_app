@@ -1,5 +1,6 @@
 from flask import render_template, request, Response
 from app import app, engine
+from app.models import Users
 import pandas as pd
 from functools import wraps
 
@@ -61,4 +62,8 @@ def lunch_menu():
 def denied():
     return render_template('denied.html')
 
-
+@app.route("/list_users")
+@requires_auth_admin 
+def list_users():
+    users = Users.query.all()
+    return render_template('users.html', users=users)
