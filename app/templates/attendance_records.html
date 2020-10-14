@@ -156,7 +156,7 @@
   </td>
     <script>
       if("{{att.status}}" =='A'){
-        $('#notify{{loop.index}}').css('display', 'none');
+        $('#notify{{loop.index}}').css('display', 'block');
       }
     </script>
     <td>{{ att.comment}}</td>
@@ -175,7 +175,7 @@
 <div style="text-align: right">
   <!-- <a id="my_classes2" href="/records" class="mt-4 mr-4 mb-2 btn btn-outline-primary btn-md">Attendance Records</a> -->
   
-  <a style="display:none" title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-md">
+  <a title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-md">
     <i style="color:#1e2a5d" class="fa fa-envelope fa-2x"></i><span  class="ml-2 h5">ALL</span></a>
   <a id="my_classes2" href="/classes_anon" class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-lg">My Classes</a>
 </div>
