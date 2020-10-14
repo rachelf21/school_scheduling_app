@@ -48,3 +48,44 @@ function edit_attendance() {
   //console.log(test);
   window.location.href = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
 }
+//href="/send_email/{{att.email}}/{{att.courseid}}"
+
+function email_absences(student_email, name, course, date) {
+  if (confirm("Are you sure you want to email " + name + " and their parents?")) {
+    var studentObj = { student_email: student_email, student_name: name, course: course, attdate: date };
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json",
+      url: "/send_email",
+      //context: document.body,
+      dataType: "json",
+      data: JSON.stringify(studentObj),
+      success: function (data) {
+        //window.location.reload;
+        alert("Email sent to " + name + " and parents.\r\nA copy has been sent to your email.");
+        console.log("response: " + data);
+        $(this).addClass("done");
+      },
+      error: function (error) {
+        console.log("error " + error);
+      },
+    });
+  } else {
+    console.log("user canceled email request");
+  }
+}
+
+function email_all(attendance) {
+  for (var i = 0; i < attendance.length; i++) {
+    student_email = attendance[i].email;
+    student_name = attendance[i].name;
+    status = attendance[i].status;
+    course = attendance[i].courseid;
+    date = attendance[i].date;
+    if (status == "A") {
+      console.log(student_email + student_name + course);
+      email_absences(student_email, student_name, course, date);
+    }
+  }
+}

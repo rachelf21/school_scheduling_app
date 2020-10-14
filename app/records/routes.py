@@ -1,11 +1,98 @@
-from flask import render_template, url_for, jsonify, request, redirect, Blueprint
+from flask import render_template, url_for, jsonify, request, redirect, Blueprint, flash
 import datetime
 from app.records.forms import AttendanceRecordForm
 from app.models import Student, Course, Attendance, Group, Users
 import json
 from flask_login import current_user, login_required
-
+from app import mail
+from flask_mail import Message
 records = Blueprint('records', __name__)
+
+
+#%%
+@records.route('/send_email', methods = ['GET','POST'])
+def send_email():
+    print("request.json" , request.json)
+    if request.method == "POST":
+        data=request.get_json(force=True)
+        student_email = data['student_email']
+        student_name = data['student_name']
+        course = data['course']
+        date = data['attdate']
+        date = datetime.datetime.strptime(date, "%Y-%m-%d")
+        date = date.strftime('%B %d, %Y')
+        
+        print("DATE =", date)
+        child = Student.query.filter_by(email = student_email).first()
+        teacher = current_user.username
+        teacher = Users.query.filter_by(username = teacher).first()
+        tname = teacher.title + " " + teacher.first + " " + teacher.last
+        temail = teacher.email
+        parent1 = Student.query.filter_by(email=student_email).first().parent1
+        parent2 = Student.query.filter_by(email=student_email).first().parent2
+
+        msg = Message('Absence', sender='noreply@mdy-attendance.com', recipients=[parent1, parent2, student_email], cc=[temail])
+        
+        msg.body = "This is an automated message. \n" + student_name + " has been marked absent on " + date +" for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \nThank you."
+    
+    #print(msg.body)
+    mail.send(msg)
+    #flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')
+    
+    success = json.dumps("success")    
+    return (success)
+    
+
+#%%
+# @records.route('/send_email/<student>/<course>', methods = ['GET','POST'])
+# def send_email(student, course):
+#     child = Student.query.filter_by(email = student).first()
+#     teacher = current_user.username
+#     teacher = Users.query.filter_by(username = teacher).first()
+#     tname = teacher.title + " " + teacher.first + " " + teacher.last
+#     temail = teacher.email
+#     parent1 = Student.query.filter_by(email=student).first().parent1
+#     parent2 = Student.query.filter_by(email=student).first().parent2
+    
+#     msg = Message('Absence', sender='noreply@mdy-attendance.com', recipients=[parent1, parent2], cc=[temail])
+
+#     msg.body = "This is an automated message. \n" + child.name + " has been marked absent today for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, he or she can be contacted at the following email address: " + temail + ". \nThank you."
+    
+    
+#     mail.send(msg)
+#     flash('Emails sent.', 'success')
+#     return redirect(url_for("classes.classes_anon"))
+
+
+#%%
+@records.route('/get_classes_today', methods = ['POST'])
+def get_classes_today():
+    date='2020-10-05'
+    print("request.json" , request.json)
+    if request.method == "POST":
+        data=request.get_json(force=True)
+        date=data['date']
+        print(" date is " + date)
+    teacher = current_user.username
+    
+    todays_classes = []
+    todays_classes_display = []
+    
+    results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
+    
+    for classs in results:
+        todays_classes_display.append(classs.courseid+"B")
+        todays_classes.append(classs.courseid)
+        
+    print(todays_classes)
+    
+    todays_classes = json.dumps(todays_classes)
+    todays_classes_display = json.dumps(todays_classes_display)
+    
+    print(todays_classes_display)
+    print("todays classes = ", todays_classes)
+    return (todays_classes)
+    
 
 #%%
 @records.route('/records', methods=["GET" , "POST"])
@@ -178,36 +265,17 @@ def track_attendance(category):
         teacher=current_user.username
         user = Users.query.filter_by(username=teacher).first()
         
-        return render_template('attendance_records.html', attendance=attendance, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2, user=user)
-#%%
-@records.route('/get_classes_today', methods = ['POST'])
-def get_classes_today():
-    date='2020-10-05'
-    print("request.json" , request.json)
-    if request.method == "POST":
-        data=request.get_json(force=True)
-        date=data['date']
-        print(" date is " + date)
-    teacher = current_user.username
-    
-    todays_classes = []
-    todays_classes_display = []
-    
-    results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
-    
-    for classs in results:
-        todays_classes_display.append(classs.courseid+"B")
-        todays_classes.append(classs.courseid)
         
-    print(todays_classes)
+        attendance_json = []
+        for a in attendance:
+            print(a)
+            attendance_json.append(a.as_dict())
+        print(attendance_json)    
+        #attendance_json = json.dumps([dict(a) for a in attendance])
     
-    todays_classes = json.dumps(todays_classes)
-    todays_classes_display = json.dumps(todays_classes_display)
-    
-    print(todays_classes_display)
-    print("todays classes = ", todays_classes)
-    return (todays_classes)
-    
+        return render_template('attendance_records.html', attendance=attendance, attendance_json=attendance_json, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2, user=user)
+
+
 
 #%%
 @records.route('/track_attendance_day' , methods=['GET', 'POST'])

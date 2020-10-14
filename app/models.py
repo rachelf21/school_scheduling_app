@@ -237,7 +237,7 @@ class Attendance(db.Model):
         return f"Attendance('{self.att_date}', '{self.teacher}','{self.scheduleid}', '{self.courseid}', '{self.email}','{self.status}', '{self.comment}')"
     
     def as_dict(self):
-        return {'date': self.att_date ,'teacher': self.teacher, 'scheduleid': self.scheduleid, 'courseid':self.courseid, 'email':self.email, 'status':self.status, 'comment':self.comment}
+        return {'date': self.att_date ,'teacher': self.teacher, 'scheduleid': self.scheduleid, 'name': self.name, 'courseid':self.courseid, 'email':self.email, 'status':self.status, 'comment':self.comment}
     
 #%%
 
