@@ -63,7 +63,9 @@ function email_absences(student_email, name, course, date) {
       data: JSON.stringify(studentObj),
       success: function (data) {
         //window.location.reload;
-        alert("Email sent to " + name + " and parents.\r\nA copy has been sent to your email.");
+        //alert("Email sent to " + name + " and parents.\r\nAx copy has been sent to your email.");
+        $("#ajax_alerts").html("Emails sent to student and parents.\r\nCheck your email for confirmation.");
+        $("#ajax_alerts").css("display", "block");
         console.log("response: " + data);
         $(this).addClass("done");
       },
@@ -76,15 +78,28 @@ function email_absences(student_email, name, course, date) {
   }
 }
 
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getUTCMonth() + 1),
+    day = "" + d.getUTCDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+}
+
 function email_all(attendance) {
   for (var i = 0; i < attendance.length; i++) {
     student_email = attendance[i].email;
     student_name = attendance[i].name;
     status = attendance[i].status;
     course = attendance[i].courseid;
-    date = attendance[i].date;
+    longdate = attendance[i].date;
+    date = formatDate(longdate);
     if (status == "A") {
-      console.log(student_email + student_name + course);
+      console.log(student_email + ", " + student_name + ", " + course + ", " + date);
       email_absences(student_email, student_name, course, date);
     }
   }

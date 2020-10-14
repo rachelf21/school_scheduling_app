@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import os
+import sendgrid
+
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -28,15 +30,24 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'users.login' #value is function for login, same as url_for
 login_manager.login_message_category = 'info'
 
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
 # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 # app.config['MAIL_PORT'] = 465
 # app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-#app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
-app.config['MAIL_PASSWORD'] = 'fmzxfjtwjqlvwyqq'  #to be replaced. for testing purposes.
+# app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
+# #app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+# app.config['MAIL_PASSWORD'] = 'fmzxfjtwjqlvwyqq'  #to be replaced. for testing purposes.
+
+
+app.config['MAIL_SERVER'] = 'smtp.sendgrid.net'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'apikey'
+app.config['MAIL_PASSWORD'] = os.environ.get('SENDGRID_API_KEY')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
+
 
 mail = Mail(app)
 

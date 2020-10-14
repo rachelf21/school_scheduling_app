@@ -24,7 +24,7 @@ class AttendanceRecordForm(FlaskForm):
         teacher = 'jsmith2'
         
     results = Course.query.distinct(Course.classid).filter_by(teacher='rfriedman').all()
-    print(results)
+    #print(results)
     classes=[]
     for classs in results:
         classes.append(classs.classid)

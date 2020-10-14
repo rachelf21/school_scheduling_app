@@ -84,15 +84,15 @@ def register_classes(teacher):
         
         for c in classes:
             room = Group.query.filter_by(classid=c).first().room
-            print(c, "Rm:", room)
+            #print(c, "Rm:", room)
             course = Course(courseid=c+"-"+subject, classid=c, subject=subject, teacher=teacher, room=room)
             try:
-                print("in first try block")
+                #print("in first try block")
                 db.session.add(course)
                 db.session.commit()
 
             except:
-                print("in first except block")
+                #print("in first except block")
                 db.session.flush()
                 db.session.rollback()
                 flash('Class already exists. Press Reset to add other classes.', 'danger')

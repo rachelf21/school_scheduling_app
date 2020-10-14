@@ -28,7 +28,7 @@ class Util:
                 dow = 'B_Th'
             else:
                 dow = 'B_M'
-        print("dow", dow)
+        #print("dow", dow)
         return dow
     
     def get_day(self):
@@ -43,7 +43,7 @@ class Util:
             day = 'Th'
         else: 
             day = 'M'
-        print("day", day)
+        #print("day", day)
         return day    
     
     def is_time_between(begin_time, end_time, check_time=None):
@@ -57,7 +57,7 @@ class Util:
     def get_current_period(self):
         # time_now = datetime.datetime.now().time()
         time_now = (datetime.now() - timedelta(hours=0))
-        print(time_now)
+        #print(time_now)
         dow = self.get_day()
         if dow == 'T':
             periods = Period.query.filter(Period.periodid.like('T%')).filter(~Period.periodid.like('Th%')).order_by(Period.start_time).all() 

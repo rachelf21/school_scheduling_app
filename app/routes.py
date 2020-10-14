@@ -36,10 +36,10 @@ def confirmation(filename):
     print(filename)
     df = pd.read_csv(filename, header=0, index_col=4)
     df.fillna('', inplace=True)
-    print(df)
+    #print(df)
     print("filename =" , filename)
     df.to_sql('attendance', engine, if_exists="append")
-    print(df)
+    #print(df)
     return render_template("confirmation.html")
 
 #%%

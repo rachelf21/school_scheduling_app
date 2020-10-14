@@ -1,5 +1,6 @@
 from flask import render_template, url_for, jsonify, request, redirect, Blueprint, flash
 import datetime
+import os
 from app.records.forms import AttendanceRecordForm
 from app.models import Student, Course, Attendance, Group, Users
 import json
@@ -12,7 +13,7 @@ records = Blueprint('records', __name__)
 #%%
 @records.route('/send_email', methods = ['GET','POST'])
 def send_email():
-    print("request.json" , request.json)
+    #print("request.json" , request.json)
     if request.method == "POST":
         data=request.get_json(force=True)
         student_email = data['student_email']
@@ -31,13 +32,13 @@ def send_email():
         parent1 = Student.query.filter_by(email=student_email).first().parent1
         parent2 = Student.query.filter_by(email=student_email).first().parent2
 
-        msg = Message('Absence', sender='noreply@mdy-attendance.com', recipients=[parent1, parent2, student_email], cc=[temail])
+        msg = Message('Absence', sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail])
         
         msg.body = "This is an automated message. \n" + student_name + " has been marked absent on " + date +" for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \nThank you."
     
-    #print(msg.body)
-    mail.send(msg)
-    #flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')
+        print(msg.body)
+        #mail.send(msg)
+        #flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')
     
     success = json.dumps("success")    
     return (success)
@@ -68,11 +69,11 @@ def send_email():
 @records.route('/get_classes_today', methods = ['POST'])
 def get_classes_today():
     date='2020-10-05'
-    print("request.json" , request.json)
+    #print("request.json" , request.json)
     if request.method == "POST":
         data=request.get_json(force=True)
         date=data['date']
-        print(" date is " + date)
+        #print(" date is " + date)
     teacher = current_user.username
     
     todays_classes = []
@@ -84,13 +85,13 @@ def get_classes_today():
         todays_classes_display.append(classs.courseid+"B")
         todays_classes.append(classs.courseid)
         
-    print(todays_classes)
+   # print(todays_classes)
     
     todays_classes = json.dumps(todays_classes)
     todays_classes_display = json.dumps(todays_classes_display)
     
-    print(todays_classes_display)
-    print("todays classes = ", todays_classes)
+    #print(todays_classes_display)
+    #print("todays classes = ", todays_classes)
     return (todays_classes)
     
 
@@ -120,7 +121,7 @@ def records_form():
             student_classes.append(r.classid)
             
         student_list = Student.query.filter(Student.classid.in_(student_classes)).order_by(Student.name).all()
-        print(student_list)
+        #print(student_list)
         form = AttendanceRecordForm()
         return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher, todays_classes=todays_classes,todays_classes_display=todays_classes_display, student_list = student_list)
 
@@ -174,7 +175,7 @@ def track_attendance(category):
             view = request.form['view']
             student = request.form['student_list']
             student_name = Student.query.filter_by(email = student).first().name
-            print(student_name)
+            #print(student_name)
             student_class = Student.query.filter_by(email = student).first().classid  
             classid2 = Group.query.filter_by(classid=student_class).first().classid2
             absences = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').count()
@@ -198,7 +199,7 @@ def track_attendance(category):
             results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
             for classs in results:
                 todays_classes.append(classs.courseid)
-            print(todays_classes)
+            #print(todays_classes)
  
             absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').count() 
             lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'L').count() 
@@ -223,7 +224,7 @@ def track_attendance(category):
                 if courseid != 'No classes on this day':
                     classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
                     courseid2 = classid2+courseid[5:]
-                    print('courseid2=', courseid2)
+                    #print('courseid2=', courseid2)
             except:
                 return "Select a date first, then select the class"
             
@@ -253,7 +254,7 @@ def track_attendance(category):
         else:
             student = category
             student_name = Student.query.filter_by(email = student).first().name
-            print(student_name)
+            #print(student_name)
             student_class = Student.query.filter_by(email = student).first().classid
             classid2 = Group.query.filter_by(classid=student_class).first().classid2
             absences = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A'])).count()
@@ -268,9 +269,9 @@ def track_attendance(category):
         
         attendance_json = []
         for a in attendance:
-            print(a)
+            #print(a)
             attendance_json.append(a.as_dict())
-        print(attendance_json)    
+        #print(attendance_json)    
         #attendance_json = json.dumps([dict(a) for a in attendance])
     
         return render_template('attendance_records.html', attendance=attendance, attendance_json=attendance_json, courseid=courseid, courseid2=courseid2, student=student, student_name=student_name, student_class=student_class, date=date, category=category, absences=absences, lates=lates, tables=tables, teacher=teacher,classid2=classid2, user=user)
@@ -304,7 +305,7 @@ def track_attendance_day():
         results = Attendance.query.distinct(Attendance.courseid).filter_by(teacher=teacher, att_date=date).all()
         for classs in results:
             todays_classes.append(classs.courseid)
-        print(todays_classes)
+        #print(todays_classes)
         
         absences =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A').count() 
         lates =  Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'L').count() 
@@ -315,7 +316,7 @@ def track_attendance_day():
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status = 'A', courseid=classs).order_by(Attendance.attid).all()
                 tables.append(jsonify(attendance))
                 
-            print("TABLES" , tables)    
+            #print("TABLES" , tables)    
                 
                 
         elif view == "lates":
