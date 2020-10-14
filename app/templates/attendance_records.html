@@ -63,7 +63,7 @@
       <th>Date</th>
       <th>Pd</th>
       <th>Class</th>
-      <th>Subject</th>
+      <th class="hide_col">Subject</th>
       <th>Name</th>
       <th class="text-center">St</th>
       <th>Actions</th>
@@ -109,7 +109,7 @@
           </script>
         </td>
 
-        <td>
+        <td class="hide_col">
           <script>
             document.write("{{ att.courseid}}".substring(6));
           </script>
@@ -156,7 +156,7 @@
   </td>
     <script>
       if("{{att.status}}" =='A'){
-        $('#notify{{loop.index}}').css('display', 'block');
+        $('#notify{{loop.index}}').css('display', 'none');
       }
     </script>
     <td>{{ att.comment}}</td>
@@ -175,7 +175,7 @@
 <div style="text-align: right">
   <!-- <a id="my_classes2" href="/records" class="mt-4 mr-4 mb-2 btn btn-outline-primary btn-md">Attendance Records</a> -->
   
-  <a title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-md">
+  <a style="display:none" title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-md">
     <i style="color:#1e2a5d" class="fa fa-envelope fa-2x"></i><span  class="ml-2 h5">ALL</span></a>
   <a id="my_classes2" href="/classes_anon" class="mt-4 mb-2 mr-4 btn btn-outline-primary btn-lg">My Classes</a>
 </div>
@@ -201,6 +201,7 @@
     scroller: true,
     select: true,
     bSort: true,
+    columnDefs: [{"orderable": false, "targets":6}]
   });
 
 </script>

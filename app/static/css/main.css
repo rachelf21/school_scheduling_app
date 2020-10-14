@@ -209,6 +209,10 @@ a.article-title:hover {
   .nav-item {
     font-size: 1.2em !important;
   }
+
+  .hide_col {
+    display: none;
+  }
 }
 
 .bg {
