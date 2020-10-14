@@ -35,7 +35,9 @@ app.config['MAIL_USE_TLS'] = True
 # app.config['MAIL_PORT'] = 465
 # app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+#app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+app.config['MAIL_PASSWORD'] = 'fmzxfjtwjqlvwyqq'  #to be replaced. for testing purposes.
+
 mail = Mail(app)
 
 
