@@ -49,9 +49,7 @@
             //console.log("day= " + my_day);
           </script>
           <td>
-            <a style="color: #1e2a5d" title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}"
-              >{{ courses.classcode.classid2}}</a
-            >
+            <a title="student info" id="class{{loop.index}}" href="get_students/d/{{ courses.classid}}">{{ courses.classcode.classid2}}</a>
           </td>
           <td>{{courses.classcode.gender}}</td>
           <td>{{ courses.subject}}</td>

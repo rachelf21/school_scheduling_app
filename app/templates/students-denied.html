@@ -34,11 +34,11 @@
     <tbody>
       {% for students in students %}
       <tr>
-        <td class="text-nowrap"><a href="/student_info/{{students.email}}" style="color: black">{{ students.name}}</a></td>
+        <td class="text-nowrap"><a href="/student_info/{{students.email}}" >{{ students.name}}</a></td>
         <td name="classid" class="text-center">
           <script>
             var classlink = "{{students.classid}}";
-            document.write("<a style='color:black' href='/get_students/d/" + classlink + "'> {{students.class_code.classid2}}</a>");
+            document.write("<a style='color:#1e2a5d' href='/get_students/d/" + classlink + "'> {{students.class_code.classid2}}</a>");
           </script>
         </td>
         <td>{{ students.email}}</td>
