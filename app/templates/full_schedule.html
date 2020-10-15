@@ -245,10 +245,14 @@
     console.log('{{teacher}}');
     if('{{teacher}}'=='rfriedman'){
       $('#mytoday').css('display', 'block');
-
+      $('#prev').css('display', 'block');
+      $('#next').css('display', 'block');
     }
-    else
-    $('#mytoday').css('display', 'none');
+    else {
+      $('#mytoday').css('display', 'none');
+      $('#prev').css('display', 'none');
+      $('#next').css('display', 'none');
+    }
 
     AutoRefresh(300000);
 
