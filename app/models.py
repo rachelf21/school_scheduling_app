@@ -22,6 +22,7 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
+    
     #attendance = db.relationship('Attendance', backref='teacher', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
@@ -173,8 +174,12 @@ class Student(db.Model):
     parent2 = db.Column(db.String(255))
     parent3 = db.Column(db.String(255))
     notes = db.Column(db.String(500))
+    last = db.Column(db.String(25))
+    first = db.Column(db.String(25))
     
-    def __init__(self,email, classid, name, parent1, parent2, parent3, notes):
+    def __init__(self, first, last, email, classid, name, parent1, parent2, parent3, notes):
+        self.first = first
+        self.last = last
         self.email = email
         self.classid = classid
         self.name = name

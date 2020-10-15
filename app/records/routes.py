@@ -23,8 +23,12 @@ def send_email():
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
         date = date.strftime('%B %d, %Y')
         
+        
+        
         print("DATE =", date)
         child = Student.query.filter_by(email = student_email).first()
+        first = child.first
+        last = child.last
         teacher = current_user.username
         teacher = Users.query.filter_by(username = teacher).first()
         tname = teacher.title + " " + teacher.first + " " + teacher.last
@@ -34,10 +38,10 @@ def send_email():
 
         msg = Message('Absence', sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail])
         
-        msg.body = "This is an automated message. \n" + student_name + " has been marked absent on " + date +" for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \nThank you."
+        msg.body = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \nThank you."
     
-        print(msg.body)
-        #mail.send(msg)
+        #print(msg.body)
+        mail.send(msg)
         #flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')
     
     success = json.dumps("success")    

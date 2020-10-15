@@ -51,7 +51,10 @@ function edit_attendance() {
 //href="/send_email/{{att.email}}/{{att.courseid}}"
 
 function email_absences(student_email, name, course, date) {
-  if (confirm("Are you sure you want to email " + name + " and their parents?")) {
+  var pos = name.indexOf(",", 0);
+  var first = name.substring(pos + 2);
+  var last = name.substring(0, pos);
+  if (confirm("Are you sure you want to email " + first + " " + last + " and parents?")) {
     var studentObj = { student_email: student_email, student_name: name, course: course, attdate: date };
 
     $.ajax({

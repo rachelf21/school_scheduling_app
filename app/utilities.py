@@ -70,12 +70,14 @@ class Util:
             p_start = datetime.combine(date.today(), p.start_time) + timedelta(minutes=-10)
             p_end = datetime.combine(date.today(), p.end_time) + timedelta(minutes=0)
             if p_start < time_now and p_end < time_now:
-                print(p_start , p_end, "this period has already passed")
+                pass
+                #print(p_start , p_end, "this period has already passed")
             elif p_start < time_now and p_end > time_now:
-                print(p_start,  p_end,"this period is now")
-                print(p.periodid)
+                #print(p_start,  p_end,"this period is now")
+                #print(p.periodid)
                 return p.periodid
             else:
-                print(p_start, p_end, "this period has not yet happened")
+                pass
+                #print(p_start, p_end, "this period has not yet happened")
         return '0'
         
