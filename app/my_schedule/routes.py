@@ -180,7 +180,7 @@ def display_full_schedule():
     lessons = Lessons.query.all()
     
     current_week = Week.query.first().today
-    title = 'My Schedule (' + current_week + ")='"
+    title = 'My Schedule (' + current_week + ')'
    
     schedule = Full_Schedule()
     schedule.get_schedule(current_week)
