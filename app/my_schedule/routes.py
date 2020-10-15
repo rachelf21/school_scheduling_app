@@ -180,7 +180,7 @@ def display_full_schedule():
     lessons = Lessons.query.all()
     
     current_week = Week.query.first().today
-    title = 'My Schedule'
+    title = 'My Schedule (' + current_week + ")='"
    
     schedule = Full_Schedule()
     schedule.get_schedule(current_week)
@@ -357,7 +357,7 @@ def set_week(letter):
     topic = "Week " + letter
     teacher=current_user.username
     #return render_template("confirmation.html", topic=topic)
-    return redirect("/weekly_schedule")
+    return redirect("/full_schedule")
 
 #%%
 @my_schedule.route('/zoom_schedule')

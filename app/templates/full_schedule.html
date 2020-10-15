@@ -8,15 +8,27 @@
 <script>
   var current_week = "{{current_week}}";
 </script>
-<div class="container d-flex justify-content-around" style="border: 0px solid red; max-width: 750px">
+<!-- <div class="container d-flex justify-content-around" style="border: 0px solid red; max-width: 750px">
   <a id="next" class="btn btn-sm pt-4" style="display: none">
     <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
   </a>
-  <h1 class="mt-1 4 text-center display-4">{{title}}</h1>
+  <h1 class="mt-1 4 text-center display-4">title</h1>
   <a id="prev" class="btn btn-sm pt-4" style="display: none">
     <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
   </a>
+</div> -->
+
+<div class="container d-flex justify-content-around" style="border: 0px solid red; max-width: 750px">
+  <a id="next" class="btn btn-sm pt-4" style="display: block">
+    <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
+  </a>
+  <h1 class="mt-1 4 text-center display-4">{{title}}</h1>
+  <a id="prev" class="btn btn-sm pt-4" style="display: block">
+    <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i>
+  </a>
 </div>
+<h5 id="mytoday" class="mt-1 text-center font-weight-normal"><a href="/today">Today</a></h5>
+
 <h5 style="display: none" class="mt-1 text-center font-weight-normal"><a href="/today">Today</a></h5>
 <h6 id="no_sched" class="text-center alert alert-danger mb-4" style="max-width: 800px; margin: auto; color: red; display: none">
   <!-- <a href="mailto:app-attendance@mdyschool.org" target="_blank" rel="noopener noreferrer"> -->
@@ -230,6 +242,14 @@
 
 <script>
   window.onload = function () {
+    console.log('{{teacher}}');
+    if('{{teacher}}'=='rfriedman'){
+      $('#mytoday').css('display', 'block');
+
+    }
+    else
+    $('#mytoday').css('display', 'none');
+
     AutoRefresh(300000);
 
     if (current_week == "A") {
