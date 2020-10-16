@@ -93,9 +93,9 @@
 
 
             <ul class="navbar-nav mr-auto ">
-              <a id="my_schedule" class="nav-item nav-link mr-2 text-nowrap" style="font-size:1.1em;" href="/full_schedule">Schedule</a>
+              <a id="my_schedule" class="nav-item nav-link ml-2 mr-2 text-nowrap" style="font-size:1.1em;" href="/full_schedule">My Schedule</a>
               <a id="my_classes"class="nav-item nav-link ml-2 mr-2 text-nowrap" style="font-size:1.1em" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
-              <a class="nav-item nav-link mr-2 text-nowrap" style="font-size:1.1em" href="/records">Attendance Records</a>
+              <a class="nav-item nav-link ml-2 mr-2 text-nowrap" style="font-size:1.1em" href="/records">Attendance Records</a>
               <a class="nav-item nav-link mr-2" style="font-size:1.1em; display:none" href="/dismissal_form">Dismissal</a>
 
 
@@ -178,7 +178,7 @@
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
               <script>
-                console.log("in base-denied.html");
+                //console.log("in base-denied.html");
                 console.log("is authenticated");
                 get_user("{{teacher}}");
                 console.log(teacher = "{{teacher}}");

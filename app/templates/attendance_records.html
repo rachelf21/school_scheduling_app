@@ -25,7 +25,7 @@
 <script>
   var attendance = [];
   attendance = {{attendance_json | tojson}};
-  console.log(attendance);
+  //console.log(attendance);
 
   
   var title = "";
@@ -191,9 +191,9 @@
 <script>
   donot_sort_these_columns = [];
   if(category=='classdate' || category.substring(0, 2) == "_x") donot_sort_these_columns = [0,1,2,3,6,7];
-  else if (category=='date') donot_sort_these_columns = [3,6];
+  else if (category=='date') donot_sort_these_columns = [0,3,6];
   else if (category=='student') donot_sort_these_columns = [2,3,4,6];
-
+  else donot_sort_these_columns = [2,3,4,6];
 
   if(category)
   $("#myTable").DataTable({
