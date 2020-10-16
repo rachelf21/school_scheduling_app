@@ -1,6 +1,6 @@
 function select_period(classs, course) {
-  var per = prompt("Enter period from 1 to 10.");
-  if (per >= 1 && per <= 10) {
+  var per = prompt("Enter period from 0 to 10.");
+  if (per >= 0 && per <= 10) {
     attendancelink = "/attendance/" + classs + "/" + classs + "-" + course + "/" + my_day + "/" + per;
     console.log(attendancelink);
     window.location.href = attendancelink;

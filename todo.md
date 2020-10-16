@@ -64,6 +64,8 @@
 - [ ] create new function for update - only retrieve cards which are not blank, update attendance table with new values.
 - [ ] flash message on screen that attendance has been updated and take to attendance records screen.
 
+- [ ] allow update of custom message
+
 ### HTML PAGES
 
 - [x] create HTML pages for each table

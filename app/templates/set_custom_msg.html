@@ -6,7 +6,21 @@
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Set Custom Message</legend>
-        <div class="form-group">
+
+        <div>
+          <p class="text-muted">
+            If you choose to click on the email button after taking attendance, an email will be sent to the student, parents, and to you.
+            If you do not choose to email, no message will be sent. The default message is shown below. Your custom text is shown in red.
+            (It does not appear in red in the actual email.) Note that it is not necessary to add custom text.
+          </p>
+
+          <div style="font-family: 'Merriweather', serif; font-size: 1.2em; border: 1px solid gainsboro">
+            <div class="ml-2 mt-2">{{msg |safe}}</div>
+            <p class="ml-2" style="color: red"><em>{{custom}}</em></p>
+            <p class="ml-2">Thank you.</p>
+          </div>
+        </div>
+        <div class="form-group mt-4">
           {{ form.content.label(class="form-control-label") }} {% if form.content.errors %} {{ form.content(class="form-control
           form-control-lg is-invalid") }}
           <div class="invalid-feedback">

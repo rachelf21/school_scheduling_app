@@ -2,7 +2,7 @@ from flask import render_template, url_for, jsonify, request, redirect, Blueprin
 import datetime
 import os
 from app.records.forms import AttendanceRecordForm
-from app.models import Student, Course, Attendance, Group, Users
+from app.models import Student, Course, Attendance, Group, Users, UserSettings
 import json
 from flask_login import current_user, login_required
 from app import mail
@@ -29,17 +29,31 @@ def send_email():
         child = Student.query.filter_by(email = student_email).first()
         first = child.first
         last = child.last
+        abs_class = child.class2id
+        abs_subject = course[6:]
+        print(abs_class, abs_subject)
         teacher = current_user.username
         teacher = Users.query.filter_by(username = teacher).first()
         tname = teacher.title + " " + teacher.first + " " + teacher.last
         temail = teacher.email
         parent1 = Student.query.filter_by(email=student_email).first().parent1
         parent2 = Student.query.filter_by(email=student_email).first().parent2
-
-        msg = Message('Absence', sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail], bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org'])
         
-        msg.body = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + course + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \nThank you."
-    
+        msg_subject = 'Absence: ' + first + " " + last + " " + abs_class + " " + abs_subject
+        msg = Message(msg_subject, sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail],bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org'])
+        
+        intro = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + abs_class + " " + abs_subject + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \n"
+        
+        c_user = UserSettings.query.filter_by(username = teacher.username).first()
+        custom =''
+        if c_user is None:
+            custom = ''
+        else:
+            custom = c_user.custom_msg
+            #print(custom)
+        
+        msg.body = intro + "\n"+custom + "\nThank you."
+        
         #print(msg.body)
         mail.send(msg)
         #flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')

@@ -16,6 +16,8 @@ $("document").ready(function () {
   //alert("in attendance records.js");
   if (category != "date") {
     $(".hid").css("display", "none");
+  } else {
+    $(".hidedate").css("display", "none");
   }
 });
 

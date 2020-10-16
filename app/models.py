@@ -40,8 +40,18 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}', '{self.email}', '{self.first}', '{self.last}' )"
-    
-    
+
+class UserSettings(db.Model):
+    __tablename__ = "usersettings"
+    __table_args__ = {'extend_existing': True} 
+    username = db.Column(db.String(25), unique=True, nullable=False, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    last = db.Column(db.String(25))
+    first = db.Column(db.String(25))
+    title = db.Column(db.String(5))
+    custom_msg = db.Column(db.String(1000), default='')    
+ 
+   
 #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead
 class Group(db.Model):
     __tablename__ = "class"
@@ -168,6 +178,7 @@ class Student(db.Model):
     __table_args__ = {'extend_existing': True} 
     email = db.Column(db.String(255), primary_key=True)
     classid = db.Column(db.String(8), db.ForeignKey(Group.classid), nullable=False)
+    class2id = db.Column(db.String(8))
     class_code = db.relationship("Group", backref='class_code', lazy=True)
     name = db.Column(db.String(255), nullable=False)
     parent1 = db.Column(db.String(255))
@@ -177,11 +188,12 @@ class Student(db.Model):
     last = db.Column(db.String(25))
     first = db.Column(db.String(25))
     
-    def __init__(self, first, last, email, classid, name, parent1, parent2, parent3, notes):
+    def __init__(self, first, last, email, classid, class2id, name, parent1, parent2, parent3, notes):
         self.first = first
         self.last = last
         self.email = email
         self.classid = classid
+        self.class2id = class2id
         self.name = name
         self.parent1 = parent1
         self.parent2 = parent2

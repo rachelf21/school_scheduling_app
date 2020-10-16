@@ -60,7 +60,7 @@
     style="background: whitesmoke; width: auto; margin: 0px auto; border-collapse: collapse; color: #1e2a5d"
   >
     <thead class="small">
-      <th>Date</th>
+      <th class="hidedate">Date</th>
       <th>Pd</th>
       <th class="hid">Class</th>
       <th class="hide_col">Subject</th>
@@ -72,7 +72,7 @@
     <tbody>
       {% for att in attendance %}
       <tr>
-        <td>
+        <td  class="hidedate" style="text-align: right;">
           <script>
             var date = "{{ att.att_date}}".substring(5, 10);
 
@@ -192,8 +192,8 @@
   donot_sort_these_columns = [];
   if(category=='classdate' || category.substring(0, 2) == "_x") donot_sort_these_columns = [0,1,2,3,6,7];
   else if (category=='date') donot_sort_these_columns = [0,3,6];
-  else if (category=='student') donot_sort_these_columns = [2,3,4,6];
-  else donot_sort_these_columns = [2,3,4,6];
+  else if (category=='student') donot_sort_these_columns = [1, 2,3,4,6];
+  else donot_sort_these_columns = [1, 2,3,4,6];
 
   if(category)
   $("#myTable").DataTable({
