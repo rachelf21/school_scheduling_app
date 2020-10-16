@@ -1,7 +1,7 @@
 {% extends "base-denied.html" %} {% block scale %}
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06, shrink-to-fit=yes"
+  content="width=device-width, initial-scale=.4, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06, shrink-to-fit=yes"
 />
 {% endblock %} {% block title %}My Schedule{% endblock %} {% block content %}
 <script src="/static/js/schedule.js"></script>
@@ -62,8 +62,7 @@
     style="background: whitesmoke; border: 0px solid green; width: auto; margin: 0px auto"
   >
     <thead style="border-width: medium">
-      <th>Per</th>
-      <th>Time</th>
+      <th>Period</th>
       <th>Monday</th>
       <th>Tuesday</th>
       <th>Wednesday</th>
@@ -75,7 +74,7 @@
 
     <tbody>
       {%for n in range(11)%}
-      <tr>
+      <tr style="border-width: thick">
         <script>
           var curr_per = per[{{n}}+1];
           if (curr_per == "L" ) {
@@ -83,13 +82,16 @@
           }
         </script>
 
-        <td name="periods" class="h1 font-weight-light" style="vertical-align: middle; border-width: medium; font-size: 3.2em">
-          <script>
-            document.write(curr_per);
-          </script>
+        <td name="periods" style="vertical-align: middle;"  class="text-nowrap">
+          <div class="text-nowrap" style="display: flex; justify-content: space-between">
+            <div name="period" class="h1 font-weight-light pr-2" style="font-size: 3.2em;"" >
+              <script>
+                document.write(curr_per);
+              </script>
+            </div>
+            <div name="times" class="" style="border-width: medium; font-size: 1.2em">{{start_times[n]}}<br />-<br />{{end_times[n]}}</div>
+          </div>
         </td>
-
-        <td name="times" style="border-width: medium">{{start_times[n]}}<br />-<br />{{end_times[n]}}</td>
 
         <td name="monday" style="border-width: medium; vertical-align: middle">
           <a>

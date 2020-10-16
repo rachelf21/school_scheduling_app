@@ -230,6 +230,31 @@ html {
   -o-background-size: cover;
   background-size: cover;
 }
+.freezHeaderAndTitle {
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+
+.freezHeaderAndTitle td {
+  border: 1px solid black;
+  padding: 5px 10px;
+}
+
+.freezHeaderAndTitle th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background-color: #5f788a;
+  color: snow;
+}
+/*https://stackoverflow.com/questions/55085527/fixed-row-and-column-in-html-table*/
+.freezHeaderAndTitle td:first-of-type {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #5f788a;
+  color: snow;
+  left: 0px;
+}
 
 /*
 body {
