@@ -1,7 +1,7 @@
 {% extends "base-denied.html" %} {% block scale %}
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=.4, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06, shrink-to-fit=yes"
+  content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=4.0, minimum-scale=.06, shrink-to-fit=no"
 />
 {% endblock %} {% block title %}My Schedule{% endblock %} {% block content %}
 <script src="/static/js/schedule.js"></script>
@@ -61,15 +61,14 @@
     class="table mx-auto table-bordered text-center mt-4 pt-4 w-auto table-fixed"
     style="background: whitesmoke; border: 0px solid green; width: auto; margin: 0px auto"
   >
-    <thead style="border-width: medium">
-      <th>Period</th>
+    <thead style="border-width: medium; border-top: solid lightslategray; border-bottom: solid lightslategray">
+      <th style="border-left: solid lightslategray">Period</th>
       <th>Monday</th>
       <th>Tuesday</th>
       <th>Wednesday</th>
-      <th>Thursday</th>
-      <th>Fri<br />Per</th>
-      <th>Fri<br />Time</th>
-      <th>Friday</th>
+      <th style="border-right: solid lightslategray">Thursday</th>
+      <th>Period</th>
+      <th style="border-right:solid lightslategray; ">Friday</th>
     </thead>
 
     <tbody>
@@ -82,9 +81,9 @@
           }
         </script>
 
-        <td name="periods" style="vertical-align: middle;"  class="text-nowrap">
+        <td name="periods" style="border-width: medium; vertical-align: middle; border-left:solid lightslategray; "  class="text-nowrap">
           <div class="text-nowrap" style="display: flex; justify-content: space-between">
-            <div name="period" class="h1 font-weight-light pr-2" style="font-size: 3.2em;"" >
+            <div name="period" class="h1 font-weight-light pl-1 pr-2" style="font-size: 3.2em;"" >
               <script>
                 document.write(curr_per);
               </script>
@@ -93,7 +92,7 @@
           </div>
         </td>
 
-        <td name="monday" style="border-width: medium; vertical-align: middle">
+        <td name="monday" style="border-width: medium; vertical-align: middle; ">
           <a>
             <script>
               var mon = "{{mon.courseid2[n]}}";
@@ -160,7 +159,7 @@
             </script>
           </a>
         </td>
-        <td name="thursday" style="border-width: medium; vertical-align: middle">
+        <td name="thursday" style="border-width: medium; border-right: solid lightslategray; vertical-align: middle">
           <a>
             <script>
               var thurs = "{{thurs.courseid2[n]}}";
@@ -181,32 +180,42 @@
             </script>
           </a>
         </td>
-        <td name="fri_per" class="h2 font-weight-light" style="border-width: medium; vertical-align: middle">
-          <script>
-            curr_per = per_fri[{{n}}+1];
-            if (curr_per < 8 || curr_per =='L') document.write(curr_per);
-            if(curr_per =='L') document.currentScript.parentElement.style.background = "Gainsboro";
-            else document.currentScript.parentElement.style.background = "whitesmoke";
-          </script>
-        </td>
 
-        <td name="fri_times" style="border-width: medium; vertical-align: middle">
+        <td name="friperiods" style="border-width: medium; vertical-align: middle;" class="text-nowrap">
+          <div class="text-nowrap" style="display: flex; justify-content: space-between">          
+          <div name="fri-per" class="h1 font-weight-light pl-1 pr-2">
+              <script>
+                curr_per = per_fri[{{n}}+1];
+                if (curr_per < 8 || curr_per =='L') document.write(curr_per);
+                if(curr_per =='L') {
+                  document.currentScript.parentElement.parentElement.parentElement.style.background = "Gainsboro";
+
+                }
+                else {
+                  document.currentScript.parentElement.parentElement.parentElement.style.background = "whitesmoke";
+              }
+              </script>
+          </div>
+
+            <div name="fri_times">
           <script>
             curr_per = per_fri[{{n}}+1];
             if (curr_per < 8 || curr_per == "L") {
               document.write("{{fri_start_times[n]}}<br />-<br />{{fri_end_times[n]}}");
-              document.currentScript.parentElement.style.background = "whitesmoke";
+              //document.currentScript.parentElement.style.background = "whitesmoke";
             }
             if (curr_per > 7) {
-              document.currentScript.parentElement.style.background = "whitesmoke";
+              //document.currentScript.parentElement.style.background = "whitesmoke";
             }
             if (curr_per == "L") {
-              document.currentScript.parentElement.style.background = "Gainsboro";
+              //document.currentScript.parentElement.style.background = "Gainsboro";
             }
           </script>
+              </div>  
+            </div>
         </td>
 
-        <td name="friday" style="border-width: medium; vertical-align: middle">
+        <td name="friday" style="border-width: medium; vertical-align: middle; border-right:solid lightslategray; ">
           <a>
             <script>
               curr_per = per_fri[{{n}}+1];
