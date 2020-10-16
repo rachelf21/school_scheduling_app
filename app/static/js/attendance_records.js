@@ -14,6 +14,9 @@ function convert_date(mydate) {
 
 $("document").ready(function () {
   //alert("in attendance records.js");
+  if (category != "date") {
+    $(".hid").css("display", "none");
+  }
 });
 
 function set_values(id, date, courseid, email, name, status, comment) {

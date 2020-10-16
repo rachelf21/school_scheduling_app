@@ -3,7 +3,7 @@ import secrets
 import os
 from PIL import Image
 from app import app, db, bcrypt, mail
-from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, RegisterClassesForm
+from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm,SetMsgBodyForm, RegisterClassesForm
 from app.models import Users, Course, Group
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -114,7 +114,7 @@ def login():
     if form.validate_on_submit():
         userlogin = form.username.data.lower().strip()
         user = Users.query.filter_by(username = userlogin).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
+        if user and (bcrypt.check_password_hash(user.password, form.password.data)):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
@@ -191,6 +191,18 @@ def reset_token(token):
      return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password',form=form)
 
+#create a new table with fields: teacher, email, msg_body
+#create new corresponding class in SQLAlchemy
+#create a function that checks if teacher exists in this table. if teacher exists, update table with new message body.
+#else, insert new record into this table with message body
+#do a query on that table by teacher=user, retrieve msgbody and then add value to send_email in routes.py under records.
+@users.route("/set_custom_msg/<teacher>", methods=['GET', 'POST'])
+def set_custom_msg(teacher):
+    form = SetMsgBodyForm()
+    if form.validate_on_submit():
+        flash('Your custom message has been saved and will now be appended to the default message.', 'success')
+        return redirect(url_for('classes.classes_anon'))
+    return render_template('set_custom_msg.html', form=form, teacher=teacher)
 
 
 

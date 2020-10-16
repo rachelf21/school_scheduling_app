@@ -62,7 +62,7 @@
     <thead class="small">
       <th>Date</th>
       <th>Pd</th>
-      <th>Class</th>
+      <th class="hid">Class</th>
       <th class="hide_col">Subject</th>
       <th>Name</th>
       <th class="text-center">St</th>
@@ -103,7 +103,7 @@
             document.write(sched);
           </script>
         </td>
-        <td class="text-center">
+        <td class="hid text-center">
           <script>
             document.write(class_);
           </script>
@@ -189,6 +189,13 @@
   }
 </script>
 <script>
+  donot_sort_these_columns = [];
+  if(category=='classdate' || category.substring(0, 2) == "_x") donot_sort_these_columns = [0,1,2,3,6,7];
+  else if (category=='date') donot_sort_these_columns = [3,6];
+  else if (category=='student') donot_sort_these_columns = [2,3,4,6];
+
+
+  if(category)
   $("#myTable").DataTable({
     //ordering: true,
     order: [[4, "asc"]],
@@ -201,8 +208,9 @@
     scroller: true,
     select: true,
     bSort: true,
-    columnDefs: [{"orderable": false, "targets":6}]
+    columnDefs: [{"orderable": false, "targets":donot_sort_these_columns}]
   });
+
 
 </script>
 

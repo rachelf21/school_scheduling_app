@@ -32,8 +32,8 @@
 <h5 style="display: none" class="mt-1 text-center font-weight-normal"><a href="/today">Today</a></h5>
 <h6 id="no_sched" class="text-center alert alert-danger mb-4" style="max-width: 800px; margin: auto; color: red; display: none">
   <!-- <a href="mailto:app-attendance@mdyschool.org" target="_blank" rel="noopener noreferrer"> -->
-  Email a copy of your schedule to app-attendance@mdyschool.org. <br />
-  You will then be able to take attendance by clicking on the class name.
+  Your personalized schedule will be generated after there are attendance records for every day of the week. You will then be able to take
+  attendance directly from your schedule.
   <!-- </a> -->
 </h6>
 <style>
@@ -83,7 +83,7 @@
           }
         </script>
 
-        <td name="periods" class="display-4" style="border-width: medium">
+        <td name="periods" class="h1 font-weight-light" style="vertical-align: middle; border-width: medium; font-size: 3.2em">
           <script>
             document.write(curr_per);
           </script>
@@ -181,18 +181,16 @@
         </td>
         <td name="fri_per" class="h2 font-weight-light" style="border-width: medium; vertical-align: middle">
           <script>
-            if (curr_per == 5) {
-              document.write("L");
-              document.currentScript.parentElement.style.background = "Gainsboro";
-            } else if (curr_per == "L") {
-              document.currentScript.parentElement.style.background = "whitesmoke";
-              document.write("5");
-            } else if (curr_per < 8) document.write(curr_per);
+            curr_per = per_fri[{{n}}+1];
+            if (curr_per < 8 || curr_per =='L') document.write(curr_per);
+            if(curr_per =='L') document.currentScript.parentElement.style.background = "Gainsboro";
             else document.currentScript.parentElement.style.background = "whitesmoke";
           </script>
         </td>
+
         <td name="fri_times" style="border-width: medium; vertical-align: middle">
           <script>
+            curr_per = per_fri[{{n}}+1];
             if (curr_per < 8 || curr_per == "L") {
               document.write("{{fri_start_times[n]}}<br />-<br />{{fri_end_times[n]}}");
               document.currentScript.parentElement.style.background = "whitesmoke";
@@ -200,7 +198,7 @@
             if (curr_per > 7) {
               document.currentScript.parentElement.style.background = "whitesmoke";
             }
-            if (curr_per == 5) {
+            if (curr_per == "L") {
               document.currentScript.parentElement.style.background = "Gainsboro";
             }
           </script>
@@ -209,26 +207,24 @@
         <td style="border-width: medium; vertical-align: middle">
           <a>
             <script>
+              curr_per = per_fri[{{n}}+1];
               var fri = "{{fri.courseid2[n] if fri.courseid2[n] !=None }}";
               fri = fri.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
               if (fri != "None") document.write(fri);
-              if (curr_per < 8) {
+              if (curr_per < 8 || curr_per == "L") {
                 var parent = document.currentScript.parentElement;
-                var schedid = "{{fri.scheduleid[n]}}".substring(0, 4);
+                var schedid = "{{fri.scheduleid[n]}}".substring(0, 3);
                 var curr_class = "{{fri.courseid[n]}}".substring(0, 5);
                 var classid = "{{fri.classid2[n]}}";
                 var curr_course = "{{fri.courseid[n]}}";
                 color_code("{{fri.scheduleid[n]}}", "{{current_period}}");
                 color_code_cs("{{fri.scheduleid[n]}}", "{{current_period}}");
                 color_recess();
-                if (curr_per == "L" || curr_course.includes("Recess")) {
+                if (curr_per == "L") {
                   document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
                 }
               } else {
                 document.currentScript.parentElement.parentElement.style.background = "whitesmoke";
-              }
-              if (curr_per == 5) {
-                document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
               }
               write_linktocourse("{{fri.scheduleid[n]}}", "{{current_period}}");
             </script>

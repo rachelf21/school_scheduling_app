@@ -59,6 +59,11 @@
 - [x] add backgrounds
 - [x] replace javascript alerts for edit status, add comment to modal popup
 
+- [ ] change submit attendance button to update if these fields are equal: teacher, date, class, period.
+- [ ] change take_attendance function not to accept blank values
+- [ ] create new function for update - only retrieve cards which are not blank, update attendance table with new values.
+- [ ] flash message on screen that attendance has been updated and take to attendance records screen.
+
 ### HTML PAGES
 
 - [x] create HTML pages for each table

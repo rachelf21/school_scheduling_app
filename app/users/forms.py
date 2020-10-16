@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SelectField, PasswordField, SubmitField, BooleanField, SelectMultipleField
+from wtforms import StringField, SelectField, PasswordField, SubmitField, BooleanField, SelectMultipleField,TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 
@@ -69,7 +69,6 @@ class RegisterClassesForm(FlaskForm):
     submit = SubmitField('Add selected classes')
 
 
-
 #%%            
 class LoginForm(FlaskForm):
     username = StringField('Username',
@@ -118,4 +117,6 @@ class ResetPasswordForm(FlaskForm):
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password', )
 
- 
+class SetMsgBodyForm(FlaskForm):
+    content = TextAreaField(u"Content", render_kw={'class': 'form-control', 'rows': 5})
+    submit = SubmitField('Submit')

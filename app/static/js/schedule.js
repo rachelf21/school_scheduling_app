@@ -1,6 +1,7 @@
 var paleyellow = "rgb(252, 255, 217)";
 var dow = ["A_M", "A_T", "A_W", "A_Th"]; //change this to wk variable later
 var per = [0, 1, 2, 3, 4, 5, "L", 6, 7, 8, 9, 10];
+var per_fri = [0, 1, 2, 3, 4, "L", 5, 6, 7, 8, 9, 10];
 
 function highlight_period(start_time, end_time) {
   var today = new Date();
