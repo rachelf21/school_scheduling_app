@@ -33,6 +33,7 @@ class Util:
     
     def get_day(self):
         today = date.today().weekday()
+        print("today is ", today)
         if today == 0:
             day = 'M'
         elif today == 1:
@@ -41,6 +42,8 @@ class Util:
             day = 'W'
         elif today == 3:
             day = 'Th'
+        elif today == 4:
+            day = 'F'
         else: 
             day = 'M'
         #print("day", day)

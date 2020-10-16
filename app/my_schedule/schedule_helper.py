@@ -36,7 +36,7 @@ class Full_Schedule:
         
         self.mon_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_M%'  order by sort" , engine)   
         self.mon_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
-        print(self.mon_df)
+        #print(self.mon_df)
     
         self.tues_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_T%' order by sort" , engine)   
         self.tues_df["courseid"].replace({"0-0-0": ""}, inplace=True)    

@@ -53,7 +53,7 @@ function color_lunch() {
 //Recess - unused function. did not work.
 function color_recess() {
   if (curr_course.includes("Recess")) {
-    console.log("Recess is now. Current period is " + curr_per);
+    //console.log("Recess is now. Current period is " + curr_per);
     element = document.currentScript.parentElement.parentElement;
     element.style.background = "Gainsboro !important";
   }

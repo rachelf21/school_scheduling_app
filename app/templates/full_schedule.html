@@ -204,13 +204,17 @@
           </script>
         </td>
 
-        <td style="border-width: medium; vertical-align: middle">
+        <td name="friday" style="border-width: medium; vertical-align: middle">
           <a>
             <script>
               curr_per = per_fri[{{n}}+1];
               var fri = "{{fri.courseid2[n] if fri.courseid2[n] !=None }}";
               fri = fri.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
               if (fri != "None") document.write(fri);
+              if (curr_per==5) {
+                console.log("curr perid is5 and fir is noen")
+                document.currentScript.parentElement.parentElement.style.background = "whitesmoke";
+              }
               if (curr_per < 8 || curr_per == "L") {
                 var parent = document.currentScript.parentElement;
                 var schedid = "{{fri.scheduleid[n]}}".substring(0, 3);
@@ -223,7 +227,8 @@
                 if (curr_per == "L") {
                   document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
                 }
-              } else {
+              }
+                else {
                 document.currentScript.parentElement.parentElement.style.background = "whitesmoke";
               }
               write_linktocourse("{{fri.scheduleid[n]}}", "{{current_period}}");
