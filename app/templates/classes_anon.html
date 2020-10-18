@@ -13,7 +13,10 @@
 <div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
   <div id="innerdiv" style="margin-left: auto; margin-right: auto" class="content-section">
     <div style="text-align: center">
+      <a href="/full_schedule" class="mt-4 mb-0">View My Schedule</a>
+
       <h1 class="mt-2 mb-1 display-4">My Classes</h1>
+
       <div class="font-weight-normal mt-2 mb-4">
         <a href="/get_students/d/7">Grade 7 Students</a> | <a href="/get_students/d/8">Grade 8 Students</a>
       </div>
@@ -25,6 +28,7 @@
         Click here to add your classes.</a
       >
     </div>
+
     <table
       id="myTable"
       class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
@@ -110,7 +114,7 @@
           <div>
             <input style="width: 60px" type="text" id="current_period" class="form-control validate" placeholder="" autofocus />
             <script>
-              $("#current_period").attr("placeholder", "{{current_period}}".substring(1, 3));
+              $("#current_period").attr("value", "{{current_period}}".substring(1, 3));
             </script>
           </div>
           <div>
@@ -139,8 +143,10 @@
 <script>
   $("#exampleModalLong").on("shown.bs.modal", function () {
     $("#current_period").focus();
+    //$("#current_period").setCursorPosition(1);
     setTimeout(function () {
-      $("#current_period").focus();
+      $("#current_period").setCursorPosition(1);
+      //$("#current_period").attr("value", "{{current_period}}".substring(1, 3));
     }, 1000);
   });
 

@@ -41,6 +41,22 @@ function highlight_current_period(periodid, curr_per) {
   }
 }
 
+//SET CURSOR POSITION
+$.fn.setCursorPosition = function (pos) {
+  this.each(function (index, elem) {
+    if (elem.setSelectionRange) {
+      elem.setSelectionRange(pos, pos);
+    } else if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", pos);
+      range.moveStart("character", pos);
+      range.select();
+    }
+  });
+  return this;
+};
+
 function AutoRefresh(t) {
   var date = new Date(new Date().getTime()).toLocaleTimeString();
   console.log("Refreshed " + date);

@@ -27,12 +27,22 @@ function highlight_period(start_time, end_time) {
 }
 
 //computers or stem
-function color_code_cs(sched, period) {
-  if (curr_course.includes("Computers")) {
-    document.currentScript.parentElement.parentElement.style.background = paleyellow;
-  } else if (curr_course.includes("STEM")) {
-    if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
-    else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+function color_code_cs(user, sched, period) {
+  if (user == "rfriedman") {
+    if (curr_course.includes("Computers")) {
+      document.currentScript.parentElement.parentElement.style.background = paleyellow;
+    } else if (curr_course.includes("STEM")) {
+      if (curr_course.includes("7")) document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+      else document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+    }
+  } else if (user == "tnahary") {
+    if (curr_course.includes("7-111")) {
+      document.currentScript.parentElement.parentElement.style.background = paleyellow;
+    } else if (curr_course.includes("7-103")) {
+      document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+    } else if (curr_course.includes("8-111")) {
+      document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+    }
   }
 }
 

@@ -82,7 +82,7 @@
               var classid = "{{mon.classid2[n]}}";
               var curr_course = "{{mon.courseid[n]}}";
               color_code("{{mon.scheduleid[n]}}", "{{current_period}}");
-              color_code_cs("{{mon.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{teacher}}", "{{mon.scheduleid[n]}}", "{{current_period}}");
               color_recess();
               if (curr_per == "L" || curr_course.includes("Recess")) {
                 document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
@@ -103,7 +103,7 @@
               var classid = "{{tues.classid2[n]}}";
               var curr_course = "{{tues.courseid[n]}}";
               color_code("{{tues.scheduleid[n]}}", "{{current_period}}");
-              color_code_cs("{{tues.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{teacher}}", "{{tues.scheduleid[n]}}", "{{current_period}}");
               color_recess();
               if (curr_per == "L" || curr_course.includes("Recess")) {
                 document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
@@ -125,7 +125,7 @@
               var classid = "{{wed.classid2[n]}}";
               var curr_course = "{{wed.courseid[n]}}";
               color_code("{{wed.scheduleid[n]}}", "{{current_period}}");
-              color_code_cs("{{wed.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{teacher}}", "{{wed.scheduleid[n]}}", "{{current_period}}");
               color_recess();
               if (curr_per == "L" || curr_course.includes("Recess")) {
                 document.currentScript.parentElement.parentElement.style.background = "Gainsboro";
@@ -146,7 +146,7 @@
               var classid = "{{thurs.classid2[n]}}";
               var curr_course = "{{thurs.courseid[n]}}";
               color_code("{{thurs.scheduleid[n]}}", "{{current_period}}");
-              color_code_cs("{{thurs.scheduleid[n]}}", "{{current_period}}");
+              color_code_cs("{{teacher}}", "{{thurs.scheduleid[n]}}", "{{current_period}}");
               color_recess();
               if (curr_per == "L" || curr_course.includes("Recess")) {
                 document.currentScript.parentElement.parentElement.style.background = "Gainsboro";

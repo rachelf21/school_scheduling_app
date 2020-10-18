@@ -49,6 +49,7 @@ def classes_anon():
         else:
             schedid = schedid.periodid
         today_schedid.append(schedid)
+        #print(c)
     print(today_schedid)
         
     if len(courses)==0:
