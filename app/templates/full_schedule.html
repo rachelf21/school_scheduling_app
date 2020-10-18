@@ -7,6 +7,7 @@
 <script src="/static/js/schedule.js"></script>
 <script>
   var current_week = "{{current_week}}";
+  console.log({{total_periods}});
 </script>
 <!-- <div class="container d-flex justify-content-around" style="border: 0px solid red; max-width: 750px">
   <a id="next" class="btn btn-sm pt-4" style="display: none">
@@ -81,10 +82,14 @@
     </thead>
 
     <tbody>
-      {%for n in range(11)%}
+      {%for n in range(total_periods)%}
       <tr style="border-width: thick">
         <script>
           var curr_per = per[{{n}}+1];
+          console.log('n='+ {{n}});
+          if({{total_periods}}==12)  curr_per = per[{{n}}];
+      
+
           if (curr_per == "L" ) {
             //document.currentScript.parentElement.style.background = "Gainsboro";
           }
@@ -196,6 +201,7 @@
           <div name="fri-per" class="h1 font-weight-light pl-1 pr-2">
               <script>
                 curr_per = per_fri[{{n}}+1];
+                if({{total_periods}}==12)  curr_per = per_fri[{{n}}];
                 if (curr_per < 8 || curr_per =='L') document.write(curr_per);
                 if(curr_per =='L') {
                   document.currentScript.parentElement.parentElement.parentElement.style.background = "Gainsboro";
@@ -210,6 +216,7 @@
             <div name="fri_times">
           <script>
             curr_per = per_fri[{{n}}+1];
+            if({{total_periods}}==12)  curr_per = per_fri[{{n}}];
             if (curr_per < 8 || curr_per == "L") {
               document.write("{{fri_start_times[n]}}<br />-<br />{{fri_end_times[n]}}");
               //document.currentScript.parentElement.style.background = "whitesmoke";
@@ -229,6 +236,8 @@
           <a>
             <script>
               curr_per = per_fri[{{n}}+1];
+              if({{total_periods}}==12)  curr_per = per_fri[{{n}}];
+
               var fri = "{{fri.courseid2[n] if fri.courseid2[n] !=None }}";
               fri = fri.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
               if (fri != "None") document.write(fri);

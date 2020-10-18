@@ -43,6 +43,16 @@ function color_code_cs(user, sched, period) {
     } else if (curr_course.includes("8-111")) {
       document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
     }
+  } else if (user == "rafriat") {
+    if (curr_course.includes("8-101")) {
+      document.currentScript.parentElement.parentElement.style.background = paleyellow;
+    } else if (curr_course.includes("8-103")) {
+      document.currentScript.parentElement.parentElement.style.background = "CornSilk";
+    } else if (curr_course.includes("8-102")) {
+      document.currentScript.parentElement.parentElement.style.background = "HoneyDew";
+    } else if (curr_course.includes("7-102")) {
+      document.currentScript.parentElement.parentElement.style.background = "LavenderBlush";
+    }
   }
 }
 

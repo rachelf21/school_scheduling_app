@@ -117,7 +117,8 @@ def login():
         if user and (bcrypt.check_password_hash(user.password, form.password.data)):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
+           # return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
+            return redirect(next_page) if next_page else redirect(url_for('my_schedule.display_full_schedule'))
         else:
             flash('Login Unsuccessful. Please check your username and password.', 'danger')
     return render_template('login.html', title='Login', form=form)

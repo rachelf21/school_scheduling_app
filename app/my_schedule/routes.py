@@ -196,13 +196,27 @@ def display_full_schedule():
     thurs = schedule.thurs_df
     fri = schedule.fri_df
 
+
+    if schedule.per_start==0:
+        total_periods=12
+        schedule.get_times_start_0()
+        schedule.get_Fri_times_start_0()
     
-    schedule.get_times()
-    schedule.get_Fri_times()
+    else:
+        total_periods=11
+        schedule.get_times()
+        schedule.get_Fri_times()
+    
+
     start_times = schedule.start_times 
     end_times = schedule.end_times
     fri_start_times = schedule.fri_start_times
     fri_end_times = schedule.fri_end_times
+    
+    print(start_times)
+    print(end_times)
+    print(fri_start_times)
+    print(fri_end_times)
     
     if schedule.is_empty():
         no_schedule=0
@@ -210,7 +224,9 @@ def display_full_schedule():
         no_schedule=1
     
     current_period = Util().get_current_period()
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule)
+
+    
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule, total_periods=total_periods)
 
 #%% this is only for rfriedman
 @my_schedule.route('/weekly_schedule')

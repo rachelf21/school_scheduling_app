@@ -40,8 +40,8 @@ def send_email():
         parent2 = Student.query.filter_by(email=student_email).first().parent2
         
         msg_subject = 'Absence: ' + first + " " + last + " " + abs_class + " " + abs_subject
-        msg = Message(msg_subject, sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail],bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org'])
-        
+        msg = Message(msg_subject, sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail])
+        #,bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org']
         intro = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + abs_class + " " + abs_subject + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \n"
         
         c_user = UserSettings.query.filter_by(username = teacher.username).first()
