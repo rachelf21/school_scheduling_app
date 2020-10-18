@@ -34,23 +34,23 @@ class Full_Schedule:
         else:
             table = 'schedule2'
         
-        self.mon_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_M%'  order by sort" , engine)   
+        self.mon_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_M%' and not scheduleid like '" + week + "_M0'  order by sort" , engine)   
         self.mon_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
         #print(self.mon_df)
     
-        self.tues_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_T%' order by sort" , engine)   
+        self.tues_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_T%' and not scheduleid like '" + week + "_T0' order by sort" , engine)   
         self.tues_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
         # print(self.tues_df)
         
-        self.wed_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_W%'  order by sort" , engine)   
+        self.wed_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_W%' and not scheduleid like '" + week + "_W0' order by sort" , engine)   
         self.wed_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
         # print(self.wed_df)
         
-        self.thurs_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_Th%'  order by sort" , engine)   
+        self.thurs_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_Th%' and not scheduleid like '" + week + "_Th0' order by sort" , engine)   
         self.thurs_df["courseid"].replace({"0-0-0": ""}, inplace=True)    
         # print(self.thurs_df)      
     
-        self.fri_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_F%'  order by sort" , engine)   
+        self.fri_df = pd.read_sql_query("Select * from " + table + " where teacher = '" + self.teacher + "' and scheduleid like '" + week +"_F%' and not scheduleid like '" + week + "_F0' order by sort" , engine)   
         self.fri_df["courseid2"].replace({"0-0-0": ""}, inplace=True) 
 
     

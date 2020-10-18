@@ -183,10 +183,10 @@ def track_attendance(category):
     
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status = 'A').order_by(Attendance.att_date.desc(), Attendance.name).all()
-            elif view=="lates":
+            elif view=="all":
                 attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.courseid == courseid, Attendance.status.in_(['A','L'])).order_by(Attendance.att_date.desc(), Attendance.name).all()
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.name).all()
+                attendance = Attendance.query.filter_by(teacher=teacher, courseid = courseid, status='L').order_by(Attendance.att_date.desc(), Attendance.name).all()
             
                 
         elif category == 'student':
@@ -201,10 +201,10 @@ def track_attendance(category):
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, email = student, status = 'A').order_by(Attendance.attid.desc()).all()
-            elif view == "lates":
+            elif view == "all":
                 attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.email == student, Attendance.status.in_(['A','L'])).order_by(Attendance.attid.desc()).all()                
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, email = student).order_by(Attendance.attid.desc()).all()
+                attendance = Attendance.query.filter_by(teacher=teacher, email = student, status='L').order_by(Attendance.attid.desc()).all()
     
 #---------------------------------------------------------------------------               
         elif category == 'date':
@@ -225,10 +225,10 @@ def track_attendance(category):
             if view=="absences":
                 attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A'])).order_by(Attendance.attid).all()   
                 
-            elif view == "lates":
+            elif view == "all":
                 attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).order_by(Attendance.attid).all()             
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all() 
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='L').order_by(Attendance.attid).all() 
             
 #-----------------------------------------------------------------------------------    
         elif category == 'classdate':
@@ -252,10 +252,10 @@ def track_attendance(category):
             
             if view=="absences":
                 attendance = Attendance.query.filter_by(teacher=teacher, att_date = date, status='A').filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.attid, Attendance.name).all() 
-            elif view =="lates":
+            elif view =="all":
                 attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).filter_by(courseid = courseid).order_by(Attendance.att_date.desc(), Attendance.attid, Attendance.name).all()  
             else:
-                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid).order_by(Attendance.att_date.desc() , Attendance.attid, Attendance.name).all() 
+                attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).filter_by(courseid = courseid, status='L').order_by(Attendance.att_date.desc() , Attendance.attid, Attendance.name).all() 
                 
         
         elif category[0:2]== '_x':
@@ -337,7 +337,7 @@ def track_attendance_day():
             #print("TABLES" , tables)    
                 
                 
-        elif view == "lates":
+        elif view == "all":
             attendance = Attendance.query.filter(Attendance.teacher==teacher, Attendance.att_date == date, Attendance.status.in_(['A','L'])).order_by(Attendance.attid).all()             
         else:
             attendance = Attendance.query.filter_by(teacher=teacher, att_date = date).order_by(Attendance.attid).all()     

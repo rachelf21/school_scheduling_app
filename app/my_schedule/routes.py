@@ -283,6 +283,7 @@ def today():
         display_schedule(dow)
         
         current_period = Util().get_current_period()
+        #print(current_period)
         
         
         return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)

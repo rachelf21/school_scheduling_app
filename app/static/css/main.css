@@ -213,6 +213,9 @@ a.article-title:hover {
   .hide_col {
     display: none;
   }
+  .fullday {
+    display: none;
+  }
 }
 
 .bg {

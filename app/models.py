@@ -152,7 +152,7 @@ class Schedule2(db.Model):
     id = db.Column(db.String(30), primary_key=True)
     scheduleid = db.Column(db.String(8))
     periodid = db.Column(db.String(8), db.ForeignKey(Period.periodid))
-    #period2 = db.relationship("Period", backref='period2', lazy=True)
+    period2 = db.relationship("Period", backref='period2', lazy=True)
     week = db.Column(db.String(1))
     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))
     courseid2 = db.Column(db.String(25))
@@ -170,7 +170,7 @@ class Schedule2(db.Model):
         self.teacher = teacher
     
     def __repr__(self):
-        return f"Schedule2('{self.scheduleid}', '{self.period.start_time}', '{self.period.end_time}', '{self.week}', '{self.courseid2}', '{self.teacher}')"
+        return f"Schedule2('{self.scheduleid}', '{self.period2.start_time}', '{self.period2.end_time}', '{self.week}', '{self.courseid2}', '{self.teacher}')"
     
 #%%
 class Student(db.Model):
@@ -233,7 +233,7 @@ class Attendance(db.Model):
     teacher = db.Column(db.String(50))
     att_date =db.Column(db.Date) #double check if right date field
     scheduleid =db.Column(db.String(8), db.ForeignKey(Schedule.scheduleid))   
-    #classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
+    classid = db.Column(db.String(5), db.ForeignKey(Group.classid), nullable=False)
     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))    
     email = db.Column(db.String(255), db.ForeignKey(Student.email))
     name = db.Column(db.String(65))    

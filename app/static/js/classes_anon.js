@@ -5,7 +5,7 @@ function select_period(classs, course) {
     console.log(attendancelink);
     window.location.href = attendancelink;
   } else {
-    alert("Invalid period number. \nNumber must be from 1 to 10");
+    alert("Invalid period number. \nNumber must be from 0 to 10");
   }
 }
 
@@ -17,12 +17,12 @@ function select_current_period(classs, course) {
   var x = document.getElementById("current_class").value;
   var y = document.getElementById("current_subject").value;
 
-  if (per >= 1 && per <= 10) {
+  if (per >= 0 && per <= 10) {
     attendancelink = "/attendance/" + x + "/" + x + "-" + y + "/" + my_day + "/" + per;
     console.log(attendancelink);
     window.location.href = attendancelink;
   } else {
-    alert("Invalid period number. \nNumber must be from 1 to 10");
+    alert("Invalid period number. \nNumber must be from 0 to 10");
   }
 }
 
@@ -33,8 +33,23 @@ function set_values(classs, course) {
   y.value = course;
 }
 
+function highlight_current_period(periodid, curr_per) {
+  console.log(periodid + " " + curr_per);
+  if (periodid == curr_per) {
+    console.log("in this period");
+    document.currentScript.parentElement.style.background = "#e6ffe6";
+  }
+}
+
+function AutoRefresh(t) {
+  var date = new Date(new Date().getTime()).toLocaleTimeString();
+  console.log("Refreshed " + date);
+  setTimeout("location.reload(true);", t);
+}
+
 $("document").ready(function () {
-  console.log("noclasses = " + noclasses);
+  AutoRefresh(300000);
+
   if (noclasses == 0) {
     console.log("no classes");
     $("#no_classes").css("display", "block");

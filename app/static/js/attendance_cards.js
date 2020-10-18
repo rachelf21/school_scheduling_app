@@ -30,22 +30,28 @@ function mark_present(id) {
 
   //console.log(present_icon);
   if (present_icon.style.background == "rgb(92, 184, 92)") {
+    s.value = "";
     present_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
     card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
+    s.value = "P";
     present_icon.style.background = "rgb(92, 184, 92)";
     card.style.background = "#eeffee";
     card.style.borderColor = "rgba(0, 255, 0, 0.65)";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
   }
+
+  if (submitted == 1) {
+    $("#submitted").css("display", "none");
+    $("#update").css("display", "block");
+  }
 }
 
 function mark_absent(id) {
   id = id - 1;
   s = document.getElementById("students-" + id + "-status");
-  s.value = "A";
   s.style.color = "rgb(220, 20, 60)";
   s.setAttribute("style", "background-color: " + PaleRed);
   n = document.getElementById("students-" + id + "-student_name");
@@ -61,23 +67,27 @@ function mark_absent(id) {
 
   //console.log(absent_icon);
   if (absent_icon.style.background == "rgb(220, 20, 60)") {
-    //217, 83, 79
+    s.value = "";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
     card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
+    s.value = "A";
     absent_icon.style.background = "rgb(220, 20, 60)";
     card.style.background = "MistyRose";
     card.style.borderColor = "rgba(255, 0, 0, 0.2)";
     present_icon.style.background = "rgba(200, 200, 200,.5)";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
   }
+  if (submitted == 1) {
+    $("#submitted").css("display", "none");
+    $("#update").css("display", "block");
+  }
 }
 
 function mark_late(id) {
   id = id - 1;
   var s = document.getElementById("students-" + id + "-status");
-  s.value = "L";
   s.style.color = "blue";
   s.setAttribute("style", "background-color: none");
   var n = document.getElementById("students-" + id + "-student_name");
@@ -93,15 +103,22 @@ function mark_late(id) {
 
   //console.log(absent_icon);
   if (late_icon.style.background == "rgb(2, 117, 216)") {
+    s.value = "";
     late_icon.style.background = "rgba(200, 200, 200,.5)";
     card.style.background = "whitesmoke";
     card.style.borderColor = "rgba(0, 0, 0, 0.125)";
   } else {
+    s.value = "L";
     late_icon.style.background = "rgb(2, 117, 216)";
     card.style.background = "Lightcyan";
     card.style.borderColor = "rgba(0, 0, 255, 0.2)";
     absent_icon.style.background = "rgba(200, 200, 200,.5)";
     present_icon.style.background = "rgba(200, 200, 200,.5)";
+  }
+
+  if (submitted == 1) {
+    $("#submitted").css("display", "none");
+    $("#update").css("display", "block");
   }
 }
 
@@ -179,6 +196,11 @@ function present(count) {
       //student_td.classList.remove("mark");
     }
   }
+
+  if (submitted == 1) {
+    $("#submitted").css("display", "none");
+    $("#update").css("display", "block");
+  }
 }
 
 function set_value_comment(id) {
@@ -207,6 +229,10 @@ function add_comment() {
     element.style.display = "block";
     var comment_element = document.getElementById("students-" + parseInt(id - 1) + "-comment");
     comment_element.value = comment;
+  }
+  if (submitted == 1) {
+    $("#submitted").css("display", "none");
+    $("#update").css("display", "block");
   }
 }
 
@@ -261,3 +287,110 @@ function view_lessons() {
   var x = "/lessons/" + courseid;
   return '<div style="float:left"> <a class="font-weight-normal" href="' + x + '"> <br> View Lessons</a>';
 }
+
+function hide_update() {
+  $("#submitted").css("display", "block");
+  $("#update").css("display", "none");
+  //window.location.replace = "/update_attendance";
+}
+
+// function check_for_blanks() {
+//   var cards = document.getElementsByClassName("card");
+//   for (i = 0; i < cards.length; i++) {
+//     status = document.getElementById("students-" + i + "-status").value;
+//     if (status == "") {
+//       console.log("BLANKS!");
+//       //$("#warning").css("display", "block");
+//       alert("Cannot leave fields blank. Please mark each student as Present, Absent, or Late.");
+//       //location.reload();
+//       break;
+//     } else {
+//       window.location.replace("/record_attendance");
+//     }
+//   }
+// }
+
+function set_values(id, date, courseid, email, name, status, comment) {
+  var i = document.getElementById("current_id2");
+  i.value = id;
+  var d = document.getElementById("current_date2");
+  d.value = get_today();
+  var c = document.getElementById("current_courseid2");
+  c.value = courseid;
+  var e = document.getElementById("current_email2");
+  e.value = email;
+  var n = document.getElementById("current_name2");
+  n.value = name;
+  var s = document.getElementById("new_status2");
+  s.value = status;
+  var t = document.getElementById("new_comment2");
+  t.value = comment;
+}
+
+function edit_attendance() {
+  //console.log("edit_attendance ");
+  var new_status = document.getElementById("new_status2").value.toUpperCase();
+  var new_comment = document.getElementById("new_comment2").value;
+  new_comment = new_comment.replace(/'/g, "") + " -edited";
+  //console.log("new comment = " + new_comment);
+  var date = document.getElementById("current_date2").value;
+  var courseid = document.getElementById("current_courseid2").value;
+  var email = document.getElementById("current_email2").value;
+  var name = document.getElementById("current_name2").value;
+
+  var test = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
+  console.log(test);
+  window.location.href = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
+}
+//href="/send_email/{{att.email}}/{{att.courseid}}"
+
+function color_cards_if_submitted() {
+  var cards = document.getElementsByClassName("card");
+  for (i = 0; i < cards.length; i++) {
+    status = document.getElementById("students-" + i + "-status").value;
+    if (status == "P") {
+      var present_icon = document.getElementById("mark_present_" + parseInt(i + 1));
+      present_icon.style.background = "rgb(92, 184, 92)";
+      cards[i].style.background = "#eeffee";
+      cards[i].style.borderColor = "rgba(0, 255, 0, 0.65)";
+    } else if (status == "A") {
+      var absent_icon = document.getElementById("mark_absent_" + parseInt(i + 1));
+      absent_icon.style.background = "rgb(220, 20, 60)";
+      cards[i].style.background = "MistyRose";
+      cards[i].style.borderColor = "rgba(255, 0, 0, 0.2)";
+    } else if (status == "L") {
+      var late_icon = document.getElementById("mark_late_" + parseInt(i + 1));
+      late_icon.style.background = "rgb(2, 117, 216)";
+      cards[i].style.background = "Lightcyan";
+      cards[i].style.borderColor = "rgba(0, 0, 255, 0.2)";
+    }
+    var element = document.getElementById("card_comment_" + parseInt(i + 1));
+    comment = document.getElementById("students-" + i + "-comment").value;
+
+    if (comment != "") {
+      console.log(comment);
+      element.childNodes[0].innerHTML = comment;
+      element.style.display = "block";
+    }
+  }
+}
+
+$("document").ready(function () {
+  if (performance.navigation.type == 2) {
+    location.reload(true);
+  }
+
+  if (submitted == 0) {
+    $("#submit").show();
+    $("#update").hide();
+    $("#submitted").hide();
+  } else {
+    $("#submit").hide();
+    //$("#update").show();
+    //$("#submitted").css("display", "block");
+    $("#all").hide();
+    $(".att_buttons").hide();
+    $(".edit_button").show();
+    color_cards_if_submitted();
+  }
+});

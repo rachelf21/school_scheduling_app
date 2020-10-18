@@ -4,6 +4,9 @@
   content="width=device-width, initial-scale=.6, user-scalable=yes, maximum-scale=3.0, minimum-scale=.04 shrink-to-fit=yes"
 />
 {% endblock %}
+
+<div  style="display:none" id="warning" class="text-center alert alert-danger"> Please check if you marked all students. Choose P for students who are present. Attendance was not recorded.</div>
+
 {%block title%} MDY Attendance {{courseid}}{%endblock%}     
 {%block content%}
 <span class='text-right text-muted font-weight-light small' style="float:right; "><a href="/lessons/{{courseid}}" style="color:black">Admin</a></script></span>
@@ -20,6 +23,8 @@
 <script src = "/static/js/attendance_cards.js"></script>
 
 <script>
+  var submitted = {{submitted}};
+  console.log('submitted ' + submitted);
   var teacher = "{{teacher}}";
   var students = [];
   var classid = "{{classid}}";
@@ -42,6 +47,7 @@
     }
   };
 
+
 </script>
 <div class = "container" style="border:0px solid red; max-width:560px;">
   <div class = "content-section" >
@@ -55,7 +61,7 @@
 </div>
 
 
-<form action="/update_attendance" method="post" name="att_form"> {{ att_form.hidden_tag() }}
+<form action="#" method="post" name="att_form"> {{ att_form.hidden_tag() }}
 
   <div id="top_of_form" class = "container-fluid" style="margin:auto; border:0px solid red ">
     
@@ -117,8 +123,18 @@
 
     <div class='text-left text-muted font-weight-normal pb-0' style="margin-top: auto;" >{{User.title}} {{User.first}} {{User.last}}</script></div>
     
-    <div style="border:0px solid red">
-      <a id='all' class="present btn mt-2 mb-1 mr-2 btn-circle btn-md" style="color:azure; background:rgb(92, 184, 92)" onclick='present({{count}})'> All </a>{{ att_form.save(class="btn btn-primary btn-md mt-2 mb-1 form-control-lg", style="border-radius: 8px") }}</div>
+    <div class='mt-2' style="border:0px solid red; ">
+
+     <div class="row" >
+       <div class= 'col'> <a id='all' class="present btn btn-circle btn-md" style="color:azure; background:rgb(92, 184, 92)" onclick='present({{count}})'> All </a></div> 
+        <div  class='col' id='submitted' ><button type="button" class="btn btn-secondary btn-md" style="display:none; border-radius: 8px; background:gainsboro; color: lightslategray" disabled> Submitted </button></div> 
+      
+
+     <div class= 'col' id='update'> <button class="btn btn-primary btn-md form-control-lg"  style="display:none; border-radius: 8px; color:whitesmoke" onclick='hide_update()' formaction= "/update_attendance"> Save Changes </button> </div>
+     <div class= 'col' id='submit'> <button class="btn btn-primary btn-md form-control-lg"  style="border-radius: 8px; color:whitesmoke"  formaction= "/record_attendance"> Submit </button> </div>
+
+    </div>
+    </div>
     </div>
 
   </div> <!--closes top of form-->
@@ -162,13 +178,24 @@
 
 
 
-                <div id="buttons" class="ml-2">
+                <div id="buttons" class="att_buttons ml-2">
                     <button id="mark_present_{{loop.index}}" title="present" style="background:rgba(200,200,200,.5); color:white; " type="button" class="present btn btn-circle btn-sm mr-2"  onclick='mark_present("{{loop.index}}")'>P</button> 
                     <button id="mark_absent_{{loop.index}}" title="absent" style="background:rgba(200,200,200,.5); color:white" type="button" class="absent btn btn-circle btn-sm mr-2"  onclick='mark_absent("{{loop.index}}")'>A</button> 
                     <button id="mark_late_{{loop.index}}" title="late" style="background:rgba(200,200,200,.5); color:white" type="button" class="late btn btn-circle btn-sm mr-2"  onclick='mark_late("{{loop.index}}")'>L</button> 
                     <button id="comment{{loop.index}}" title="Add comment" style="background:rgba(200,200,200,.5); color:white" type="button" class="add btn btn-circle btn-sm mr-2"  onclick='set_value_comment("{{loop.index}}")'             
                     data-toggle="modal"
                     data-target="#commentModal">C</button> 
+                </div>
+                <div class="edit_button" style="display:none">
+                    <a
+                    id="edit{{loop.index}}"
+                    title="edit"
+                    class="a btn-sm"
+                    onclick='set_values("{{loop.index}}",  date, "{{courseid}}", "{{ student.email.data}}","{{student.student_name.data}}", "{{ student.status.data}}", "{{ student.comment.data}}" )'
+                    data-toggle="modal"
+                    data-target="#editModal"
+                    ><i name="edit" style="color: #1e2a5d" class="fa fa-pencil fa-1x"></i>
+                  </a>
 
                 </div>
 
@@ -262,5 +289,75 @@
     }
   })
 </script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit Attendance Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times; </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="md-form mb-1">
+          <div class="form-group form-row">
+          <label for="current_name2" class="col-3" /> Student </label>
+          <input id="current_name2" style="max-width: 300px" class="col form-control validate" disabled />
+          </div>
+
+
+          <div class="form-group form-row">
+            <div class="col-3"><label for="new_status2">Status</label></div>
+            <div class="col"><select style="width: 60px" type="text" id="new_status2" class="form-control validate"  autofocus />
+              <option>P</option>
+              <option>A</option>
+              <option>L</option>
+            </select></div>
+          </div>
+          <div class="form-group form-row">
+            <div class="col-3"><label for="new_comment2">Comment</label></div>
+            <div class="col"><input style="width: 300px" type="text" id="new_comment2" class="form-control validate"  /></div>
+          </div>
+
+
+          <div style="display: none">
+            <input id="current_id2" class="form-control validate" />
+            <input id="current_date2" class="form-control validate" />
+            <input id="current_courseid2" class="form-control validate" />
+            <input id="current_email2" class="form-control validate" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id = "edit_ok_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_attendance()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#editModal").on("shown.bs.modal", function () {
+    $("#new_comment").focus();
+    setTimeout(function () {
+      $("#new_comment").focus();
+    }, 1000);
+  });
+
+  $(document).on("keyup", function (event) {
+    //Check if modal is visible and key code
+    if ($("#editModal").is(":visible") && event.keyCode === 13) {
+      //Programatically click the button
+      $("#edit_ok_button").click();
+    }
+  })
+
+</script>
+
+
 
 {%endblock%}

@@ -39,7 +39,7 @@
     {% for schedule in schedule %}
     <script>
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
-      var per = [0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+      var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
       var current_period =  "{{current_period}}";
       //console.log("current period is" + current_period);
       //var per = parseInt({{ schedule.sort}})
@@ -143,21 +143,21 @@
 
 <script> 
   var sched = {{sched_list | tojson}};
-  console.log(sched);
+  //console.log(sched);
 
   function get_next(){
     var current = "{{dow}}";
-    console.log(current);
+    //console.log(current);
     for(i=0; i< sched.length; i++){
       if(current.substring(2,4)=="Th"){
         //document.getElementById("next").disabled=true;
         next=sched[0];
-        console.log("next day should be Mon " + next);
+        //console.log("next day should be Mon " + next);
         window.location.href = "/schedule/" + next;
       }
       else if(sched[i]==current){
         next = sched[i+1];
-        console.log("Next day: " + next);
+        //console.log("Next day: " + next);
         window.location.href = "/schedule/" + next;
       }
     }

@@ -102,7 +102,7 @@ def form():
     else:
         return render_template('form.html', att_form=att_form)
 
-@app.route('/update_attendance', methods=['GET', 'POST'])
+@app.route('/record_attendance', methods=['GET', 'POST'])
 def udpate_attendance():
     print("form has been validated")
     results = request.form['data']

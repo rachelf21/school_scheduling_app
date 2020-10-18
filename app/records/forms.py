@@ -38,7 +38,7 @@ class AttendanceRecordForm(FlaskForm):
     date1 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
     date2 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
 
-    view = RadioField('View', choices=[('all', 'View all'),('absences', 'Absences only'),('lates', "Absence and Late")],default='lates')
+    view = RadioField('View', choices=[('absences', 'Absences Only'),('all', "Absence and Late")],default='all')
     #date = DateField('Date', format="%m-%d-%Y",validators=[DataRequired()])
     btnSubmit = SubmitField('Submit')
 

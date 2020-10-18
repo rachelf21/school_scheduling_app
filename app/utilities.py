@@ -15,6 +15,8 @@ class Util:
                 dow = 'A_W'
             elif today == 3:
                 dow = 'A_Th'
+            elif today == 4:
+                dow = 'A_F'
             else: 
                 dow = 'A_M'
         else:
@@ -26,6 +28,8 @@ class Util:
                 dow = 'B_W'
             elif today == 3:
                 dow = 'B_Th'
+            elif today == 4:
+                dow = 'B_F'
             else:
                 dow = 'B_M'
         #print("dow", dow)
