@@ -213,10 +213,10 @@ def display_full_schedule():
     fri_start_times = schedule.fri_start_times
     fri_end_times = schedule.fri_end_times
     
-    print(start_times)
-    print(end_times)
-    print(fri_start_times)
-    print(fri_end_times)
+    #print(start_times)
+    #print(end_times)
+    #print(fri_start_times)
+    #print(fri_end_times)
     
     if schedule.is_empty():
         no_schedule=0

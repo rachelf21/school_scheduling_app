@@ -155,7 +155,7 @@ def send_reset_email(user):
     msg = Message('Password Reset Request', sender='attendance-app@mdyschool.org', recipients=[user.email])
 
     msg.body = f'''
-    To reset your password, visit the following link:
+    This link will expire in one hour. To reset your password, visit the following link within the next hour:
     {url_for('users.reset_token', token=token, _external=True)}
     If you did not make this request then simply ignore this email and no change will be made.
     '''
@@ -227,7 +227,7 @@ def set_custom_msg(teacher):
                 flash('Error adding custom text. Your custom text was not added.', 'danger')
                 return redirect(url_for('users.set_custom_msg', teacher=teacher))
         else:
-            print("User has settings")
+            #print("User has settings")
             try:
                 user.custom_msg = msg
                 db.session.commit()
