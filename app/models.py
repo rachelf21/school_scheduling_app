@@ -156,7 +156,7 @@ class Schedule2(db.Model):
     week = db.Column(db.String(1))
     courseid = db.Column(db.String(25),db.ForeignKey(Course.courseid))
     courseid2 = db.Column(db.String(25))
-    #course = db.relationship("Course", backref='course', lazy=True)    
+    course2 = db.relationship("Course", backref='course2', lazy=True)    
     sort = db.Column(db.Integer)
     teacher = db.Column(db.String(50))
     

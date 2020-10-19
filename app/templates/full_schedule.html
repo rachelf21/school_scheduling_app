@@ -33,7 +33,7 @@
   </a>
 </div>
 
-<h5 id="mytoday" class="mt-1 text-center font-weight-normal" style="display:none"><a href="/today">Today</a></h5>
+<h5 class="mt-1 text-center font-weight-normal" ><a id="mytoday" href="/today2" style=display:none>Today</a></h5>
 
 
 <h6 id="no_sched" class="text-center alert alert-danger mb-4" style="max-width: 800px; margin: auto; color: red; display: none">
@@ -284,7 +284,7 @@
       $('#next').css('display', 'block');
     }
     else {
-      $('#mytoday').css('display', 'none');
+      //$('#mytoday').css('display', 'none');
       $('#prev').css('display', 'none');
       $('#next').css('display', 'none');
     }
@@ -310,6 +310,11 @@
   } else {
     console.log("sched set up");
     $("#no_sched").css("display", "none");
+  }
+
+  if ("{{teacher}}" == "rfriedman") {
+    element = document.getElementById("mytoday");
+    if (element) element.href = "/today";
   }
 </script>
 <hr class="mt-4 mb-4" />

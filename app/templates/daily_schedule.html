@@ -1,0 +1,168 @@
+{% extends "base-denied.html" %} {% block title %}{{title}} Schedule {{dow}}{% endblock %} {% block content %}
+<script>
+  function AutoRefresh(t) {
+    var date = new Date(new Date().getTime()).toLocaleTimeString();
+    console.log("Refreshed " + date);
+    setTimeout("location.reload(true);", t);
+  }
+
+  var dow = "{{dow}}";
+</script>
+<div class="container d-flex justify-content-around" style="max-width: 600px; border: 0px solid red">
+  <a id="next" class="btn btn-sm pt-4" onclick="get_prev()" style="display: none">
+    <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
+  </a>
+  <h1 class="mt-1 text-center display-4">{{title}}</h1>
+
+  <a id="prev" class="btn btn-sm pt-4" onclick="get_next()" style="display: none">
+    <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i
+  ></a>
+</div>
+
+<h5 class="mt-1 text-center font-weight-normal"><a id="full_schedule" href="/full_schedule">Schedule</a></h5>
+
+<div class="table-responsive">
+  <table
+    id="myTable"
+    class="table mx-auto table-hover row-border text-center mt-4 pt-4 w-auto table-fixed"
+    style="background: snow; border: 0px solid green; width: auto; margin: 0px auto"
+  >
+    <thead>
+      <th>Per</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Subject</th>
+      <th>Class</th>
+      <th>Room</th>
+    </thead>
+    <tbody>
+      {% for schedule in schedule %}
+      <script>
+        var dow = "{{dow}}"; //this is actually scheduleid!!!!
+        var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+        var current_period = "{{current_period}}";
+        //console.log("current period is" + current_period);
+        //var per = parseInt({{ schedule.sort}})
+      </script>
+      <tr>
+        <td class="h4">
+          <script>
+            var sched = "{{schedule.period2.periodid}}";
+            if (per[{{loop.index}}] != -1) {
+            document.write(per[{{loop.index}}]);
+            }
+              else {
+                document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
+                document.write("L");
+              }
+              /*if (per[{{loop.index}}] ==8) {
+                document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
+              }*/
+
+            if(sched == current_period){
+              document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";
+            }
+            //console.log("sched period periodid {{schedule.period2.periodid}}")
+          </script>
+        </td>
+        <td>{{ start_times[loop.index-1]}}</td>
+        <td>{{ end_times[loop.index-1]}}</td>
+
+        <td>
+          <script>
+            if ("{{ schedule.course2.subject}}" == "0") {
+              document.write("");
+            } else document.write("{{ schedule.course2.subject}}");
+          </script>
+        </td>
+        <td class="text-nowrap">
+          <script>
+            var course = "{{ schedule.course2.classid}}"+"-{{ schedule.course2.subject}}";
+            //console.log("course " + course);
+            var p = per[{{loop.index}}];
+            var c = "{{ schedule.course2.classid}}";
+            var c2 = "{{ schedule.course2.classcode.classid2}}";
+            var icon = "<i class = 'fa fa-edit'> </i>";
+            var courseid = "{{ schedule.course2.courseid}}";
+            if (courseid.includes('Minha') || courseid.includes('Recess')) {
+                document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
+              }
+            //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
+            var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c2 + "&nbsp;  &nbsp;" + icon + "</a>";
+            var course = "{{ schedule.course2.subject}}" ;
+            if ( course == "0"  ) {
+              document.write("");
+            } else document.write(t);
+          </script>
+        </td>
+        <td>
+          <script>
+            if (course != "0") {
+              document.write("{{ schedule.course2.room}}");
+            } else {
+              document.write("");
+            }
+          </script>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  var current_week = "{{current_week}}";
+  window.onload = function () {
+    AutoRefresh(300000);
+    if (current_week == "A") {
+      document.getElementById("weekA").classList.add("active");
+      document.getElementById("weekB").classList.remove("active");
+    } else if (current_week == "B") {
+      document.getElementById("weekB").classList.add("active");
+      document.getElementById("weekA").classList.remove("active");
+    }
+  };
+</script>
+
+<script>
+  var sched = {{sched_list | tojson}};
+  //console.log(sched);
+
+  function get_next(){
+    var current = "{{dow}}";
+    //console.log(current);
+    for(i=0; i< sched.length; i++){
+      if(current.substring(2,4)=="F"){
+        //document.getElementById("next").disabled=true;
+        next=sched[0];
+        //console.log("next day should be Mon " + next);
+        window.location.href = "/display_daily_schedule/" + next;
+      }
+      else if(sched[i]==current){
+        next = sched[i+1];
+        //console.log("Next day: " + next);
+        window.location.href = "/display_daily_schedule/" + next;
+      }
+    }
+  }
+
+
+  function get_prev(){
+    console.log("prev function");
+    var current = "{{dow}}";
+    console.log(current);
+    for(i=0; i< sched.length; i++){
+      if(current.substring(2,3)=="M"){
+        prev=sched[4];
+        window.location.href = "/display_daily_schedule/" + prev;
+      }
+      else if(sched[i]==current){
+        prev = sched[i-1];
+        window.location.href = "/display_daily_schedule/" + prev;
+      }
+    }
+  }
+</script>
+<hr class="mt-4 mb-4" />
+
+{% endblock content %}

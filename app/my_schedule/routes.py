@@ -1,7 +1,7 @@
 from flask import render_template, request, Response, redirect, Blueprint
 from datetime import date
 from app import engine
-from app.models import Schedule, Period, Lessons, Week
+from app.models import Schedule, Period, Lessons, Week, Schedule2
 from functools import wraps
 from app.my_schedule.schedule_helper import Full_Schedule
 from app.utilities import Util
@@ -43,7 +43,7 @@ def requires_auth_admin(f):
 #%%
 def get_latest_lesson(courseid2):
     lesson = Lessons.query.filter_by(courseid=courseid2).order_by(Lessons.lessonid.desc()).first()
-    print(lesson)
+    #print(lesson)
     return lesson
 
 #%%
@@ -101,7 +101,7 @@ def display_schedule(dow):
         start_times.append(s.period.start_time.strftime("%#I:%M"))
         end_times.append(s.period.end_time.strftime("%#I:%M"))
         
-        print("sched courseid=", s.courseid)
+        #print("sched courseid=", s.courseid)
         latest_lesson = get_latest_lesson(s.courseid)
         latest_lessons.append(latest_lesson)
     
@@ -160,11 +160,11 @@ def schedule_with_lessons(dow):
     for s in schedule:
         s.period.start_time = s.period.start_time.strftime("%#I:%M")
         s.period.end_time = s.period.end_time.strftime("%#I:%M")
-        print("sched courseid=", s.courseid)
+        #print("sched courseid=", s.courseid)
         latest_lesson = get_latest_lesson(s.courseid)
         latest_lessons.append(latest_lesson)
    
-    print(latest_lessons)
+    #print(latest_lessons)
     return render_template('schedule_with_lessons.html', schedule = schedule, title = title, dow=dow, lessons=lessons, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, teacher=current_user.username)
     
 #%%
@@ -278,10 +278,11 @@ def get_day(day):
     current_period = Util().get_current_period()
     
     return render_template('schedule.html', schedule = schedule, title = title, dow=dow,current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
+
 #%%
 @my_schedule.route('/today')
 @login_required
-@requires_auth_admin 
+#@requires_auth_admin 
 def today():
     if current_user.username != 'rfriedman':
         return render_template('denied.html')
@@ -304,6 +305,94 @@ def today():
         
         return render_template('schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, latest_lessons=latest_lessons, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 
+#%%
+@my_schedule.route('/display_daily_schedule/<dow>')
+def display_daily_schedule(dow):
+    global schedule
+    #x = Course.query.join(Group, Course.classid == Group.classid)
+    global title
+    global current_week
+    global start_times
+    global end_times
+    teacher = current_user.username
+    
+    title = ''
+    
+    current_week = Week.query.first().today
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
+        
+    #jsonify(sched_list=sched_list) 
+    
+
+    if dow == 'A_M':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('M%')).filter_by(week='A',teacher=teacher).order_by(Schedule2.sort).all()
+        title = 'Monday'
+    elif dow == 'A_T':
+         schedule = Schedule2.query.filter(~(Schedule2.periodid.like('Th%'))).filter(Schedule2.periodid.like('T%')).filter_by(week='A',teacher=teacher).order_by(Schedule2.sort).all()
+         title = 'Tuesday'
+    elif dow == 'A_W':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('W%')).filter_by(week='A',teacher=teacher).order_by(Schedule2.sort).all()         
+        title = 'Wednesday'
+    elif dow == 'A_Th':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('Th%')).filter_by(week='A',teacher=teacher).order_by(Schedule2.sort).all()         
+        title = 'Thursday'
+    elif dow == 'A_F':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('F%')).filter_by(week='A',teacher=teacher).order_by(Schedule2.sort).all()         
+        title = 'Friday'        
+    elif dow == 'B_M':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('M%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()
+        title = 'Monday'
+    elif dow == 'B_T':
+         schedule = Schedule2.query.filter(~(Schedule2.periodid.like('Th%'))).filter(Schedule2.periodid.like('T%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()
+         title = 'Tuesday'
+    elif dow == 'B_W':
+        schedule = Schedule.query.filter(Schedule2.periodid.like('W%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()         
+        title = 'Wednesday'
+    elif dow == 'B_Th':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('Th%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()  
+        title = 'Thursday'
+    elif dow == 'B_F':
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('F%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()  
+        title = 'Friday'        
+        
+
+    start_times = []
+    end_times = []
+    for s in schedule:
+        start_times.append(s.period2.start_time.strftime("%#I:%M"))
+        end_times.append(s.period2.end_time.strftime("%#I:%M"))
+
+    print(schedule)
+    
+    current_period = Util().get_current_period()
+       
+    return render_template('daily_schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
+
+
+#%%
+@my_schedule.route('/today2')
+@login_required
+#@requires_auth_admin 
+def today2():
+    global current_week
+    current_week = Week.query.first().today  
+    util = Util()
+    dow = util.get_dow()
+    if current_week ==  'A':
+        sched_list = sched_list_A
+    else:
+        sched_list = sched_list_B
+    
+    display_daily_schedule(dow)
+    
+    current_period = Util().get_current_period()
+        #print(current_period)
+        
+        
+    return render_template('daily_schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 
 #%%
 @my_schedule.route('/now')
