@@ -84,7 +84,7 @@
             var c2 = "{{ schedule.course2.classcode.classid2}}";
             var icon = "<i class = 'fa fa-edit'> </i>";
             var courseid = "{{ schedule.course2.courseid}}";
-            if (courseid.includes('Minha') || courseid.includes('Recess')) {
+            if (courseid.includes('Minha') || courseid.includes('Recess') || per[{{loop.index}}]==0) {
                 document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
               }
             //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";

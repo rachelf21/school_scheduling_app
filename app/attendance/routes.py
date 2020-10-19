@@ -42,52 +42,32 @@ def take_attendance(classname, courseid, dow, per):
         count = len(students)
         amount = amount-3
         
-    if result is not None:
-        submitted=1
-        print('already submitted attendance')
-        for s in students:
-            amt_abs = len(Attendance.query.filter_by(att_date=date.today(),teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
-            amt_late = len(Attendance.query.filter_by(att_date=date.today(),teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
-            
-            student_form = StudentAttendanceForm()
-            student_form.count = amt_abs
-            student_form.count_late = amt_late        
-            student_form.email = s.email
-            student_form.student_name = s.name
+
+    for s in students:
+        amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+        amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
+        
+        student_form = StudentAttendanceForm()
+        student_form.count = amt_abs
+        student_form.count_late = amt_late        
+        student_form.email = s.email
+        student_form.student_name = s.name
+        if result is not None:
+            submitted=1
+            print('already submitted attendance')
             student_attendance = Attendance.query.filter_by(att_date=date.today(),teacher=teacher, courseid=courseid, classid=classname, scheduleid=dow+per, email = s.email).first()
             #print(s.email)
             student_form.status = student_attendance.status
             student_form.comment = student_attendance.comment
-            #print(student_form.status)
-
-    
-            att_form.students.append_entry(student_form)
-    else:    
-    
-        for s in students:
-            amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
-            amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
-            
-            student_form = StudentAttendanceForm()
-            student_form.count = amt_abs
-            student_form.count_late = amt_late        
-            student_form.email = s.email
-            student_form.student_name = s.name
+        
+        else:            
             student_form.comment = ""
-            #temp_student = Fake(s.email, s.name, "P","")
-            #class_att_records.append(temp_student)
             
     
-            att_form.students.append_entry(student_form)        
+        att_form.students.append_entry(student_form)        
     # if att_form.validate():
     #     print("form validated")
-    #     email = student_form.email.data
-    #     student = student_form.student.data
-    #     status = student_form.status.data
-    #     comment = student_form.comment.data
-    #     test = Fake(email, student, status, comment)  
-    #     add_to_database(test)
-    #     return "<h1> Attendance has been recorded </h1>"
+
     
     return render_template('attendance_cards.html', att_form=att_form, classid = classname, classid2 = classid2, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User, courseid2=classid2, submitted=submitted)
 

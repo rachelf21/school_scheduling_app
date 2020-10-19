@@ -384,6 +384,7 @@ $("document").ready(function () {
     $("#submit").show();
     $("#update").hide();
     $("#submitted").hide();
+    $("#footer_buttons").hide();
   } else {
     $("#submit").hide();
     //$("#update").show();
@@ -391,6 +392,7 @@ $("document").ready(function () {
     $("#all").hide();
     $(".att_buttons").hide();
     $(".edit_button").show();
+    $("#footer_buttons").show();
     color_cards_if_submitted();
   }
 });
