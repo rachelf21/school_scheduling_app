@@ -1,9 +1,10 @@
 from flask import render_template, request, Response
 from app import app, engine
-from app.models import Users
+from app.models import Users, Attendance
 import pandas as pd
 from functools import wraps
-
+from sqlalchemy import func
+from datetime import date
 
 #%%
 #https://stackoverflow.com/questions/29725217/password-protect-one-webpage-in-flask-app
@@ -67,3 +68,9 @@ def denied():
 def list_users():
     users = Users.query.all()
     return render_template('users.html', users=users)
+
+@app.route("/admin/adm_attendance")
+@requires_auth_admin 
+def admin_attendance():
+    attendance = Attendance.query.filter_by(att_date=date.today()).distinct(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).with_entities(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).order_by(Attendance.teacher, Attendance.scheduleid, Attendance.courseid).all()
+    return render_template('/admin/adm_attendance.html', attendance=attendance)

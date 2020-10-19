@@ -35,7 +35,7 @@ class Full_Schedule:
         else:
             table = 'schedule2'
                     
-        if self.teacher == 'tnahary':
+        if self.teacher == 'tnahary' or self.teacher =='rafriat' or self.teacher == 'dsultan':
             self.get_schedule_start_per0(table, week)
         else:
             self.get_schedule_start_per1(table, week)

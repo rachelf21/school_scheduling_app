@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %} Admin Attendance {% endblock title %} {% block content %}
+<script>
+  var num_att = 0;
+</script>
+<div style="border: 0px solid red; text-align: center" style="max-width: 500px; margin: auto">
+  <h1 id="title" class="font-weight-normal mb-4">Admin: Today's Attendance</h1>
+  <table id="myTable" class="table table-striped table-hover table-bordered" style="border: 0px red solid; background: whitesmoke">
+    <thead>
+      <th>Count</th>
+      <th>scheduleid</th>
+      <th>courseid</th>
+      <th>teacher</th>
+    </thead>
+
+    <tbody>
+      {% for att in attendance%}
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{att.scheduleid}}</td>
+        <td>{{att.courseid}}</td>
+        <td>{{att.teacher}}</td>
+      </tr>
+      <script>
+        num_att = {{loop.index}};
+      </script>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  window.onload = function () {
+    AutoRefresh(300000);
+  };
+</script>
+
+<script>
+  function AutoRefresh(t) {
+    var date = new Date(new Date().getTime()).toLocaleTimeString();
+    console.log("Refreshed " + date);
+    $("#title").text(num_att + " Attendance");
+    setTimeout("location.reload(true);", t);
+  }
+</script>
+
+<script>
+  $("#myTable").DataTable({
+    ordering: true,
+    //order: [[3, "asc"]],
+    pageLength: 40,
+    //paging: true,
+    filter: true,
+    //deferRender: true,
+    scrollY: 600,
+
+    //scrollCollapse: true,
+    scroller: true,
+    select: true,
+    bSort: true,
+  });
+</script>
+{% endblock content %}
