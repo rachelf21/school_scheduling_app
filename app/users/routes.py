@@ -3,7 +3,7 @@ import secrets
 import os
 from PIL import Image
 from app import app, db, bcrypt, mail
-from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm,SetMsgBodyForm, RegisterClassesForm
+from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm,SetMsgBodyForm, RegisterClassesForm, SuggestionsForm
 from app.models import Users, Course, Group, UserSettings
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -192,11 +192,7 @@ def reset_token(token):
      return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password',form=form)
 
-#create a new table with fields: teacher, email, msg_body
-#create new corresponding class in SQLAlchemy
-#create a function that checks if teacher exists in this table. if teacher exists, update table with new message body.
-#else, insert new record into this table with message body
-#do a query on that table by teacher=user, retrieve msgbody and then add value to send_email in routes.py under records.
+
 @users.route("/set_custom_msg/<teacher>", methods=['GET', 'POST'])
 def set_custom_msg(teacher):
     form = SetMsgBodyForm()
@@ -242,6 +238,31 @@ def set_custom_msg(teacher):
         return redirect(url_for('users.set_custom_msg', teacher=teacher))
     return render_template('set_custom_msg.html', form=form, teacher=teacher, msg=msg, custom=custom)
 
+def send_suggestion(suggestion, teacher):
+    msg = Message('Suggestion for Attendance App', sender='attendance-app@mdyschool.org', recipients=['rfriedman@mdyschool.org'])
+    
+    teacher = Users.query.filter_by(username=teacher).first()
+    suggestee = teacher.title + ' ' + teacher.first + ' ' + teacher.last
+    intro = 'The following suggestion has been submitted on the attendance app by ' + teacher.email + ', ' + suggestee + '.\n\n'
+    msg.body = intro + suggestion
+    mail.send(msg)    
 
-
+@users.route("/suggestions/<teacher>", methods=['GET', 'POST'])
+def suggestions(teacher):
+    suggestion=''
+    form = SuggestionsForm()    
+    if form.validate_on_submit():
+        suggestion = form.content.data
+        if suggestion=='':
+            flash('Suggestion is blank. Nothing to submit', 'info')
+            return redirect(url_for('users.suggestions', teacher=teacher))
+        else:
+            flash('Your suggestion has been submitted. Thank you.', 'success')
+            send_suggestion(suggestion, teacher)
+            return redirect(url_for('users.suggestions', teacher=teacher))                         
+        
+        print(suggestion)
+        flash('Error submitting your suggestion. Your suggestion was not sent.', 'danger')
+        return redirect(url_for('users.suggestions', teacher=teacher))
+    return render_template('suggestions.html', form=form, teacher=teacher, suggestion=suggestion)
     

@@ -118,6 +118,11 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password', )
 
 class SetMsgBodyForm(FlaskForm):
-    content = TextAreaField(u"Custom Text", render_kw={'class': 'form-control', 'rows': 5})
+    content = TextAreaField(u"Custom Text", render_kw={'class': 'form-control', 'rows': 7})
+    submit = SubmitField('Submit')
+    cancel = SubmitField('Cancel')
+    
+class SuggestionsForm(FlaskForm):
+    content = TextAreaField(u"Suggestion", render_kw={'class': 'form-control', 'rows': 7})
     submit = SubmitField('Submit')
     cancel = SubmitField('Cancel')

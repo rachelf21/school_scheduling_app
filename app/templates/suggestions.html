@@ -1,0 +1,31 @@
+{% extends "base-denied.html" %} {% block content %}
+
+<div style="width: 500px; margin: auto">
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Suggestions</legend>
+
+        <div>
+          <p class="font-weight-normal">
+            If there are any features you would like to see added in the future, please submit your suggestions below.
+          </p>
+          <p>Thank you.</p>
+        </div>
+        <div class="form-group mt-4">
+          {% if form.content.errors %} {{ form.content(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.content.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.content(class="form-control form-control-lg") }} {% endif %}
+        </div>
+      </fieldset>
+
+      <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}</div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

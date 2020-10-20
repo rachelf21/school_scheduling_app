@@ -135,7 +135,6 @@
           </script>
         </td>
   
-
         
       <td style="text-align:center text-nowrap">
        <div style="display:flex; align-content:center; justify-content:left">
@@ -156,7 +155,7 @@
     </div> <!--ends div row for actions cell-->
   </td>
     <script>
-      if("{{att.status}}" =='A'){
+      if("{{att.status}}" =='A' && "{{att.att_date}}" == today_formatted()){
         $('#notify{{loop.index}}').css('display', 'block');
       }
     </script>
