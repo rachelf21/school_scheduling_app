@@ -66,7 +66,7 @@
       <th class="hide_col">Subject</th>
       <th>Name</th>
       <th class="text-center">St</th>
-      <th>Actions</th>
+      <th class="onlytoday">Actions</th>
       <th>Comments</th>
     </thead>
     <tbody>
@@ -109,7 +109,7 @@
           </script>
         </td>
 
-        <td class="hide_col">
+        <td class="hidecol">
           <script>
             document.write("{{ att.courseid}}".substring(6));
           </script>
@@ -136,7 +136,7 @@
         </td>
   
         
-      <td style="text-align:center text-nowrap">
+      <td class='onlytoday' style="text-align:center text-nowrap">
        <div style="display:flex; align-content:center; justify-content:left">
         <a
         id="edit{{loop.index}}"
@@ -169,10 +169,11 @@
 
 
 </div>
+
 <!-- </div>
 </div> -->
 <div style="display:flex; justify-content:center">
-  <a title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="btn btn-outline-primary btn-md">
+  <a id="emailall" title="Email ALL absences" onclick='email_all({{attendance_json | tojson}})' class="btn btn-outline-primary btn-md">
     <i style="color:#1e2a5d" class="fa fa-envelope fa-2x"></i><span  class="ml-2 h5">ALL ABSENCES</span></a>
 </div>
 <hr class="mb-4" />
@@ -182,7 +183,20 @@
   <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">My Classes</a>
 </div>
 
+<script>   
+  if("{{category}}"== "date" || "{{category}}"== "classdate"){
+    //console.log("{{date}}");
+    if("{{date}}"!=today_formatted()){
+        $('#emailall').hide();
+        $('.onlytoday').hide();
+    }
+  }
+else if ("{{category}}"== "student" || "{{category}}".includes("@stu.mdyschool.org")){
+  $('#emailall').hide();
+  //$('.onlytoday').hide();
+}
 
+  </script>
 
 
 <script>

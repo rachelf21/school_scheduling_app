@@ -80,7 +80,7 @@
           var c2 = "{{ schedule.course.classcode.classid2}}";
           var courseid = "{{ schedule.course.courseid}}";         
           //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
-          var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
+          //var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
           var course = "{{ schedule.course.subject}}" ;
           if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
             document.write("");
@@ -108,7 +108,6 @@
           }
         </script>
       </td>
-
 
       <td id="att">
 <script>
