@@ -43,7 +43,11 @@ def classes_anon():
         
     today_schedid = []
     for c in courses:
-        schedid = Schedule2.query.filter(Schedule2.courseid==c.courseid).filter(Schedule2.scheduleid.like(dow+'%')).first()
+        if dow=='A_T':
+            schedid = Schedule2.query.filter(Schedule2.courseid==c.courseid).filter(~Schedule2.scheduleid.like('%Th%')).filter(Schedule2.scheduleid.like(dow+'%')).first()
+        else:    
+            schedid = Schedule2.query.filter(Schedule2.courseid==c.courseid).filter(Schedule2.scheduleid.like(dow+'%')).first()
+        
         if schedid is None:
             schedid = 'X'
         else:

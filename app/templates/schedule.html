@@ -30,9 +30,11 @@
     <th>Per</th>
     <th>Start</th>
     <th>End</th>
-    <th>Subject</th>
     <th>Class</th>
+    <th>Subject</th>
     <th>Room</th>
+<th>Att</th>
+    <th>GC</th>
     <th>Lessons</th>
   </thead>
   <tbody>
@@ -44,7 +46,7 @@
       //console.log("current period is" + current_period);
       //var per = parseInt({{ schedule.sort}})
     </script>
-    <tr>
+    <tr id="period">
       <td class="h4">
         <script>
           var sched = "{{schedule.period.periodid}}";
@@ -66,35 +68,39 @@
 
         </script>
       </td>
-      <td>{{ start_times[loop.index-1]}}</td>
-      <td>{{ end_times[loop.index-1]}}</td>
+      <td id="start">{{ start_times[loop.index-1]}}</td>
+      <td id="end">{{ end_times[loop.index-1]}}</td>
 
-      <td>
+
+      <td id="classs" class="text-nowrap">
+        <script>
+          var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
+          var p = per[{{loop.index}}];
+          var c = "{{ schedule.course.classid}}";
+          var c2 = "{{ schedule.course.classcode.classid2}}";
+          var courseid = "{{ schedule.course.courseid}}";         
+          //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
+          var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
+          var course = "{{ schedule.course.subject}}" ;
+          if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
+            document.write("");
+          } else document.write("<a  href='/get_students/d/{{ schedule.course.classid}}'>" + c2 + "</a>");
+        </script>
+      </td>
+
+      <td id="subject">
         <script>
           if ("{{ schedule.course.subject}}" == "0") {
             document.write("");
           } else document.write("{{ schedule.course.subject}}");
         </script>
       </td>
-      <td class="text-nowrap">
+      
+
+      <td id="room">
         <script>
-          var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
-          var p = per[{{loop.index}}];
-          var c = "{{ schedule.course.classid}}";
-          var c2 = "{{ schedule.course.classcode.classid2}}";
-          var icon = "<i class = 'fa fa-edit'> </i>";
-          var courseid = "{{ schedule.course.courseid}}";         
-          //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
-          var t = '<a href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + c2 + "&nbsp;  &nbsp;" + icon + "</a>";
-          var course = "{{ schedule.course.subject}}" ;
-          if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
-            document.write("");
-          } else document.write(t);
-        </script>
-      </td>
-      <td>
-        <script>
-          if (course != "0"  && per[{{loop.index}}] != -1 && per[{{loop.index}}] != 8) {
+          
+          if (course != "0"   && per[{{loop.index}}] != 0 && per[{{loop.index}}] != -1 && per[{{loop.index}}] != 8) {
              document.write("{{ schedule.course.room}}");       
           }
           else {
@@ -102,16 +108,40 @@
           }
         </script>
       </td>
+
+
+      <td id="att">
+<script>
+  var icon = "<i style='color: #1e2a5d' class = 'fa fa-edit fa-2x'> </i>";
+  var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
+  if ( course == "0"  ||   per[{{loop.index}}] ==0 || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
+    document.write("");
+  } else document.write(t);
+</script>
+      </td>
+
+
+      <td> 
+        {% if schedule.course.gclink !=None  %}
+        <a href = "{{schedule.course.gclink}}" target="_blank"> <img title='Google Classroom' src = '/static/img/gc2.png' style="width:20px;"> </a>
+        {%else%}
+      &nbsp;
+      {%endif%}
+      </td>
+
+
       <td class="text-nowrap">
         <script>
           var course = "{{ schedule.course.classid}}"+"-{{ schedule.course.subject}}";
           var s = "{{ schedule.course.subject}}" ;
+          var icon = "<i style='color: #1e2a5d' class = 'fa fa-book'> </i>";
           if (s == "Computers" || s == "STEM") {
             var x = "/lessons/"+course;
-                    document.write('<a href="' + x + '">View</a>  &nbsp;|  ');
+                    document.write('<a title="view lesson" href="' + x + '">'+ icon +'</a>  &nbsp; &nbsp;' );
                   }
                   var c = "{{ schedule.course.classid}}";
-                  var t = '<a href="/addLesson/' + c + '/' + courseid + '/' + dow + '/' +p + '/a">' + "&nbsp; Add" + "</a>";
+                  var icon = "<i style='color: #1e2a5d' class = 'fa fa-plus'> </i>";
+                  var t = '<a title = "add lesson" href="/addLesson/' + c + '/' + courseid + '/' + dow + '/' +p + '/a">'  + icon + "</a>" ;
                   if (s == "Computers" || s == "STEM")  {
                     document.write(t);
                   } else document.write("");

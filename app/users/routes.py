@@ -239,7 +239,7 @@ def set_custom_msg(teacher):
     return render_template('set_custom_msg.html', form=form, teacher=teacher, msg=msg, custom=custom)
 
 def send_suggestion(suggestion, teacher):
-    msg = Message('Suggestion for Attendance App', sender='attendance-app@mdyschool.org', recipients=['rfriedman@mdyschool.org'])
+    msg = Message('Suggestion from '+ teacher +' for Attendance App', sender='attendance-app@mdyschool.org', recipients=['rfriedman@mdyschool.org'])
     
     teacher = Users.query.filter_by(username=teacher).first()
     suggestee = teacher.title + ' ' + teacher.first + ' ' + teacher.last

@@ -9,6 +9,7 @@
       <th>Count</th>
       <th>scheduleid</th>
       <th>courseid</th>
+      <td>Absences</td>
       <th>teacher</th>
     </thead>
 
@@ -18,6 +19,7 @@
         <td>{{loop.index}}</td>
         <td>{{att.scheduleid}}</td>
         <td>{{att.courseid}}</td>
+        <td>absence</td>
         <td>{{att.teacher}}</td>
       </tr>
       <script>
@@ -51,7 +53,7 @@
     //paging: true,
     filter: true,
     //deferRender: true,
-    scrollY: 600,
+    scrollY: 800,
 
     //scrollCollapse: true,
     scroller: true,

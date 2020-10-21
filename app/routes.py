@@ -72,5 +72,5 @@ def list_users():
 @app.route("/admin/adm_attendance")
 @requires_auth_admin 
 def admin_attendance():
-    attendance = Attendance.query.filter_by(att_date=date.today()).distinct(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).with_entities(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).order_by(Attendance.teacher, Attendance.scheduleid, Attendance.courseid).all()
+    attendance = Attendance.query.filter_by(att_date=date.today()).distinct(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).with_entities(Attendance.scheduleid, Attendance.courseid, Attendance.teacher).order_by(Attendance.teacher, Attendance.scheduleid, Attendance.courseid, Attendance.status).all()
     return render_template('/admin/adm_attendance.html', attendance=attendance)

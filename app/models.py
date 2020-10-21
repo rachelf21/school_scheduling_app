@@ -87,15 +87,17 @@ class Course(db.Model):
     subject = db.Column(db.String(25))
     teacher = db.Column(db.String(25))
     room = db.Column(db.Integer, nullable=False) #this is a bad idea! should get room from related class table! but i cant seem to create the relationship, so doing it manually. how sad.
+    gclink = db.Column(db.Text)
     
     
-    def __init__(self,courseid, classid, subject, teacher, room):
+    def __init__(self,courseid, classid, subject, teacher, room,gclink):
         self.courseid = courseid
         self.classid = classid
         #self.classid2 = classid
         self.subject = subject
         self.teacher = teacher
         self.room = room  
+        self.gclink = gclink
     
     def __repr__(self):
         return f"Course('{self.courseid}', '{self.classid}', '{self.subject}', '{self.teacher}')"
