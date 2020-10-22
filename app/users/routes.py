@@ -104,6 +104,17 @@ def register_classes(teacher):
     return render_template('register_classes.html', title='Register Classes', form=form, teacher=teacher, user=user)
 
 
+def get_landing_page(teacher):
+    user = UserSettings.query.filter_by(username=teacher).first()
+    # landing_page = 'my_schedule.display_full_schedule'
+    landing_page = 'classes.classes_anon'
+   
+    if user is not None:
+        landing_page = user.landing_page
+        if landing_page == '' or landing_page is None:
+            landing_page = 'classes.classes_anon'
+            
+    return landing_page
 
 #%%
 @users.route("/login", methods=['GET', 'POST'])
@@ -118,7 +129,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
            # return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
-            return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon'))
+            return redirect(next_page) if next_page else redirect(url_for(get_landing_page(userlogin)))
         else:
             flash('Login Unsuccessful. Please check your username and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -199,19 +210,19 @@ def set_custom_msg(teacher):
     msg= "This is an automated message. <p> Jane Smith has been marked absent on October 16, 2020 for 7-201-Physics by Mrs. Susan Johnson. <p> Please do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: sjohnson@mdyschool.org."
     custom='Your custom text will appear here.'
     user = UserSettings.query.filter_by(username=teacher).first()
-    if user is not None:
+    if user is not None and user.custom_msg != '':
         custom = user.custom_msg
     
     if form.validate_on_submit():
         msg = form.content.data
-        if msg=='':
-            flash('Message is blank. Your custom text was not added.', 'danger')
-            return redirect(url_for('users.set_custom_msg', teacher=teacher))    
+        # if msg=='':
+        #     flash('Message is blank. Your custom text was not added.', 'danger')
+        #     return redirect(url_for('users.set_custom_msg', teacher=teacher))    
         
         if user is None:
             print("User has no settings")
             user = Users.query.filter_by(username=teacher).first()
-            usersetting = UserSettings(username=teacher, email=user.email, first=user.first, last=user.last, title=user.title, custom_msg=msg)
+            usersetting = UserSettings(username=teacher, email=user.email, first=user.first, last=user.last, title=user.title, custom_msg=msg, landing_page='my_schedule.display_full_schedule')
         #subject = form.subject.data
             try:
                 db.session.add(usersetting)

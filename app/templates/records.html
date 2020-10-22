@@ -132,6 +132,7 @@
   <div style="display: flex; justify-content: center">
     <a href="/full_schedule" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">My Schedule</a>
     <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">My Classes</a>
+    <a id="my_today" href="/today" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">Today</a>
   </div>
 </div>
 <script>
@@ -149,6 +150,13 @@
   var select = document.getElementById("student_list");
   for (index in student_names) {
     select.options[index] = new Option(student_names[index], student_emails[index]);
+  }
+
+  if("{{teacher}}" == 'rfriedman'){
+    $('#my_today').show();
+  }
+  else{
+    $('#my_today').hide();
   }
 </script>
 {% endblock content %}

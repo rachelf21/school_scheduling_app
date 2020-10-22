@@ -49,7 +49,8 @@ class UserSettings(db.Model):
     last = db.Column(db.String(25))
     first = db.Column(db.String(25))
     title = db.Column(db.String(5))
-    custom_msg = db.Column(db.String(1000), default='')    
+    custom_msg = db.Column(db.String(1000), default='')  
+    landing_page = db.Column(db.String(100))
  
    
 #%%   This is the class table, but since class is a reserved keyword in Python, I called it Group instead

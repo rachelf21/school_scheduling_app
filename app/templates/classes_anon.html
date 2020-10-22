@@ -14,6 +14,7 @@
   <div id="innerdiv" style="margin-left: auto; margin-right: auto" class="content-section">
     <div style="text-align: center">
       <a href="/full_schedule" class="mt-4 mb-0">View My Schedule</a>
+      <a id="my_today" href="/today" class="mt-4 mb-0"> | Today</a>
 
       <h1 class="mt-2 mb-1 display-4">My Classes</h1>
 
@@ -157,5 +158,11 @@
       $("#period_ok_button").click();
     }
   });
+
+  if ("{{teacher}}" == "rfriedman") {
+    $("#my_today").show();
+  } else {
+    $("#my_today").hide();
+  }
 </script>
 {%endblock content%}
