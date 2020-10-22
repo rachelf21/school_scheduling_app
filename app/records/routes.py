@@ -38,6 +38,8 @@ def send_email():
         temail = teacher.email
         parent1 = Student.query.filter_by(email=student_email).first().parent1
         parent2 = Student.query.filter_by(email=student_email).first().parent2
+        if parent2 is None or parent2 == 'None':
+            parent2=''
         
         msg_subject = 'Absence: ' + first + " " + last + " " + abs_class + " " + abs_subject
         msg = Message(msg_subject, sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail],bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org', 'attendance-app@mdyschool.org'])
