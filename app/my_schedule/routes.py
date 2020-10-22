@@ -224,7 +224,7 @@ def display_full_schedule():
         no_schedule=1
     
     current_period = Util().get_current_period()
-
+    print(current_user.username)
     
     return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule, total_periods=total_periods)
 

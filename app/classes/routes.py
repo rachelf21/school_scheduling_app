@@ -54,6 +54,7 @@ def classes_anon():
             schedid = schedid.periodid
         today_schedid.append(schedid)
         #print(c)
+    print(current_user.username)
     print(today_schedid)
         
     if len(courses)==0:

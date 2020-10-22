@@ -129,6 +129,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
            # return redirect(next_page) if next_page else redirect(url_for('classes.classes_anon',teacher=current_user.username))
+            print(userlogin)
             return redirect(next_page) if next_page else redirect(url_for(get_landing_page(userlogin)))
         else:
             flash('Login Unsuccessful. Please check your username and password.', 'danger')

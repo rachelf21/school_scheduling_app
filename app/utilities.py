@@ -37,7 +37,6 @@ class Util:
     
     def get_day(self):
         today = date.today().weekday()
-        print("today is ", today)
         if today == 0:
             day = 'M'
         elif today == 1:
@@ -51,6 +50,7 @@ class Util:
         else: 
             day = 'M'
         #print("day", day)
+        print("today is", today, day)
         return day    
     
     def is_time_between(begin_time, end_time, check_time=None):

@@ -141,6 +141,7 @@ def records_form():
         student_list = Student.query.filter(Student.classid.in_(student_classes)).order_by(Student.name).all()
         #print(student_list)
         form = AttendanceRecordForm()
+        print(teacher)
         return render_template('records.html', title=title, classes=classes, form=form, teacher=teacher, todays_classes=todays_classes,todays_classes_display=todays_classes_display, student_list = student_list)
 
 
