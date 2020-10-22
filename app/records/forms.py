@@ -6,7 +6,7 @@ from flask_login import current_user
 import datetime
 
 class AttendanceRecordForm(FlaskForm):
-    courses = Course.query.all()
+    #courses = Course.query.all()
     options = []
     
     # for c in courses:
@@ -18,23 +18,27 @@ class AttendanceRecordForm(FlaskForm):
                       choices=options)
     options=[]
    
-    try:
-        teacher = current_user.username
-    except:
-        teacher = 'jsmith2'
+    # try:
+    #     teacher = current_user.username
+    # except:
+    #     teacher = 'jsmith2'
         
-    results = Course.query.distinct(Course.classid).filter_by(teacher='rfriedman').all()
-    #print(results)
-    classes=[]
-    for classs in results:
-        classes.append(classs.classid)
+    # results = Course.query.distinct(Course.classid).filter_by(teacher='jsmith2').all()
+    # #print(results)
+    # classes=[]
+    # for classs in results:
+    #     classes.append(classs.classid)
         
-    students = Student.query.filter(Student.classid.in_(classes)).order_by(Student.name).all()
+    #students = Student.query.filter(Student.classid.in_(classes)).order_by(Student.name).all()
     
-    for s in students:
-        options.append([s.email, s.name])
-        student_list = SelectField('Select', 
-                  choices=options)
+    # for s in students:
+    #     options.append([s.email, s.name])
+    #     student_list = SelectField('Select', 
+    #               choices=options)
+    
+    options.append(['Email','Name'])
+    student_list = SelectField('Select', choices=options)
+    
     date1 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
     date2 = DateField('DatePicker', format='%Y-%m-%d', default=datetime.date.today())
 

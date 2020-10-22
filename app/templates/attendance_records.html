@@ -77,6 +77,8 @@
             var date = "{{ att.att_date}}".substring(5, 10);
 
             var class_ = "{{ att.courseid}}".substring(0, 5);
+            var class_ = "{{ att.class2.classid2}}";
+
             {% if loop.nextitem is defined  %}
               var prev_class = "{{attendance[loop.index].courseid}}".substring(0, 5);
               //console.log("current class = " + class_ + " and next class =" + next_class);
@@ -109,7 +111,7 @@
           </script>
         </td>
 
-        <td class="hidecol">
+        <td class="hide_col">
           <script>
             document.write("{{ att.courseid}}".substring(6));
           </script>
@@ -120,6 +122,7 @@
             >{{ att.name}}</a
           >
         </td>
+        
         <td class="text-center">
           <script>
             current_student_status = "{{att.status}}";
@@ -136,7 +139,7 @@
         </td>
   
         
-      <td class='onlytoday' style="text-align:center text-nowrap">
+      <td id="actions" class='onlytoday' style="text-align:center text-nowrap">
        <div style="display:flex; align-content:center; justify-content:left">
         <a
         id="edit{{loop.index}}"
@@ -154,20 +157,20 @@
       </div>
     </div> <!--ends div row for actions cell-->
   </td>
-    <script>
+    
+  <script>
       if("{{att.status}}" =='A' && "{{att.att_date}}" == today_formatted()){
         $('#notify{{loop.index}}').css('display', 'block');
       }
     </script>
-    <td>{{ att.comment}}</td>
+    
+    <td id="attcomment">{{ att.comment}}</td>
 
   </tr>
 
       {%endfor%}
     </tbody>
   </table>
-
-
 </div>
 
 <!-- </div>
@@ -275,9 +278,9 @@ else if ("{{category}}"== "student" || "{{category}}".includes("@stu.mdyschool.o
 
 <script>
   $("#editModal").on("shown.bs.modal", function () {
-    $("#new_comment").focus();
+    $("#new_status").focus();
     setTimeout(function () {
-      $("#new_comment").focus();
+      $("#new_status").focus();
     }, 1000);
   });
 

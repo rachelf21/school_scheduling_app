@@ -241,7 +241,8 @@ class Attendance(db.Model):
     name = db.Column(db.String(65))    
     status = db.Column(db.String(1), nullable=False)
     comment = db.Column(db.String(255), nullable=False)
-    
+    class2 = db.relationship("Group", backref='class2', lazy=True)
+
     def __init__(self, att_date, teacher, scheduleid, classid, courseid, email, status, comment):
         self.att_date = att_date
         self.teacher = teacher
