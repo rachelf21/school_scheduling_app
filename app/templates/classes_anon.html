@@ -115,7 +115,11 @@
           <div>
             <input style="width: 60px" type="text" id="current_period" class="form-control validate" placeholder="" autofocus />
             <script>
-              $("#current_period").attr("value", "{{current_period}}".substring(1, 3));
+              var c = "{{current_period}}".substring(1, 3);
+              if (c.includes("h")) {
+                c = "{{current_period}}".substring(2, 4);
+              }
+              $("#current_period").attr("value", c);
             </script>
           </div>
           <div>
