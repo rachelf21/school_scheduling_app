@@ -33,7 +33,7 @@
   </a>
 </div>
 
-<h5 class="mt-1 text-center font-weight-normal" ><a id="mytoday" href="/today2" style=display:none>Today</a></h5>
+<h5 class="mt-1 text-center font-weight-normal" ><a class="myclass" id="mytoday" href="/today2">Today</a></h5>
 
 
 <h6 id="no_sched" class="text-center alert alert-danger mb-4" style="max-width: 800px; margin: auto; color: red; display: none">
@@ -86,6 +86,11 @@
       {%for n in range(total_periods)%}
       <tr style="border-width: thick">
         <script>
+          /*
+          if("{{dow}}".includes('F')){
+            var curr_per = per_fri[{{n}}+1];
+          }
+          else */
           var curr_per = per[{{n}}+1];
           //console.log('n='+ {{n}});
           if({{total_periods}}==12)  curr_per = per[{{n}}];
@@ -98,12 +103,12 @@
 
         <td name="periods" style="border-width: medium; vertical-align: middle; border-left:solid lightslategray; "  class="text-nowrap">
           <div class="text-nowrap" style="display: flex; justify-content: space-between">
-            <div name="period" class="h1 font-weight-light pl-1 pr-1" style="font-size: 3.2em;"" >
+            <div name="period" class="h1 font-weight-light pl-1 pr-1" style="font-size: 3em;"" >
               <script>
                 document.write(curr_per);
               </script>
             </div>
-            <div name="times" class="" style="border-width: medium; font-size: 1.2em">{{start_times[n]}}<br />-<br />{{end_times[n]}}</div>
+            <div name="times" class="" style="border-width: medium; font-size: 1em">{{start_times[n]}}<br />-<br />{{end_times[n]}}</div>
           </div>
         </td>
 
@@ -308,6 +313,8 @@
   if ({{no_schedule}} == 0) {
     console.log("no schedule set up");
     $("#no_sched").css("display", "block");
+    $("#mytoday").css("display", "none");
+
   } else {
     //console.log("sched set up");
     $("#no_sched").css("display", "none");

@@ -20,7 +20,7 @@ def classes_all():
 @login_required
 def classes_anon():
     noclasses = 1
-    courses = Course.query.filter(~Course.subject.like('Lunch%')).filter(~Course.subject.like('Recess%')).filter_by(teacher=current_user.username).all()
+    courses = Course.query.filter(~Course.subject.like('%Breakfast%')).filter(~Course.subject.like('%Recess%')).filter(~Course.subject.like('%Lunch%')).filter_by(teacher=current_user.username).all()
     #print("len", len(courses))
         
     schedule = Schedule.query.all()

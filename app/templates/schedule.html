@@ -42,6 +42,9 @@
     <script>
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
       var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+      if ("{{title}}".includes("Friday")) {
+        var per = [-1, 0, 1, 2, 3, 4, -1, 5, 6, 7, 8, 9, 10];
+      }
       var current_period =  "{{current_period}}";
       //console.log("current period is" + current_period);
       //var per = parseInt({{ schedule.sort}})
@@ -82,7 +85,9 @@
           //var t = '<a href="/today/' + c + '/' + dow + '/' +p + '">' + c + "</a>";
           //var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
           var course = "{{ schedule.course.subject}}" ;
-          if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
+          // if ( course == "0"  || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) { uncomment this line to hide class for lunch and recess
+
+          if ( course == "0" ) {
             document.write("");
           } else document.write("<a  href='/get_students/d/{{ schedule.course.classid}}'>" + c2 + "</a>");
         </script>
@@ -99,8 +104,9 @@
 
       <td id="room">
         <script>
-          
-          if (course != "0"   && per[{{loop.index}}] != 0 && per[{{loop.index}}] != -1 && per[{{loop.index}}] != 8) {
+          //if (course != "0"   && per[{{loop.index}}] != 0 && per[{{loop.index}}] != -1 && per[{{loop.index}}] != 8) {uncomment this line to hid class for lunch and recess
+         
+          if (course != "0") {
              document.write("{{ schedule.course.room}}");       
           }
           else {
@@ -111,11 +117,31 @@
 
       <td id="att">
 <script>
-  var icon = "<i style='color: #1e2a5d' class = 'fa fa-edit fa-2x'> </i>";
+  var icon = "<i id = 'atticon{{loop.index}}' style='color: #1e2a5d' class = 'fa fa-edit fa-2x'> </i>";
   var t = '<a title="take attendance" href="/attendance/' + c + '/' + courseid + '/' + dow + '/' +p + '">' + icon + "</a>";
   if ( course == "0"  ||   per[{{loop.index}}] ==0 || (per[{{loop.index}}] == -1) || (per[{{loop.index}}] == 8)) {
     document.write("");
   } else document.write(t);
+
+  //console.log("sched, period " + sched + " " +  current_period);
+
+  if (sched == current_period) {
+    if ("{{title}}".includes("Thursday")) {
+      var num = parseInt(current_period.substring(2));
+    } else var num = parseInt(current_period.substring(1));
+
+    //console.log("num=" + num);
+    for (i = 1; i <= num; i++) {
+      var element = document.getElementById("atticon" + i);
+      if (element) {
+        //console.log("atticon=" + element);
+        element.style.color = "Silver";
+      }
+      //console.log("i=" + i);
+    }
+    document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";  //this has already been set at the start of the row, but leaving it here as a backup
+  }
+
 </script>
       </td>
 
@@ -178,7 +204,7 @@
     var current = "{{dow}}";
     //console.log(current);
     for(i=0; i< sched.length; i++){
-      if(current.substring(2,4)=="Th"){
+      if(current.substring(2,4)=="F"){
         //document.getElementById("next").disabled=true;
         next=sched[0];
         //console.log("next day should be Mon " + next);
@@ -199,7 +225,7 @@
     console.log(current);
     for(i=0; i< sched.length; i++){
       if(current.substring(2,3)=="M"){
-        prev=sched[3];
+        prev=sched[4];
         console.log("prev day should be Thurs " + prev);
         window.location.href = "/schedule/" + prev;
       }

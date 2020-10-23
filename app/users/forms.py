@@ -57,7 +57,7 @@ class RegisterClassesForm(FlaskForm):
     class8G111 = BooleanField('8G-111')  
     
     
-    subject_options = [('Select', '--Select Subject--'),('ELA', 'ELA'), ('Computers', 'Computers'), ('Gemara', 'Gemara'), ('Halacha', 'Halacha'), ('Hashkafah', 'Hashkafah'), ('Humash', 'Humash'), ('Jewish History', 'Jewish History'), ('Judaic Studies', 'Judaic Studies'), ('Keria', 'Keria'), ('Math', 'Math'), ('Minha', 'Minha'),('Nabi', 'Nabi'), ('Parasha', 'Parasha'), ('Safah', 'Safah'), ('Safe', 'Safe'), ('Science', 'Science'), ('Social Studies', 'Social Studies'), ('Tamim', 'Tamim'), ('Tefila', 'Tefila')]
+    subject_options = [('Select', '--Select Subject--'),('ELA', 'ELA'), ('Computers', 'Computers'), ('Gemara', 'Gemara'), ('Halacha', 'Halacha'), ('Hashkafah', 'Hashkafah'), ('Humash', 'Humash'), ('Jewish History', 'Jewish History'), ('Judaic Studies', 'Judaic Studies'), ('Keria', 'Keria'), ('Lunch', 'Lunch'),('Math', 'Math'), ('Minha', 'Minha'),('Nabi', 'Nabi'), ('Parasha', 'Parasha'), ('Recess', 'Recess'), ('Safah', 'Safah'), ('Safe', 'Safe'), ('Science', 'Science'), ('Social Studies', 'Social Studies'), ('Tamim', 'Tamim'), ('Tefila', 'Tefila')]
     
     subject = SelectField('Subject', choices = subject_options)
     

@@ -41,15 +41,23 @@
       <script>
         var dow = "{{dow}}"; //this is actually scheduleid!!!!
         var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
+        if ("{{title}}".includes("Friday")) {
+          var per = [-1, 0, 1, 2, 3, 4, -1, 5, 6, 7, 8, 9, 10];
+        }
         var current_period = "{{current_period}}";
         //console.log("current period is" + current_period);
         //var per = parseInt({{ schedule.sort}})
       </script>
+
       <tr>
         <td id="period" class="h4">
           <script>
             var sched = "{{schedule.period2.periodid}}";
-            if (per[{{loop.index}}] != -1) {
+            if (per[{{loop.index}}] == 0) {
+              document.write("");
+              }
+
+            else if (per[{{loop.index}}] != -1) {
             document.write(per[{{loop.index}}]);
             }
               else {
@@ -61,13 +69,17 @@
               }*/
 
             if(sched == current_period){
-              document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";
+              var num = current_period.substring(1); //change for Thursday
+              for(i=0;i<num;i++){
+                $('#atticon{{loop.index}}').css('color','red');
+              }
+                document.currentScript.parentElement.parentElement.style.background = "#e6ffe6";
             }
             //console.log("sched period periodid {{schedule.period2.periodid}}")
           </script>
         </td>
-        <td id="start">{{ start_times[loop.index-1]}}</td>
-        <td id="end">{{ end_times[loop.index-1]}}</td>
+        <td id="start">{%if loop.index !=1 %} {{ start_times[loop.index-1] }}{%endif%}</td>
+        <td id="end">{%if loop.index !=1 %} {{ end_times[loop.index-1] }}{%endif%}</td>
 
         <td id="classs" class="text-nowrap font-weight-normal">
           <script>
@@ -76,7 +88,6 @@
             var p = per[{{loop.index}}];
             var c = "{{ schedule.course2.classid}}";
             var c2 = "{{ schedule.course2.classcode.classid2}}";
-            var icon = "<i style='color: #1e2a5d' class = 'fa fa-edit fa-2x'> </i>";
             var courseid = "{{ schedule.course2.courseid}}";
             if (courseid.includes('Minha') || courseid.includes('Recess') || per[{{loop.index}}]==0) {
                 document.currentScript.parentElement.parentElement.style.background = "#F0F0F0";
@@ -96,24 +107,42 @@
             else if ("{{ schedule.course2.subject}}" == "0") {
               document.write("");
             } else document.write("{{ schedule.course2.subject}}");
-            console.log(p);
+            //console.log(p);
           </script>
         </td>
 
         <td id="room">
           <script>
-            if (courseid.includes("Recess")) document.write("");
-            else if (course != "0") {
+            if (course != "0") {
               document.write("{{ schedule.course2.room}}");
             } else document.write("");
           </script>
         </td>
         <td id="attendance">
           <script>
+            var icon = "<i id='atticon{{loop.index}}' style='color: #1e2a5d' class = 'fa fa-edit fa-2x'> </i>";
+
             var t = '<a style="color:#1e2a5d" href="/attendance/' + c + "/" + courseid + "/" + dow + "/" + p + '">' + icon + "</a>";
-            if (course == "0" || courseid.includes("Recess") || courseid.includes("Lunch")) {
+            if (course == "0" || courseid.includes("Recess") || courseid.includes("Lunch") || courseid.includes("Breakfast")) {
               document.write("");
             } else document.write(t);
+
+            if (sched == current_period) {
+              if ("{{title}}".includes("Thursday")) {
+                var num = parseInt(current_period.substring(2));
+              } else var num = parseInt(current_period.substring(1));
+
+              //console.log("num=" + num);
+              for (i = 1; i <= num; i++) {
+                var element = document.getElementById("atticon" + i);
+                if (element) {
+                  //console.log("atticon=" + element);
+                  element.style.color = "Silver";
+                }
+                //console.log("i=" + i);
+              }
+              document.currentScript.parentElement.parentElement.style.background = "#e6ffe6"; //this has already been set at the start of the row, but leaving it here as a backup
+            }
           </script>
         </td>
       </tr>

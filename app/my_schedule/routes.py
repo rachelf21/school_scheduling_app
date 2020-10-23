@@ -11,8 +11,8 @@ my_schedule = Blueprint('my_schedule', __name__)
 
 #%%
 current_week ='A'
-sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th']
-sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th']
+sched_list_A = ['A_M', 'A_T', 'A_W', 'A_Th', 'A_F']
+sched_list_B = ['B_M', 'B_T', 'B_W', 'B_Th', 'B_F']
 schedule = ''
 title = ''
 latest_lessons = []
@@ -81,6 +81,9 @@ def display_schedule(dow):
     elif dow == 'A_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='A').order_by(Schedule.sort).all()         
         title = 'Thursday (A)'
+    elif dow == 'A_F':
+        schedule = Schedule.query.filter(Schedule.periodid.like('F%')).filter_by(week='A').order_by(Schedule.sort).all()         
+        title = 'Friday (A)'
     elif dow == 'B_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()
         title = 'Monday (B)'
@@ -93,6 +96,13 @@ def display_schedule(dow):
     elif dow == 'B_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
         title = 'Thursday (B)'
+    elif dow == 'B_F':
+        schedule = Schedule.query.filter(Schedule.periodid.like('F%')).filter_by(week='B').order_by(Schedule.sort).all()         
+        title = 'Friday (B)'
+    else:
+        dow =='B_M'
+        schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()
+        title = 'Monday (B)'
 
     start_times = []
     end_times = []
@@ -212,6 +222,7 @@ def display_full_schedule():
     end_times = schedule.end_times
     fri_start_times = schedule.fri_start_times
     fri_end_times = schedule.fri_end_times
+    dow = Util().get_dow()
     
     #print(start_times)
     #print(end_times)
@@ -226,7 +237,7 @@ def display_full_schedule():
     current_period = Util().get_current_period()
     print(current_user.username)
     
-    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule, total_periods=total_periods)
+    return render_template('full_schedule.html', mon=mon, tues=tues, wed=wed, thurs=thurs, fri=fri, title = title,  lessons=lessons, current_week=current_week, start_times=start_times, end_times=end_times, fri_start_times = fri_start_times, fri_end_times = fri_end_times, current_period = current_period, teacher=current_user.username, no_schedule=no_schedule, total_periods=total_periods, dow=dow)
 
 #%% this is only for rfriedman
 @my_schedule.route('/weekly_schedule')
@@ -349,7 +360,7 @@ def display_daily_schedule(dow):
          schedule = Schedule2.query.filter(~(Schedule2.periodid.like('Th%'))).filter(Schedule2.periodid.like('T%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()
          title = 'Tuesday'
     elif dow == 'B_W':
-        schedule = Schedule.query.filter(Schedule2.periodid.like('W%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()         
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('W%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()         
         title = 'Wednesday'
     elif dow == 'B_Th':
         schedule = Schedule2.query.filter(Schedule2.periodid.like('Th%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()  
@@ -357,7 +368,10 @@ def display_daily_schedule(dow):
     elif dow == 'B_F':
         schedule = Schedule2.query.filter(Schedule2.periodid.like('F%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()  
         title = 'Friday'        
-        
+    else:
+        dow = 'B_M'
+        schedule = Schedule2.query.filter(Schedule2.periodid.like('M%')).filter_by(week='B',teacher=teacher).order_by(Schedule2.sort).all()  
+        title = 'Monday'        
 
     start_times = []
     end_times = []
@@ -368,6 +382,7 @@ def display_daily_schedule(dow):
     print(schedule)
     
     current_period = Util().get_current_period()
+    
        
     return render_template('daily_schedule.html', schedule = schedule, title = title, dow=dow, current_week=current_week, sched_list=sched_list, current_period=current_period, start_times=start_times, end_times=end_times, teacher=current_user.username)
 

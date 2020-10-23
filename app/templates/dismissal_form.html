@@ -1,9 +1,10 @@
 {% extends "base-denied.html" %}{% block title %}MDY Dismissal{% endblock %} {% block content %}
+
 <div id="outerdiv" style="display: flex; justify-content: center; text-align: center">
-  <div id="innerdiv" style="margin-left: auto; margin-right: auto">
+  <div id="innerdiv" style="margin-left: auto; margin-right: auto" class="content-section">
     <h2 class="mb-4 text-center display-4">Dismissal</h2>
     <div>
-      <div class="content-section">
+      <div class="">
         <form action="/dismissal/class7" method="post" name="form">
           {{ form.hidden_tag() }}
           <legend class="border-bottom mb-2 text-muted">Grade 7</legend>
