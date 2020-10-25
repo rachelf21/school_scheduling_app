@@ -8,6 +8,8 @@
 <script>
   var current_week = "{{current_week}}";
   console.log({{total_periods}});
+  var dow = "{{dow}}";
+  console.log("dow is "+ dow);
 </script>
 <!-- <div class="container d-flex justify-content-around" style="border: 0px solid red; max-width: 750px">
   <a id="next" class="btn btn-sm pt-4" style="display: none">
@@ -50,9 +52,23 @@
     color: blue;
     text-decoration: none;
   }
+
+  
   td:hover {
     background-color: #e0ffff !important;
   }
+/*
+  @media (hover:none){
+    td {
+      background-color: none;
+    }
+  } */
+
+  @media (hover: hover) {
+    td:hover {
+        background-color:#e0ffff !important;
+    }
+}
 
   td a {
     display: block;
@@ -78,7 +94,7 @@
       <th>Tues<span class="fullday">day</span></th>
       <th>Wed<span class="fullday">nesday</span></th>
       <th style="border-right: solid lightslategray">Thurs<span class="fullday">day</span></th>
-      <th>Period</th>
+      <th>Fri Per</th>
       <th style="border-right:solid lightslategray; ">Fri<span class="fullday">day</span></th>
     </thead>
 
@@ -118,6 +134,7 @@
           <a>
             <script>
               var mon = "{{mon.courseid2[n]}}";
+              //console.log("mon.scheduleid = {{mon.scheduleid[n]}}");
               mon = mon.replace(/^(.+?-.+?)-\s*/g, "$1<br>");
               if (mon != "None") document.write(mon);
               var parent = document.currentScript.parentElement;

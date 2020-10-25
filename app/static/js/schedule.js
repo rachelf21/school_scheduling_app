@@ -78,12 +78,32 @@ function color_recess() {
     element.style.background = "Gainsboro !important";
   }
 }
+function convert_day(dow) {
+  if (dow.includes("M")) return "Monday";
+  else if (dow.includes("T") && !dow.includes("Th")) return "Tuesday";
+  else if (dow.includes("W")) return "Wednesday";
+  else if (dow.includes("Th")) return "Thursday";
+  else if (dow.includes("F")) return "Friday";
+  else return "Saturday/Sunday";
+}
 
 function write_linktocourse(sched, period) {
   var link_text = "/attendance/" + curr_class + "/" + curr_course + "/" + schedid + "/" + curr_per;
-  //console.log(link_text);
   parent.setAttribute("href", link_text);
   parent.setAttribute("style", "display:block; width:100%; height:100%");
+
+  //console.log("dow= " + dow);
+  if (!sched.includes(dow)) {
+    var today = convert_day(dow);
+    var day = convert_day(schedid);
+
+    var message =
+      "Today is " + today + ". You are entering attendance for " + day + ". Click OK to continue or click Cancel to choose another day.";
+    var wrong_att = "return confirm('" + message + "')";
+    //console.log("schedid = " + schedid);
+    parent.setAttribute("onclick", wrong_att);
+  }
+
   if (sched.substring(2) == period) {
     //console.log(sched.substring(2));
     document.currentScript.parentElement.parentElement.style.background = "#00FFFF";

@@ -153,9 +153,19 @@ def check_absences(courseid,lessondate):
     teacher = current_user.username
     user=Users.query.filter_by(username=teacher).first()
     category = 'class'
-    attendance = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate).order_by(Attendance.attid.desc()).all()
+    attendance = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate).filter_by(status='A').order_by(Attendance.attid.desc()).all()
     absences = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate, status='A').count()
-    return render_template('attendance_records.html', attendance=attendance, courseid=courseid, category=category, absences=absences, teacher=teacher, user=user)
+    lates = Attendance.query.filter_by(teacher=teacher, courseid=courseid).filter_by(att_date = lessondate, status='L').count()
+    
+    attendance_json = []
+    for a in attendance:
+        #print(a)
+        attendance_json.append(a.as_dict())
+#print(attendance_json)    
+#attendance_json = json.dumps([dict(a) for a in attendance])
+    
+    
+    return render_template('attendance_records.html', attendance=attendance, courseid=courseid,attendance_json=attendance_json, category=category, absences=absences, lates=lates, teacher=teacher, user=user)
 
 #%%        
 @records.route('/track_attendance/<category>',  methods=["GET" , "POST"])
