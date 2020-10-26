@@ -8,13 +8,21 @@
 
   var dow = "{{dow}}";
 </script>
+
+<script src="/static/js/daily_schedule.js"></script>
+
 <div class="container d-flex justify-content-around" style="max-width: 600px; border: 0px solid red">
   <a id="next" class="btn btn-sm pt-4" onclick="get_prev()" style="display: none">
     <i class="fa fa-angle-left text-muted" style="font-size: 36px"></i>
   </a>
   <div>
     <h5 class="mt-1 text-center font-weight-normal"><a id="full_schedule" href="/full_schedule">My Schedule</a></h5>
-    <h1 class="mt-1 text-center display-4">{{title}}</h1>
+    <h1 class="mt-1 text-center display-4">
+      {{title}},
+      <script>
+        document.write(get_date());
+      </script>
+    </h1>
   </div>
   <a id="prev" class="btn btn-sm pt-4" onclick="get_next()" style="display: none">
     <i class="fa fa-angle-right text-muted" style="font-size: 36px"></i
@@ -39,7 +47,7 @@
     <tbody>
       {% for schedule in schedule %}
       <script>
-        var dow = "{{dow}}"; //this is actually scheduleid!!!!
+        var dow = "{{dow}}"; //this is schedid in ths format A_M
         var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
         if ("{{title}}".includes("Friday")) {
           var per = [-1, 0, 1, 2, 3, 4, -1, 5, 6, 7, 8, 9, 10];
