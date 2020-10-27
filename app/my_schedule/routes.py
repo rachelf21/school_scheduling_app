@@ -71,34 +71,34 @@ def display_schedule(dow):
 
     if dow == 'A_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='A').order_by(Schedule.sort).all()
-        title = 'Monday (A)'
+        title = 'A| Mon'
     elif dow == 'A_T':
          schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='A').order_by(Schedule.sort).all()
-         title = 'Tuesday (A)'
+         title = 'A| Tues'
     elif dow == 'A_W':
         schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='A').order_by(Schedule.sort).all()         
-        title = 'Wednesday (A)'
+        title = 'A| Wed'
     elif dow == 'A_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='A').order_by(Schedule.sort).all()         
-        title = 'Thursday (A)'
+        title = 'A| Thurs'
     elif dow == 'A_F':
         schedule = Schedule.query.filter(Schedule.periodid.like('F%')).filter_by(week='A').order_by(Schedule.sort).all()         
-        title = 'Friday (A)'
+        title = 'A| Fri'
     elif dow == 'B_M':
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()
-        title = 'Monday (B)'
+        title = 'B| Mon'
     elif dow == 'B_T':
          schedule = Schedule.query.filter(~(Schedule.periodid.like('Th%'))).filter(Schedule.periodid.like('T%')).filter_by(week='B').order_by(Schedule.sort).all()
-         title = 'Tuesday (B)'
+         title = 'B| Tues'
     elif dow == 'B_W':
         schedule = Schedule.query.filter(Schedule.periodid.like('W%')).filter_by(week='B').order_by(Schedule.sort).all()         
-        title = 'Wednesday (B)'
+        title = 'B| Wed'
     elif dow == 'B_Th':
         schedule = Schedule.query.filter(Schedule.periodid.like('Th%')).filter_by(week='B').order_by(Schedule.sort).all()  
-        title = 'Thursday (B)'
+        title = 'B| Thurs'
     elif dow == 'B_F':
         schedule = Schedule.query.filter(Schedule.periodid.like('F%')).filter_by(week='B').order_by(Schedule.sort).all()         
-        title = 'Friday (B)'
+        title = 'B| Fri'
     else:
         dow =='B_M'
         schedule = Schedule.query.filter(Schedule.periodid.like('M%')).filter_by(week='B').order_by(Schedule.sort).all()

@@ -143,6 +143,9 @@
               //console.log("num=" + num);
               for (i = 1; i <= num; i++) {
                 var element = document.getElementById("atticon" + i);
+                if (i > 6) element = document.getElementById("atticon" + parseInt(i + 1));
+
+                console.log("num=" + num);
                 if (element) {
                   //console.log("atticon=" + element);
                   element.style.color = "Silver";
