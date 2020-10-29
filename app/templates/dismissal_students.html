@@ -1,0 +1,64 @@
+{% extends "base-denied.html" %} {% block content %}
+<div style="text-align: center">
+  <h2 class="font-weight-normal">Dismissal Information</h2>
+  <h4 class="font-weight-normal">{{subtitle}}</script></h4>
+
+
+</div>
+<div style="border:0px solid blue; max-width:1000px; margin:auto" class="table-responsive">
+  <!-- <table
+  id="myTable"
+  class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+  style="border: 0px red solid; margin: 0 auto; width: 75% !important"
+> -->
+  <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-hover table-bordered table-fixed"
+    style="background:whitesmoke; border: 0px red solid; width: auto; margin: 0px auto"
+  >
+    <thead>
+      <th>Name</th>
+      <th id="class" class="text-center">Section</th>
+      <th>Email</th>
+      <th>Number</th>
+      <th>Mode</th>
+      <th>Update</th>
+    </thead>
+    <tbody>
+      {% for students in students %}
+      <tr>
+        <td class="text-nowrap"><a href="/student_info/{{students.email}}" >{{ students.name}}</a></td>
+        <td name="classid" class="text-center">
+          {{students.section}}
+        </td>
+        <td>{{ students.email}}</td>
+        <td class="text-center">{{ students.number}}</td>
+        <td >{{ students.mode}}</td>
+        <td class="text-center"><a href="/dismissal_change/{{students.email}}"><i id="edit{{loop.index}}"class='fa fa-pencil'></i></a></td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+<script>
+  $("#myTable").DataTable({
+    pageLength: 30,
+    filter: true,
+    deferRender: true,
+    //scrollY: 1200,
+    scrollCollapse: true,
+    scroller: true,
+    //ordering: true,
+    select: true,
+    bSort: true,
+    //order: [[2, "asc"]],
+  });
+</script>
+
+<!-- <script>
+  $(document).ready(function () {
+    $("#myTable").DataTable();
+  });
+</script> -->
+
+{% endblock content %}

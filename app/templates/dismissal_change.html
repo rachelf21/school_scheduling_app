@@ -1,0 +1,55 @@
+{% extends "base-denied.html" %} {% block content %}
+<script src="/static/js/dismissal_change.js"></script>
+<div style="width: 500px; margin: auto">
+  <div class="content-section">
+    <form id="myform" method="POST" action="">
+      {{ form.hidden_tag() }}
+      <h4 class="text-center display-4 mb-4">Dismissal Change</h4>
+      <fieldset class="form-group">
+        <legend class="text-center border-bottom">{{form.name.data}} - {{form.section.data}}</legend>
+        <span style="display: none">{{form.email.data}}</span>
+        <div class="form-group mt-4">
+          <div style="display: flex; justify-content: space-between">
+            {{ form.number.label(class="form-control-label mr-2", style="align-self: flex-end;") }} 
+            
+            
+            
+            {{ form.number(class="form-control
+            form-control-lg mr-2", style="width:100px") }} 
+            
+            {{form.mode.label(class="form-control-label mr-2", style="align-self: flex-end;")
+            }} {{ form.mode(class="form-control form-control-lg") }}
+          </div>
+          {{ form.siblings.label(class="form-control-label mt-3") }} {{ form.siblings(class="form-control form-control-lg") }}
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend class="border-bottom">Mom: {{form.mom.data}}</legend>
+
+        <div class="form-group">
+          <div class="row">
+          {{ form.mom_email.label(class="form-control-label mt-3 col-3") }} {{ form.mom_email(class="form-control form-control-lg col mr-3") }} </div> 
+          <div class="row mt-2">{{
+          form.mom_cell.label(class="form-control-label mt-3 col-3") }} {{ form.mom_cell(class="form-control form-control-lg col mr-3") }}
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend class="border-bottom">Dad: {{form.dad.data}}</legend>
+
+        <div class="form-group">
+          <div class="row">
+          {{ form.dad_email.label(class="form-control-label mt-3 col-3") }} {{ form.dad_email(class="form-control form-control-lg col mr-3") }} </div> 
+          <div class="row mt-2">{{
+          form.dad_cell.label(class="form-control-label mt-3 col-3") }} {{ form.dad_cell(class="form-control form-control-lg col mr-3") }}
+        </div>
+      </fieldset>
+
+
+      <div class="form-group text-right">{{ form.submit(class="btn btn-outline-info ") }}</div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

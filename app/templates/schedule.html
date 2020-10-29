@@ -17,7 +17,7 @@
 <a id="next" class='btn btn-sm pt-4' onclick="get_prev()" style="display:block"> <i class="fa fa-angle-left text-muted" style="font-size:36px"></i> </a>
 <h1 class="mt-1 text-center display-4" >{{title}}       
   <script>
-  document.write(get_date());
+  document.write(", " + get_date());
 </script>
 </h1>
 
@@ -140,6 +140,7 @@
     for (i = 1; i <= num; i++) {
       var element = document.getElementById("atticon" + i);
       if (i > 6) element = document.getElementById("atticon" + parseInt(i + 1));
+      console.log("element="+element);
       if (element) {
         //console.log("atticon=" + element);
         element.style.color = "Silver";

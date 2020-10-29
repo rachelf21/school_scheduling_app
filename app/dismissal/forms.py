@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField
+from wtforms import SelectField, SubmitField, StringField, IntegerField, TextAreaField
+from wtforms.validators import DataRequired, Length, NumberRange
+
 from app.models import Student, Group
 
 
@@ -35,3 +37,17 @@ class DismissalSelectForm(FlaskForm):
     
     save = SubmitField('Submit')
     
+class DismissalChangeForm(FlaskForm):
+    name = StringField('Student')
+    section = StringField('Class')
+    email = StringField('Email')
+    mode = SelectField('Mode',choices=[('Carpool', 'Carpool'),('Parent Pick Up', 'Parent Pick Up'),('Walker', 'Walker')])
+    number = IntegerField("Number" , validators=[NumberRange(min=0, max=500, message="Invalid Dismissal Number")])
+    siblings = TextAreaField(u"Siblings", render_kw={'class': 'form-control', 'rows': 4})
+    mom = StringField("Mom")
+    mom_cell = StringField("Mom Cell")
+    mom_email = StringField("Mom Email")
+    dad = StringField("Dad")
+    dad_cell = StringField("Dad Cell")
+    dad_email = StringField("Dad Email")    
+    submit = SubmitField('Submit')
