@@ -20,7 +20,7 @@
       <th></th>
       <th>Name</th>
       <th id="class" class="text-center">Section</th>
-      <th>Email</th>
+      <th style="display:none">Email</th>
       <th>Number</th>
       <th>Mode</th>
     </thead>
@@ -33,9 +33,9 @@
         <td name="classid" class="text-center">
           {{students.section}}
         </td>
-        <td>{{ students.email}}</td>
+        <td style="display:none">{{ students.email}}</td>
         <td class="text-center">{{ students.number}}</td>
-        <td >{{ students.mode}}</td>
+        <td class="text-nowrap">{{ students.mode}}</td>
       </tr>
       {%endfor%}
     </tbody>

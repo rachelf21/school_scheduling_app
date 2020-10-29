@@ -78,6 +78,21 @@ def dismissal_change(email):
             
             flash('Your dismissal change for ' + student.name + ' has been updated.', 'success')
             return redirect(url_for('dismissal.dismissal_students'))
+        else:
+            form.name.data = student.name
+            form.email.data = student.email
+            form.section.data = student.section
+            form.mode.data = student.mode
+            form.number.data = student.number
+            form.siblings.data = student.siblings
+            form.mom.data = student.mom
+            form.mom_cell.data = student.mom_cell
+            form.mom_email.data = student.mom_email
+            form.dad.data = student.dad
+            form.dad_cell.data = student.dad_cell
+            form.dad_email.data = student.dad_email
+            flash('Invalid entry. Dismissal information for ' + student.name + ' was not changed.', 'danger')
+
         
     return render_template("dismissal_change.html", form=form)
 

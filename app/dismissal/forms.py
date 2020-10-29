@@ -42,7 +42,7 @@ class DismissalChangeForm(FlaskForm):
     section = StringField('Class')
     email = StringField('Email')
     mode = SelectField('Mode',choices=[('Carpool', 'Carpool'),('Parent Pick Up', 'Parent Pick Up'),('Walker', 'Walker')])
-    number = IntegerField("Number" , validators=[NumberRange(min=0, max=500, message="Invalid Dismissal Number")])
+    number = IntegerField("Number" , validators=[NumberRange(min=0, max=500, message="Invalid dismissal number")])
     siblings = TextAreaField(u"Siblings", render_kw={'class': 'form-control', 'rows': 4})
     mom = StringField("Mom")
     mom_cell = StringField("Mom Cell")

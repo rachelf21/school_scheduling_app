@@ -4,21 +4,38 @@
   <div class="content-section">
     <form id="myform" method="POST" action="">
       {{ form.hidden_tag() }}
-      <h4 class="text-center display-4 mb-4">Dismissal Change</h4>
+      <h4 class="text-center display-4 mb-2">Dismissal Change</h4>
       <fieldset class="form-group">
         <legend class="text-center border-bottom">{{form.name.data}} - {{form.section.data}}</legend>
         <span style="display: none">{{form.email.data}}</span>
-        <div class="form-group mt-4">
+        <div class="form-group mt-3">
           <div style="display: flex; justify-content: space-between">
+
+            <div style="display: flex; justify-content: space-between">
             {{ form.number.label(class="form-control-label mr-2", style="align-self: flex-end;") }} 
+          
+            {% if form.number.errors %} {{ form.number(class="form-control
+          form-control-lg is-invalid") }}
+            </div>
+          <div class="invalid-feedback">
+            {% for error in form.number.errors %}
+            <div class='mr-2'>{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          {% else %} {{ form.number(class="form-control
+          form-control-lg mr-2", style="width:100px") }}  {% endif %}
+        
+
+
             
-            
-            
-            {{ form.number(class="form-control
-            form-control-lg mr-2", style="width:100px") }} 
-            
-            {{form.mode.label(class="form-control-label mr-2", style="align-self: flex-end;")
+           
+
+
+            {{form.mode.label(class="form-control-label ml-2 mr-2", style="align-self: flex-end;")
             }} {{ form.mode(class="form-control form-control-lg") }}
+          </div>
+
           </div>
           {{ form.siblings.label(class="form-control-label mt-3") }} {{ form.siblings(class="form-control form-control-lg") }}
         </div>
