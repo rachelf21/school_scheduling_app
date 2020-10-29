@@ -15,8 +15,7 @@ def check_auth_admin(username, password):
 def authenticate():
     #Sends a 401 response that enables basic auth"
     return Response(
-    '<h3>This information is password protected.</h3>'
-    '<h3>Please log in with proper credentials.</h3>', 401,
+    '<h3>Admin credentials are required to change dismissal information.</h3>', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 def requires_auth_admin(f):
@@ -35,19 +34,17 @@ def dismissal_form():
     form = DismissalSelectForm()
     return render_template("dismissal_form.html" , title=title, form=form)
 
-
+@dismissal.route('/dismissal_students')
 @login_required
 @requires_auth_admin 
-@dismissal.route('/dismissal_students')
 def dismissal_students():
     students = Dismissal.query.all()
     return render_template("dismissal_students.html", students=students)
 
 
-
+@dismissal.route('/dismissal_change/<email>', methods=['GET','POST'])
 @login_required
 @requires_auth_admin 
-@dismissal.route('/dismissal_change/<email>', methods=['GET','POST'])
 def dismissal_change(email):
     
     student = Dismissal.query.filter_by(email = email).first()

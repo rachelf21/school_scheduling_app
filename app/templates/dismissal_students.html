@@ -17,16 +17,18 @@
     style="background:whitesmoke; border: 0px red solid; width: auto; margin: 0px auto"
   >
     <thead>
+      <th></th>
       <th>Name</th>
       <th id="class" class="text-center">Section</th>
       <th>Email</th>
       <th>Number</th>
       <th>Mode</th>
-      <th>Update</th>
     </thead>
     <tbody>
       {% for students in students %}
       <tr>
+        <td class="text-center"><a href="/dismissal_change/{{students.email}}"><i id="edit{{loop.index}}"class='fa fa-pencil'></i></a></td>
+
         <td class="text-nowrap"><a href="/student_info/{{students.email}}" >{{ students.name}}</a></td>
         <td name="classid" class="text-center">
           {{students.section}}
@@ -34,7 +36,6 @@
         <td>{{ students.email}}</td>
         <td class="text-center">{{ students.number}}</td>
         <td >{{ students.mode}}</td>
-        <td class="text-center"><a href="/dismissal_change/{{students.email}}"><i id="edit{{loop.index}}"class='fa fa-pencil'></i></a></td>
       </tr>
       {%endfor%}
     </tbody>
