@@ -48,7 +48,7 @@
     <script>
       var dow = "{{dow}}";  //this is actually scheduleid!!!!
       var per = [-1, 0, 1, 2, 3, 4, 5, -1, 6, 7, 8, 9, 10];
-      if ("{{title}}".includes("Friday")) {
+      if ("{{title}}".includes("Fri")) {
         var per = [-1, 0, 1, 2, 3, 4, -1, 5, 6, 7, 8, 9, 10];
       }
       var current_period =  "{{current_period}}";
@@ -132,7 +132,7 @@
   //console.log("sched, period " + sched + " " +  current_period);
 
   if (sched == current_period) {
-    if ("{{title}}".includes("Thursday")) {
+    if ("{{title}}".includes("Thur")) {
       var num = parseInt(current_period.substring(2));
     } else var num = parseInt(current_period.substring(1));
 

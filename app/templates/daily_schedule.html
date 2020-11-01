@@ -135,13 +135,20 @@
               document.write("");
             } else document.write(t);
 
+            console.log(sched);
+            console.log(current_period);
+
             if (sched == current_period) {
               if ("{{title}}".includes("Thursday")) {
                 var num = parseInt(current_period.substring(2));
-              } else var num = parseInt(current_period.substring(1));
-
+                console.log("Thursday");
+              } else {
+                var num = parseInt(current_period.substring(1));
+                console.log(num);
+              }
               //console.log("num=" + num);
               for (i = 1; i <= num; i++) {
+                console.log(i);
                 var element = document.getElementById("atticon" + i);
                 if (i > 6) element = document.getElementById("atticon" + parseInt(i + 1));
 
@@ -167,11 +174,11 @@
   window.onload = function () {
     AutoRefresh(300000);
     if (current_week == "A") {
-      document.getElementById("weekA").classList.add("active");
-      document.getElementById("weekB").classList.remove("active");
+      //document.getElementById("weekA").classList.add("active");
+      //document.getElementById("weekB").classList.remove("active");
     } else if (current_week == "B") {
-      document.getElementById("weekB").classList.add("active");
-      document.getElementById("weekA").classList.remove("active");
+      //document.getElementById("weekB").classList.add("active");
+      //document.getElementById("weekA").classList.remove("active");
     }
   };
 </script>

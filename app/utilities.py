@@ -66,6 +66,7 @@ class Util:
         time_now = (datetime.now() - timedelta(hours=0))
         #print(time_now)
         dow = self.get_day()
+        per_passed=0
         if dow == 'T':
             periods = Period.query.filter(Period.periodid.like('T%')).filter(~Period.periodid.like('Th%')).order_by(Period.start_time).all() 
         else:
@@ -77,7 +78,7 @@ class Util:
             p_start = datetime.combine(date.today(), p.start_time) + timedelta(minutes=-10)
             p_end = datetime.combine(date.today(), p.end_time) + timedelta(minutes=0)
             if p_start < time_now and p_end < time_now:
-                pass
+                per_passed=per_passed+1  #this is not being used, but it has potential for future use - esp on daily schedule 
                 #print(p_start , p_end, "this period has already passed")
             elif p_start < time_now and p_end > time_now:
                 #print(p_start,  p_end,"this period is now")
