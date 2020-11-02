@@ -76,7 +76,7 @@ def dismissal_change(email):
             #db.session.flush()
             #db.session.rollback()
             
-            flash('Your dismissal change for ' + student.name + ' has been updated.', 'success')
+            flash('Dismissal information for ' + student.name + ' has been updated.', 'success')
             return redirect(url_for('dismissal.dismissal_students'))
         else:
             form.name.data = student.name
