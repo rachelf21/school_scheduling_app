@@ -1,0 +1,51 @@
+{% extends "base-denied.html" %} {% block title%}Zoom Classroom Logins{% endblock %} {% block content %}
+<div style="text-align: center">
+  <h2 class="font-weight-normal">Zoom Classroom Logins</h2>
+</div>
+<div style="border: 0px solid blue; max-width: 1000px; margin: auto" class="table-responsive">
+  <!-- <table
+  id="myTable"
+  class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
+  style="border: 0px red solid; margin: 0 auto; width: 75% !important"
+> -->
+  <table
+    id="myTable"
+    class="table mx-auto w-auto table-striped table-hover table-bordered table-fixed"
+    style="background: whitesmoke; border: 0px red solid; width: auto; margin: 0px auto"
+  >
+    <thead>
+      <th>Class</th>
+      <th>Room</th>
+      <th class="text-center">Link</th>
+      <th class="text-center">Username</th>
+      <th class="text-center">Password</th>
+    </thead>
+    <tbody>
+      {% for key, value in df.iterrows() %} {% if value['class']!='None'%}
+      <tr>
+        <td class="text-center">{{ value['class'] }}</td>
+        <td class="text-center">{{ value['room'] }}</td>
+        <td class="text-nowrap"><a href="{{ value['link'] }}" taraget="blank">Click here to connect </a></td>
+        <td class="text-center">{{ value['username'] }}</td>
+        <td class="text-center">{{ value['password'] }}</td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  $("#myTable").DataTable({
+    pageLength: 30,
+    filter: true,
+    deferRender: true,
+    //scrollY: 1200,
+    scrollCollapse: true,
+    scroller: true,
+    //ordering: true,
+    select: true,
+    bSort: true,
+    order: [[0, "asc"]],
+  });
+</script>
+
+{% endblock content %}

@@ -81,6 +81,9 @@ app.register_blueprint(students)
 from app.covid.routes import covid
 app.register_blueprint(covid)
 
+from app.links.routes import links
+app.register_blueprint(links)
+
 # from app.main.routes import main
 # app.register_blueprint(main)
 # try:
