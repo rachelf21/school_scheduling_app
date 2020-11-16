@@ -126,14 +126,15 @@
                 </div>
               </li> -->
 
-              <a class="nav-item nav-link ml-4 mr-2" a href="/lessons/all">Lessons</a>
-              <a id="my_schedule" class="nav-item nav-link mr-2 text-nowrap" href="/full_schedule">My Schedule</a>
+              <a class="nav-item nav-link ml-2" a href="/lessons/all">Lessons</a>
+              <a class="nav-item nav-link ml-2" a href="{{ url_for('classes.grades') }}">Grades</a>
+              <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">My Schedule</a>
 
-              <a id="my_classes" class="nav-item nav-link ml-2 mr-2 text-nowrap" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
-              <a class="nav-item nav-link mr-2" href="/records"> Attendance Records</a>
-              <a class="nav-item nav-link mr-2" href="/dismissal_form">Dismissal</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('lunch_menu') }}">Lunch Menu</a>
-              <a class="nav-item nav-link mr-2" href="{{ url_for('links.zoom_links') }}">Zoom Logins</a>
+              <a id="my_classes" class="nav-item nav-link ml-2 text-nowrap" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
+              <a class="nav-item nav-link" href="/records"> Attendance Records</a>
+              <a class="nav-item nav-link" href="/dismissal_form">Dismissal</a>
+              <a class="nav-item nav-link" href="{{ url_for('lunch_menu') }}">Lunch</a>
+              <a class="nav-item nav-link" href="{{ url_for('links.zoom_links') }}">Zoom</a>
 
               <a style="display: none" class="nav-item nav-link mr-2" href="/covid">Covid</a>
 

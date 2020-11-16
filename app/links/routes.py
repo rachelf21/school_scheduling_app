@@ -17,6 +17,7 @@ client = gspread.authorize(creds)
 sheet = client.open("Zoom Classroom Logins").sheet1
 
 @links.route('/zoom_links')
+@login_required
 def zoom_links():
     data = sheet.get_all_values()
     headers = data.pop(0)

@@ -6,6 +6,12 @@ from app.utilities import Util
 
 classes = Blueprint('classes' , __name__)
 
+
+@classes.route('/grades')
+@login_required
+def grades():
+    return render_template('grades.html')
+
 @classes.route('/classes')
 def classes_all():
     group = Group.query.all()

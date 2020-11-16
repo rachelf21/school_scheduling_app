@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-pss-message-prefixes="psx.html.teachers.index">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" />
+    <link rel="icon" type="image/png" href="/android-chrome-512x512.png" sizes="512x512" />
+    <link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon-128.png" sizes="128x128" />
+
+    <link class="pds-icon-src" rel="import" href="/scripts/dist/teacher_tools/js/lib/img/icons/pds-icons.svg" />
+    <script src="/scripts/dist/teacher_tools/js/lib/html-import.js"></script>
+
+    <meta name="application-name" content="PowerSchool" />
+    <meta name="application-version" content="20.4.5.1.1453659" />
+    <meta name="msapplication-TileColor" content="#042d40" />
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
+
+    <meta name="image-root" content="/images/" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- minimal inline style for loading indicator -->
+    <style>
+      body {
+        background-color: #f4f4f4;
+      }
+      .loading {
+        text-align: center;
+      }
+      .loading .loading-bar {
+        display: inline-block;
+        box-sizing: border-box;
+        width: 9px;
+        height: 9px;
+        margin: 16px 2px;
+        border-radius: 50%;
+        -webkit-animation: loading 1s ease-in-out infinite;
+        -o-animation: loading 1s ease-in-out infinite;
+        animation: loading 1s ease-in-out infinite;
+      }
+      .loading.loading-lg .loading-bar {
+        width: 18px;
+        height: 18px;
+        margin: 25px 4px;
+      }
+      .loading .loading-bar:nth-child(1) {
+        background-color: #e14854;
+        -webkit-animation-delay: 0s;
+        -moz-animation-delay: 0s;
+        -o-animation-delay: 0s;
+        animation-delay: 0s;
+      }
+      .loading .loading-bar:nth-child(2) {
+        background-color: #f7a81e;
+        -webkit-animation-delay: 0.09s;
+        -moz-animation-delay: 0.09s;
+        -o-animation-delay: 0.09s;
+        animation-delay: 0.09s;
+      }
+      .loading .loading-bar:nth-child(3) {
+        background-color: #7db556;
+        -webkit-animation-delay: 0.18s;
+        -moz-animation-delay: 0.18s;
+        -o-animation-delay: 0.18s;
+        animation-delay: 0.18s;
+      }
+      .loading .loading-bar:nth-child(4) {
+        background-color: #62bab8;
+        -webkit-animation-delay: 0.27s;
+        -moz-animation-delay: 0.27s;
+        -o-animation-delay: 0.27s;
+        animation-delay: 0.27s;
+      }
+      @keyframes loading {
+        0% {
+          transform: scale(1);
+        }
+        20% {
+          transform: scale(1.8, 1.8);
+        }
+        40% {
+          transform: scale(1);
+        }
+      }
+    </style>
+
+    <!-- the invalid media attribute will cause the browser to download the stylesheet immediately, but not block dom rendering -->
+    <link href="/images/dist/teacher_tools/css/main.css?_=20.4.5.1.1453659" rel="stylesheet" media="bogus" />
+    <meta id="keep-alive-config" content="120" />
+    <title>PowerTeacher Pro</title>
+    <script>
+      samlsp = 1;
+
+      reauth = 1;
+      portalPrefix = "/teachers";
+    </script>
+  </head>
+  <body
+    data-ng-controller="contextController"
+    data-ng-class="{
+            'show-wait':currentContext.showWait,
+            'savable':currentContext.savable,
+            'class-header-on':currentContext.pageConfig === 'class-header',
+            'is-common-portal-layout': currentContext.isCommonPortal,
+            'is-nav-collapsed': currentContext.isNavCollapsed}"
+  >
+    <div id="preloading-indicator" class="loading loading-lg" pss-loader data-size="large">
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+    </div>
+
+    <div id="container-main" data-ng-if="currentContext.isLoggedIn">
+      <div data-pss-navbar data-ng-if="!currentContext.isCommonPortal"></div>
+      <div data-pss-app-head data-ng-if="currentContext.isCommonPortal" class="pds-app-header-bar"></div>
+      <div id="sidebar-charms-container" data-ng-if="!currentContext.isCommonPortal" data-sidebarcharms></div>
+      <div data-ng-if="currentContext.isCommonPortal" data-pss-app-nav></div>
+
+      <main id="content-main">
+        <!-- I manually added some of the page-head styles. The styles are not currently available to pull in individually from PDS. -->
+        <!-- TODO: Make this a component -->
+        <div data-ng-if="currentContext.isCommonPortal" class="pds-page-head">
+          <div class="pds-page-head-text">
+            <h1 class="pds-page-text-primary" tabindex="-1" ng-bind="currentContext.pageTitle | translate"></h1>
+          </div>
+          <div class="pds-page-actions">
+            <div data-pss-uc-reporting-term-selector></div>
+          </div>
+        </div>
+        <div data-pss-notifications="docked"></div>
+        <div data-pss-notifications="fixed"></div>
+        <div data-pss-notifications="out-of-page"></div>
+        <div data-ng-view="" data-ng-cloak=""></div>
+        <div data-pss-legend></div>
+        <div data-pss-onboarding></div>
+      </main>
+    </div>
+    <footer class="footer"><span data-pss-footer data-save-button-label-override="currentContext.saveButtonLabelOverride"></span></footer>
+    <div id="dynamic-message-container" class="screen_readers_only" role="alert" aria-live="assertive" aria-atomic="false"></div>
+    <div id="cust-content-footer"></div>
+
+    <script src="/scripts/dist/teacher_tools/components/shared/ckeditor/ckeditor.js"></script>
+    <script
+      src="/scripts/dist/teacher_tools/js/require.js?_=20.4.5.1.1453659"
+      data-main="/scripts/dist/teacher_tools/components/main.js?_=20.4.5.1.1453659"
+    ></script>
+
+    <script>
+      window.powerSchoolCommonPortalPrefOn = true;
+
+      window.hasSISStudentContacts = false;
+
+      window.emailEnabled = false;
+
+      window.ptpHelpLink = "https://docs.powerschool.com/PTPH/20.4";
+    </script>
+
+    <link href="/images/dist/teacher_tools/css/main.css?_=20.4.5.1.1453659" rel="stylesheet" />
+    <div id="fusion-charts-colors">
+      <div class="fusion-chart-dark-blue"></div>
+      <div class="fusion-chart-blue"></div>
+      <div class="fusion-chart-dark-green"></div>
+      <div class="fusion-chart-purple"></div>
+      <div class="fusion-chart-grey-1"></div>
+      <div class="fusion-chart-grey-2"></div>
+      <div class="fusion-chart-white"></div>
+      <div class="fusion-chart-black"></div>
+
+      <div class="fusion-chart-line-blue"></div>
+      <div class="fusion-chart-line-pink"></div>
+      <div class="fusion-chart-line-teal"></div>
+      <div class="fusion-chart-line-orange"></div>
+    </div>
+  </body>
+</html>

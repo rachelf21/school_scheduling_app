@@ -1,0 +1,20 @@
+{% extends "base.html" %} {%block title%} Grades {%endblock%} {% block content %}
+<script src="static/js/grades.js"></script>
+<h1 class="mb-2 text-center font-weight-normal">View Grades</h1>
+<hr />
+<p></p>
+<div class="text-center mb-4">
+  <button type="button" class="btn btn-secondary mr-4" onclick="view_grades7()">View Grade 7</button>
+  <button type="button" class="btn btn-secondary ml-2" onclick="view_grades8()">View Grade 8</button>
+</div>
+<div id="div_grades" class="container text-center row mb-2" style="margin: auto; max-width: 440px; border: 0px red solid">
+  <script>
+    $(document).ready(function () {
+      create_buttons();
+    });
+  </script>
+</div>
+
+<hr class="mb-4" />
+<p class="mt-4 mb-4">&nbsp;</p>
+{% endblock content %}
