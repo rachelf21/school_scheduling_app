@@ -42,7 +42,7 @@ def send_email():
             parent2=''
         
         msg_subject = 'Absence: ' + first + " " + last + " " + abs_class + " " + abs_subject
-        msg = Message(msg_subject, sender=os.environ.get('MAIL_DEFAULT_SENDER'), recipients=[parent1, parent2, student_email], cc=[temail],bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org', 'attendance-app@mdyschool.org'])
+        msg = Message(msg_subject, sender=('MDY Attendance App', os.environ.get('MAIL_DEFAULT_SENDER')), recipients=[parent1, parent2, student_email], cc=[temail],bcc=['seckers@mdyschool.org', 'mkopelowitz@mdyschool.org', 'attendance-app@mdyschool.org'])
         #
         intro = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + abs_class + " " + abs_subject + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \n"
         

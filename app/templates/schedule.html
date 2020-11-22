@@ -136,6 +136,13 @@
       var num = parseInt(current_period.substring(2));
     } else var num = parseInt(current_period.substring(1));
 
+
+    if(num=="L" ){
+      if(("{{title}}".includes("Fri")))
+      num=5;
+      else num = 6;
+    }
+
     //console.log("num=" + num);
     for (i = 1; i <= num; i++) {
       var element = document.getElementById("atticon" + i);

@@ -84,6 +84,10 @@ app.register_blueprint(covid)
 from app.links.routes import links
 app.register_blueprint(links)
 
+from app.notifications.routes import notifications
+app.register_blueprint(notifications)
+
+
 # from app.main.routes import main
 # app.register_blueprint(main)
 # try:

@@ -1,0 +1,38 @@
+{% extends "base-denied.html" %} {% block content %}
+
+<div style="width: 500px; margin: auto">
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Add Custom Email Message</legend>
+
+        <div>
+          <p class="text-muted">
+            This is the message that will be sent to the student and their parents. To change it, simply type in the box and press Submit
+            when done. Then go back to the "Send Email" page and select the students you would like to email.
+          </p>
+
+          <div style="font-family: 'Merriweather', serif; font-size: 1.2em; border: 1px solid gainsboro">
+            <div class="ml-2 mt-2">{{msg |safe}}</div>
+            <p class="ml-2" style="color: red"><em>{{custom}}</em></p>
+            <p class="ml-2">Thank you.</p>
+          </div>
+        </div>
+        <div class="form-group mt-4">
+          {{ form.content.label(class="form-control-label") }} {% if form.content.errors %} {{ form.content(class="form-control
+          form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.content.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.content(class="form-control form-control-lg") }} {% endif %}
+        </div>
+      </fieldset>
+
+      <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}</div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
