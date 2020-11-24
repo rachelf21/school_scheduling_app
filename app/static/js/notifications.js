@@ -8,7 +8,7 @@ function email_progress(student_email, name, course) {
     $.ajax({
       type: "POST",
       contentType: "application/json",
-      url: "/send_progress_email",
+      url: "/send_teacher_email",
       //context: document.body,
       dataType: "json",
       data: JSON.stringify(studentObj),

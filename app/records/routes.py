@@ -46,15 +46,15 @@ def send_email():
         #
         intro = "This is an automated message. \n" + first + " " + last + " has been marked absent on " + date +" for " + abs_class + " " + abs_subject + " by " +  tname +".\nPlease do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: " + temail + ". \n"
         
-        c_user = UserSettings.query.filter_by(username = teacher.username).first()
-        custom =''
-        if c_user is None:
-            custom = ''
-        else:
-            custom = c_user.custom_msg
-            #print(custom)
+        # c_user = UserSettings.query.filter_by(username = teacher.username).first()
+        # custom =''
+        # if c_user is None:
+        #     custom = ''
+        # else:
+        #     custom = c_user.custom_msg
+        #     #print(custom)
         
-        msg.body = intro + "\n"+custom + "\nThank you."
+        msg.body = intro + "\nThank you."
         
         #print(msg.body)
         mail.send(msg)

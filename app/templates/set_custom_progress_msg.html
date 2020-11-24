@@ -5,18 +5,18 @@
     <form method="POST" action="">
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Add Custom Email Message</legend>
+        <legend class="border-bottom mb-4">Set Your Email Message</legend>
 
         <div>
           <p class="text-muted">
-            This is the message that will be sent to the student and their parents. To change it, simply type in the box and press Submit
-            when done. Then go back to the "Send Email" page and select the students you would like to email.
+            This is the message that will be sent to a student and their parents when you choose to email them from the "Send Missing Work Emails" page. You can update the message body below where shown. Make sure to click on "Set Message Body" to save your changes. 
           </p>
 
-          <div style="font-family: 'Merriweather', serif; font-size: 1.2em; border: 1px solid gainsboro">
-            <div class="ml-2 mt-2">{{msg |safe}}</div>
-            <p class="ml-2" style="color: red"><em>{{custom}}</em></p>
-            <p class="ml-2">Thank you.</p>
+          <div style="background:snow; font-family: 'Merriweather', serif; font-size: 1.2em; border: 1px solid gainsboro">
+            <div class="ml-2 mt-2 mb-4">{{intro |safe}}</div> 
+            <p class="ml-2" ><em>{{custom}}</em></p>
+            <p class="ml-2" >{{signature | safe}}</p>
+
           </div>
         </div>
         <div class="form-group mt-4">
@@ -27,11 +27,14 @@
             <span>{{ error }}</span>
             {% endfor %}
           </div>
-          {% else %} {{ form.content(class="form-control form-control-lg") }} {% endif %}
+          {% else %} {{ form.content(class="form-control") }} {% endif %}
         </div>
       </fieldset>
 
-      <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}</div>
+      <div style="display:flex;  justify-content:space-between">
+      <div class="form-group">{{ form.changeText(class="btn btn-outline-info") }}</div>
+      <div><a href="/students_notifications/all" role="button" class="btn btn-outline-info">Select Students to Email</a></div>
+      </div>
     </form>
   </div>
 </div>

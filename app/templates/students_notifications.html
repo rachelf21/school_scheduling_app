@@ -19,7 +19,7 @@
   >
     <thead>
       <th>Name</th>
-      <th>Progress</th>
+      <th class='text-center'>Missing Work</th>
       <th id="class" class="text-center">Class</th>
       <th>Email</th>
       <th>Parent1 Email</th>
@@ -32,7 +32,7 @@
         <td>
           <div id="notify{{loop.index}}" class="text-center">
             <a
-              title="email student and parents"
+              title="Email student and parents about missing work"
               onclick='email_progress("{{students.email}}", "{{students.name}}","{{students.courseid}}")'
             >
               <i style="color: #1e2a5d" class="fa fa-envelope fa-1x"></i>
