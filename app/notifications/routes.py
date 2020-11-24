@@ -24,7 +24,7 @@ def students_notifications(classname):
         students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
 
         
-    title = 'Send "Missing Work" Emails'
+    title = 'Send Missing Work Emails'
     return render_template('students_notifications.html' , students = students, title=title, classname=classname, teacher=current_user.username)
 
 #%%
@@ -42,6 +42,9 @@ def set_custom_progress_msg(teacher):
     teacher_description=''
     if current_user.username=='dpiselli':
         teacher_description = "<br><i>Mathematics Teacher</i>"
+    elif current_user.username=='rfriedman':
+        teacher_description = "<br><i>Technology Instructor</i>"
+
     signature = full_teacher + teacher_description+"<br>Magen David Yeshivah<br>2130 McDonald Ave<br>Brooklyn, NY 11223"
     custom='Please be advised that you have not submitted work which you were required to submit for this class.'
     user = UserSettings.query.filter_by(username=teacher).first()
@@ -95,12 +98,12 @@ def send_teacher_email():
         data = request.get_json(force=True)
         student_email = data['student_email']
         student_name = data['student_name']
-        course = data['course']
+        # course = data['course']
         child = Student.query.filter_by(email=student_email).first()
         first = child.first
         last = child.last
         student_class = child.class2id
-        student_subject = course[6:]
+        student_subject = Course.query.filter_by(teacher=current_user.username).first().subject
         print(student_class, student_subject)
         teacher = current_user.username
         teacher = Users.query.filter_by(username=teacher).first()
@@ -128,6 +131,8 @@ def send_teacher_email():
             # print(custom)
         if current_user.username=='dpiselli':
             teacher_description='\nMathematics Teacher'
+        elif current_user.username=='rfriedman':
+            teacher_description='\nTechnology Instructor'
         signature = "----------------\n" + teacher.title + " " + teacher.first + " " + teacher.last + teacher_description +"\nMagen David Yeshivah\n2130 McDonald Ave\nBrooklyn, NY 11223"
         msg.body = intro + "\n" + custom + "\n\n" + signature
 
