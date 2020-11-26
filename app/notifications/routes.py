@@ -45,7 +45,7 @@ def set_custom_progress_msg(teacher):
     elif current_user.username=='rfriedman':
         teacher_description = "<br><i>Technology Instructor</i>"
 
-    signature = full_teacher + teacher_description+"<br>Magen David Yeshivah<br>2130 McDonald Ave<br>Brooklyn, NY 11223"
+    signature = full_teacher + teacher_description+"<br>Magen David Yeshivah<br>"
     custom='Please be advised that you have not submitted work which you were required to submit for this class.'
     user = UserSettings.query.filter_by(username=teacher).first()
     if user is not None and user.custom_msg != '':
@@ -133,7 +133,7 @@ def send_teacher_email():
             teacher_description='\nMathematics Teacher'
         elif current_user.username=='rfriedman':
             teacher_description='\nTechnology Instructor'
-        signature = "----------------\n" + teacher.title + " " + teacher.first + " " + teacher.last + teacher_description +"\nMagen David Yeshivah\n2130 McDonald Ave\nBrooklyn, NY 11223"
+        signature = "------------------------\n" + teacher.title + " " + teacher.first + " " + teacher.last + teacher_description +"\nMagen David Yeshivah\n"
         msg.body = intro + "\n" + custom + "\n\n" + signature
 
         # print(msg.body)

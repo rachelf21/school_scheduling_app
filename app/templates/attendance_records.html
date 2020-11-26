@@ -184,7 +184,7 @@
 <div style="display: flex; justify-content: center">
   <a href="/full_schedule" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">My Schedule</a>
   <a id="my_classes2" href="/classes_anon" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">My Classes</a>
-  <a id="my_today" href="/today" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">Today</a>
+  <a id="my_today" href="/today2" class="mt-2 mb-2 mr-4 btn btn-outline-primary btn-md">Today</a>
 
 </div>
 
@@ -202,10 +202,10 @@ else if ("{{category}}"== "student" || "{{category}}".includes("@stu.mdyschool.o
 }
 
 if("{{teacher}}" == 'rfriedman'){
-  $('#my_today').show();
+  $('#my_today').attr("href","/today");
 }
 else{
-  $('#my_today').hide();
+  $('#my_today').attr("href","/today2");
 }
 
 

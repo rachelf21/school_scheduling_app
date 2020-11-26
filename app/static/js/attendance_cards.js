@@ -255,6 +255,9 @@ function edit_attendance(id, email) {
   window.location.href = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + changed_status + "/" + changed_comment;
 }
 
+
+
+
 function change_color(e) {
   var ele = e.target;
   var id = ele.id;
@@ -327,6 +330,7 @@ function set_values(id, date, courseid, email, name, status, comment) {
   t.value = comment;
 }
 
+
 function edit_attendance() {
   //console.log("edit_attendance ");
   var new_status = document.getElementById("new_status2").value.toUpperCase();
@@ -341,6 +345,23 @@ function edit_attendance() {
   var test = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
   console.log(test);
   window.location.href = "/edit_attendance/" + date + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
+}
+
+function edit_attendance_present() {
+  console.log("edit_attendance_present ");
+  var new_status = document.getElementById("new_status2").value.toUpperCase();
+  var new_comment = document.getElementById("new_comment2").value;
+  new_comment = new_comment.replace(/'/g, "") + " -edited";
+  console.log("new comment = " + new_comment);
+  var date = document.getElementById("current_date2").value;
+  var courseid = document.getElementById("current_courseid2").value;
+  var scheduleid = document.getElementById("scheduleid").value;
+  var email = document.getElementById("current_email2").value;
+  var name = document.getElementById("current_name2").value;
+
+  var test = "/edit_attendance_present/" + date + "/" + scheduleid + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
+  console.log(test);
+  window.location.href = "/edit_attendance_present/" + date + "/" + scheduleid + "/" + courseid + "/" + email + "/" + new_status + "/" + new_comment;
 }
 //href="/send_email/{{att.email}}/{{att.courseid}}"
 

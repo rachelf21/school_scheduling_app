@@ -57,10 +57,14 @@ def take_attendance(classname, courseid, dow, per):
             print('already submitted attendance')
             student_attendance = Attendance.query.filter_by(att_date=date.today(),teacher=teacher, courseid=courseid, classid=classname, scheduleid=dow+per, email = s.email).first()
             #print(s.email)
-            student_form.status = student_attendance.status
-            student_form.comment = student_attendance.comment
+            try:
+                student_form.status = student_attendance.status
+                student_form.comment = student_attendance.comment
+            except:
+                student_form.status = 'P'
+                student_form.comment = ''
         
-        else:            
+        else:
             student_form.comment = ""
             
     
@@ -163,7 +167,8 @@ def record_attendance():
     i = 0
     for x in emails:
         entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]], index=df.columns)
-        df = df.append(entry, ignore_index=True)
+        if statuses[i]=='A' or statuses[i]=='L':
+            df = df.append(entry, ignore_index=True)
         i+=1
     df = df.set_index('email')
     df.fillna('', inplace=True)
@@ -177,7 +182,7 @@ def record_attendance():
     return redirect(url_for('records.track_attendance', category=cat))
 
 
-#%%This route edits one specific attendance entry in the database
+#%%This route edits one specific attendance entry in the database - originates from the Attendance Records page
 @attendance.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')
 def edit_attendance(date, courseid, email, status, comment):
     name = Student.query.filter_by(email = email).first().name
@@ -198,3 +203,40 @@ def edit_attendance(date, courseid, email, status, comment):
     # return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
     
 #%%
+
+# %%This route edits one specific attendance entry in the database - originates from the Attendance CARDS page
+@attendance.route('/edit_attendance_present/<date>/<scheduleid>/<courseid>/<email>/<status>/<comment>')
+def edit_attendance_present(date, scheduleid, courseid, email, status, comment):
+    name = Student.query.filter_by(email=email).first().name
+    att_date = date
+    classid = courseid[0:5]
+    teacher=current_user.username
+    print(email, att_date, scheduleid, status, comment, classid, courseid)
+    student_attendance_record = Attendance.query.filter_by(email=email, att_date=att_date, courseid=courseid, scheduleid=scheduleid, teacher=current_user.username).first()
+    if student_attendance_record is None:
+        df = pd.DataFrame(
+            columns=['teacher', 'att_date', 'scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
+        entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, email, status, comment, name],index=df.columns)
+        df = df.append(entry, ignore_index=True)
+        df = df.set_index('email')
+        df.fillna('', inplace=True)
+        # print(df)
+        df.to_sql('attendance', engine, if_exists="append")
+        db.session.commit()
+        #query = f'INSERT into attendance(att_date, scheduleid, classid, courseid, email, status, comment, name, teacher) VALUES({att_date},{scheduleid},{classid},{courseid},{email},{status},{comment},{name},{teacher})'
+    else:
+        query = "UPDATE attendance set status = '" + status + "', comment = '" + comment + "' where email = '" + email + "' and att_date = '" + att_date + "' and courseid = '" + courseid + "' and teacher ='" + current_user.username + "';"
+        print(query)
+        with engine.begin() as conn:  # TRANSACTION
+            conn.execute(query)
+            conn.execute("COMMIT")
+    # db.session.flush()
+    # db.session.rollback()
+    topic = "attendance status of " + status + " for " + name
+
+    cat = '_x' + att_date + courseid
+    flash('Your attendance status for ' + name + ' has been updated.', 'success')
+    return redirect(url_for('records.track_attendance', category=cat))
+    # return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
+
+# %%
