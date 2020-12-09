@@ -108,24 +108,6 @@
               <a style="display: none" class="nav-item nav-link mr-2 text-nowrap" href="/today">Today</a>
               <a style="display: none" class="nav-item nav-link mr-2" href="{{ url_for('classes.classes_all') }}">ClassInfo</a>
 
-              <!-- <li class="nav-link nav-item dropdown mr-2">
-                <a
-                  class="dropdown-toggle"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Students</a
-                >
-                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
-                  <a class="dropdown-item" href="/get_students/a/all">All Students</a>
-                  <a class="dropdown-item" href="/get_students/a/7">Grade 7</a>
-                  <a class="dropdown-item" href="/get_students/a/8">Grade 8</a>
-                </div>
-              </li> -->
-
               <a class="nav-item nav-link ml-2" a href="/lessons/all">Lessons</a>
               <a class="nav-item nav-link ml-2" a href="{{ url_for('classes.grades') }}">Grades</a>
               <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">My Schedule</a>
@@ -135,6 +117,22 @@
               <a class="nav-item nav-link" href="/dismissal_form">Dismissal</a>
               <a class="nav-item nav-link" href="{{ url_for('lunch_menu') }}">Lunch</a>
               <a class="nav-item nav-link" href="{{ url_for('links.zoom_links') }}">Zoom</a>
+
+              <li class="nav-link nav-item dropdown mr-2">
+                <a
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Send Emails</a
+                >
+                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a class="dropdown-item" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
+                </div>
+              </li>
 
               <a style="display: none" class="nav-item nav-link mr-2" href="/covid">Covid</a>
 

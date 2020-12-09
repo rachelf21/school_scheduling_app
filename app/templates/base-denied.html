@@ -101,7 +101,21 @@
               <a class="nav-item nav-link mr-1" style="font-size:1.0em" href="{{ url_for('lunch_menu') }}">Lunch Menu</a>
               <a class="nav-item nav-link mr-1" style="font-size:1.0em" href="{{ url_for('links.zoom_links') }}">Zoom Logins</a>
 
-
+              <li class="nav-link nav-item dropdown mr-4">
+                <a
+                  class="dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Send Emails</a
+                >
+                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a class="dropdown-item" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
+                </div>
+              </li>
 
 
               <!-- <li class="nav-item dropdown mr-4" style="color: #cbd5db; margin-top: 0.5rem; position: relative">
