@@ -4,6 +4,7 @@ from flask_login import login_required
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from flask_login import login_user, current_user, logout_user, login_required
 
 links = Blueprint('links' , __name__)
 
@@ -37,4 +38,4 @@ def zoom_links():
         classes.append(c)
     df['class'] = classes
     print(classes)
-    return render_template('links/zoom_classrooms.html', df=df)
+    return render_template('links/zoom_classrooms.html', df=df, teacher=current_user.username)

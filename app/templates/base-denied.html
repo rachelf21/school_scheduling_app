@@ -70,7 +70,7 @@
   </head>
   <body class="bg">
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <nav class="navbar navbar-expand-xl navbar-dark bg-steel fixed-top">
         <div class="container">
           <a  class="navbar-brand" href="{{ url_for('my_schedule.display_full_schedule') }}">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
@@ -199,7 +199,7 @@
                   Send Emails</a
                 >
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
-                  <a class="dropdown-item" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
+                  <a class="nav-item nav-link " href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
                 </div>
               </li>
               <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>
@@ -244,5 +244,15 @@
         </div>
       </div>
     </main>
+
+    <script>
+      window.onload = function () {
+    if ("{{teacher}}" == "rfriedman") {
+      element = document.getElementById("mytodaynav");
+      if (element) element.href = "/today";
+    }
+  }
+  </script>
+
   </body>
 </html>

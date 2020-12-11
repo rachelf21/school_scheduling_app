@@ -62,7 +62,7 @@
   </head>
   <body class="bg">
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <nav class="navbar navbar-expand-xl navbar-dark bg-steel fixed-top">
         <div class="container">
           <a class="navbar-brand" href="/today">
             <img src="{{url_for('static', filename='img/mdy_logo.png')}}" width="40" height="40" alt="" />
@@ -110,7 +110,25 @@
 
               <a class="nav-item nav-link ml-2" a href="/lessons/all">Lessons</a>
               <a class="nav-item nav-link ml-2" a href="{{ url_for('classes.grades') }}">Grades</a>
-              <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">My Schedule</a>
+
+              <!--a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">My Schedule</a-->
+
+              <li class="nav-link nav-item dropdown mr-2">
+                <a
+                  class="dropdown-toggle text-nowrap"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  My Schedule</a
+                >
+                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                  <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">Full Schedule</a>
+                  <a id="mytodaynav" class="nav-item nav-link text-nowrap" href="/today2">Today</a>
+                </div>
+              </li>
 
               <a id="my_classes" class="nav-item nav-link ml-2 text-nowrap" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
               <a class="nav-item nav-link" href="/records"> Attendance Records</a>
@@ -130,7 +148,7 @@
                   Send Emails</a
                 >
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
-                  <a class="dropdown-item" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
+                  <a class="nav-item nav-link" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
                 </div>
               </li>
 
@@ -174,5 +192,14 @@
         </div>
       </div>
     </main>
+
+    <script>
+      window.onload = function () {
+        if ("{{teacher}}" == "rfriedman") {
+          element = document.getElementById("mytodaynav");
+          if (element) element.href = "/today";
+        }
+      };
+    </script>
   </body>
 </html>

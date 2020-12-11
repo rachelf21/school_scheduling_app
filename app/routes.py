@@ -5,6 +5,7 @@ import pandas as pd
 from functools import wraps
 from sqlalchemy import func
 from datetime import date
+from flask_login import login_user, current_user, logout_user, login_required
 
 #%%
 #https://stackoverflow.com/questions/29725217/password-protect-one-webpage-in-flask-app
@@ -57,7 +58,7 @@ def about():
 @app.route('/lunch_menu') 
 def lunch_menu():     
     #return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')
-    return render_template("lunch.html")
+    return render_template("lunch.html", teacher=current_user.username)
 
 @app.route('/denied')
 def denied():
