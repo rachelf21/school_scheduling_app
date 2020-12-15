@@ -58,7 +58,11 @@ def about():
 @app.route('/lunch_menu') 
 def lunch_menu():     
     #return send_file('static/resources/lunch.pdf', attachment_filename='lunch.pdf')
-    return render_template("lunch.html", teacher=current_user.username)
+    try:
+        teacher=current_user.username
+    except:
+        teacher = 'anon'
+    return render_template("lunch.html", teacher=teacher)
 
 @app.route('/denied')
 def denied():

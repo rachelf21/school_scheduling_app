@@ -115,7 +115,7 @@
 
               <li class="nav-link nav-item dropdown mr-2">
                 <a
-                  class="dropdown-toggle text-nowrap"
+                  class="btn dropdown-toggle text-nowrap"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -126,7 +126,7 @@
                 >
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
                   <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">Full Schedule</a>
-                  <a id="mytodaynav" class="nav-item nav-link text-nowrap" href="/today2">Today</a>
+                  <a id="mytodaynav" class="nav-item nav-link text-nowrap" href="/today">Today</a>
                 </div>
               </li>
 
@@ -138,15 +138,15 @@
 
               <li class="nav-link nav-item dropdown mr-2">
                 <a
-                  class="dropdown-toggle"
+                  class="btn dropdown-toggle"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  Send Emails</a
-                >
+                  Send Emails
+                </a>
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
                   <a class="nav-item nav-link" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
                 </div>
@@ -193,13 +193,13 @@
       </div>
     </main>
 
-    <script>
+    <!--script>
       window.onload = function () {
         if ("{{teacher}}" == "rfriedman") {
           element = document.getElementById("mytodaynav");
           if (element) element.href = "/today";
         }
       };
-    </script>
+    </script-->
   </body>
 </html>

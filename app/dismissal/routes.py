@@ -35,14 +35,18 @@ def requires_auth_admin(f):
 def dismissal_form():
     title = 'Dismissal'
     form = DismissalSelectForm()
-    return render_template("dismissal_form.html" , title=title, form=form, teacher=current_user.username)
+    try:
+        teacher=current_user.username
+    except:
+        teacher = 'anon'
+    return render_template("dismissal_form.html" , title=title, form=form,teacher=teacher)
 
 @dismissal.route('/dismissal_students')
 @login_required
 @requires_auth_admin 
 def dismissal_students():
     students = Dismissal.query.all()
-    return render_template("dismissal_students.html", students=students,teacher=current_user.username )
+    return render_template("dismissal_students.html", students=students)
 
 
 @dismissal.route('/dismissal_change/<email>', methods=['GET','POST'])
@@ -253,5 +257,9 @@ def dismiss(category):
         count = len(dismissal)
         classid3 = classid2[0:2] + "-" + classid2[2:5]
         room = Group.query.filter_by(classid2=classid3).first().room
-    
-    return render_template('dismissal.html', dismissal=dismissal, classid2=classid2, room=room, student_name=student_name, count=count, category=category, teacher=current_user.username)
+
+    try:
+        teacher=current_user.username
+    except:
+        teacher = 'anon'
+    return render_template('dismissal.html', dismissal=dismissal, classid2=classid2, room=room, student_name=student_name, count=count, category=category, teacher=teacher)
