@@ -82,7 +82,7 @@
 
           <div class="collapse navbar-collapse float-right text-right pr-3" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="navbar-brand mr-4" href="/">MDY Daily App</a>
+              <a class="navbar-brand" href="/">MDY Daily App</a>
 
               <!-- <li class="nav-link nav-item dropdown mr-2">
                 <a
@@ -105,15 +105,14 @@
                 </div>
               </li> -->
 
-              <a style="display: none" class="nav-item nav-link mr-2 text-nowrap" href="/today">Today</a>
-              <a style="display: none" class="nav-item nav-link mr-2" href="{{ url_for('classes.classes_all') }}">ClassInfo</a>
+              <a style="display: none" class="nav-item nav-link mr-0" href="{{ url_for('classes.classes_all') }}">ClassInfo</a>
 
-              <a class="nav-item nav-link ml-2" a href="/lessons/all">Lessons</a>
-              <a class="nav-item nav-link ml-2" a href="{{ url_for('classes.grades') }}">Grades</a>
+              <a class="nav-item nav-link" a href="/lessons/all">Lessons</a>
+              <a class="nav-item nav-link" a href="{{ url_for('classes.grades') }}">Grades</a>
 
               <!--a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">My Schedule</a-->
 
-              <li class="nav-link nav-item dropdown mr-2">
+              <li class="nav-link nav-item dropdown">
                 <a
                   class="btn dropdown-toggle text-nowrap"
                   id="navbarDropdown"
@@ -124,19 +123,57 @@
                 >
                   My Schedule</a
                 >
-                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
-                  <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">Full Schedule</a>
+                <div
+                  class="dropdown-menu float-right text-right pr-3"
+                  aria-labelledby="navbarDropdown"
+                  style="background: #5f788a; min-width: 0px !important"
+                >
                   <a id="mytodaynav" class="nav-item nav-link text-nowrap" href="/today">Today</a>
+                  <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">Full Schedule</a>
                 </div>
               </li>
 
-              <a id="my_classes" class="nav-item nav-link ml-2 text-nowrap" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
-              <a class="nav-item nav-link" href="/records"> Attendance Records</a>
+              <a style="display: none" id="my_classes" class="nav-item nav-link text-nowrap" href="{{ url_for('classes.classes_anon') }}"
+                >My Classes</a
+              >
+              <a class="nav-item nav-link text-nowrap" href="/records"> Attendance Records</a>
+
+              <li class="nav-link nav-item dropdown">
+                <a
+                  class="btn dropdown-toggle text-nowrap"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Links
+                </a>
+                <div
+                  class="dropdown-menu float-right text-right pr-3"
+                  aria-labelledby="navbarDropdown"
+                  style="background: #5f788a; min-width: 0px !important"
+                >
+                  <a
+                    class="nav-item nav-link"
+                    href="https://docs.google.com/spreadsheets/d/1lCtkbwmaBeWSGo0AlBRMaJH7XBWxY5FvAdg7q2plL5M/edit?usp=sharing"
+                    target="_blank"
+                    >MDY Links</a
+                  >
+                  <a class="nav-item nav-link text-nowrap" href="{{ url_for('links.zoom_links') }}">Classroom Zoom IDs</a>
+                  <a
+                    class="nav-item nav-link text-nowrap"
+                    href="https://docs.google.com/spreadsheets/d/18eSTVpVwQu8s1qsG-Q8f-HxQdjLorTntOCYmho4fYFs/edit?usp=sharing"
+                    target="_blank"
+                    >Teacher Zoom IDs</a
+                  >
+                </div>
+              </li>
+
               <a class="nav-item nav-link" href="/dismissal_form">Dismissal</a>
               <a class="nav-item nav-link" href="{{ url_for('lunch_menu') }}">Lunch</a>
-              <a class="nav-item nav-link" href="{{ url_for('links.zoom_links') }}">Zoom</a>
 
-              <li class="nav-link nav-item dropdown mr-2">
+              <li class="nav-link nav-item dropdown">
                 <a
                   class="btn dropdown-toggle"
                   id="navbarDropdown"
@@ -147,7 +184,11 @@
                 >
                   Send Emails
                 </a>
-                <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="min-width: 0px !important">
+                <div
+                  class="dropdown-menu float-right text-right pr-3"
+                  aria-labelledby="navbarDropdown"
+                  style="background: #5f788a; min-width: 0px !important"
+                >
                   <a class="nav-item nav-link" href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
                 </div>
               </li>
