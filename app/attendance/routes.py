@@ -41,12 +41,26 @@ def take_attendance(classname, courseid, dow, per):
         students = Student.query.filter_by(classid=classname).filter(~Student.email.in_(["hben-dayan497@stu.mdyschool.org","ialfaks946@stu.mdyschool.org","vhaber778@stu.mdyschool.org"])).order_by(Student.name).all()
         count = len(students)
         amount = amount-3
-        
 
+    course = courseid[6:]
     for s in students:
-        amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
-        amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
-        
+        amt_abs = len(Attendance.query.filter_by(teacher=teacher, email=s.email).filter(
+            Attendance.courseid.like('%' + course)).filter_by(status='A').all())
+        amt_late = len(Attendance.query.filter_by(teacher=teacher, email=s.email).filter(
+            Attendance.courseid.like('%' + course)).filter_by(status='L').all())
+
+    # for s in students:
+    #     changed_classes  = ["dkhafif121@stu.mdyschool.org", "jfaks858@stu.mdyschool.org", "abukai326@stu.mdyschool.org"]
+    #     if s.email in changed_classes:
+    #         course = courseid[6:]
+    #         print(course)
+    #         #courses = ['7-202-' + course, '7-203-' + course, '7-211-' + course]
+    #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='A').all())
+    #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='L').all())
+    #     else:
+    #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+    #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
+    #
         student_form = StudentAttendanceForm()
         student_form.count = amt_abs
         student_form.count_late = amt_late        
