@@ -304,6 +304,22 @@ class Week(db.Model):
     weekid = db.Column(db.Integer, primary_key=True)
     today = db.Column(db.String(1))
 
+class Messages(db.Model):
+    __tablename__ = "messages"
+    __table_args__ = {'extend_existing': True}
+    msgid = db.Column(db.String(25), nullable=False, primary_key=True)
+    username = db.Column(db.String(25))
+    category = db.Column(db.String(25))
+    subject = db.Column(db.String(255))
+    message = db.Column(db.String(1000), default='')
+
+    def __init__(self, msgid, username, category, subject, message):
+        self.msgid = msgid
+        self.username = username
+        self.category = category
+        self.subject = subject
+        self.message = message
+
 
 #%%
 def create_att_record(att_date, scheduleid, classid, courseid, email, status, comment):

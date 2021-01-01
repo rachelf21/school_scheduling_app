@@ -4,7 +4,7 @@ import os
 from PIL import Image
 from app import app, db, bcrypt, mail
 from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm,SetMsgBodyForm, RegisterClassesForm, SuggestionsForm
-from app.models import Users, Course, Group, UserSettings
+from app.models import Users, Course, Group, UserSettings, Messages
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 users = Blueprint('users', __name__)
@@ -249,6 +249,8 @@ def set_custom_msg(teacher):
         flash('Error replacing custom text. Your custom text was not changed.', 'danger')
         return redirect(url_for('users.set_custom_msg', teacher=teacher))
     return render_template('set_custom_msg.html', form=form, teacher=teacher, msg=msg, custom=custom)
+
+
 
 def send_suggestion(suggestion, teacher):
     msg = Message('Suggestion from '+ teacher +' for Attendance App', sender='attendance-app@mdyschool.org', recipients=['rfriedman@mdyschool.org'])

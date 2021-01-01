@@ -2,9 +2,11 @@
 <script src="/static/js/notifications.js"></script>
 
 <div style="text-align: center">
-  <h2 class="font-weight-normal">Send <img src="/static/img/MISSING WORK.png" style="width: 140px" alt="missing work" /> Emails</h2>
-  <a class="font-weight-normal" href="/set_custom_progress_msg/{{teacher}}">Customize Message</a>
-  <div id="all" class="font-weight-normal mb-4"><a href="/students_notifications/all">View All Students</a></div>
+  <h2 class="font-weight-normal">Send <img src="/static/img/FAILURE ALERT.png" style="width: 140px" alt="failure alert" /> Emails</h2>
+
+  <a class="font-weight-normal" href="/set_failure_alert_msg/{{teacher}}">Customize Email Message</a>
+
+  <div id="all" class="font-weight-normal mb-4"><a href="/students_failure_notifications/all">View All Students</a></div>
 </div>
 <div style="border: 0px solid blue; max-width: 1000px; margin: auto" class="table-responsive">
   <!-- <table
@@ -12,6 +14,7 @@
   class="table mx-auto w-auto table-striped table-hover table-bordered table-responsive"
   style="border: 0px red solid; margin: 0 auto; width: 75% !important"
 > -->
+
   <table
     id="myTable"
     class="table mx-auto w-auto table-striped table-hover table-bordered table-fixed"
@@ -19,7 +22,8 @@
   >
     <thead>
       <th>Name</th>
-      <th class="text-center">Missing Work</th>
+      <th class="text_email text-center" style="color: #cc0000">Failure Alert</th>
+      <!--th class="html_email text-center" style="color: #fd0679">HTML Failure Alert</th-->
       <th id="class" class="text-center">Class</th>
       <th>Email</th>
       <th>Parent1 Email</th>
@@ -29,21 +33,31 @@
       {% for students in students %}
       <tr>
         <td class="text-nowrap"><a href="/student_info/{{students.email}}">{{ students.name}}</a></td>
-        <td>
+        <td class="text_email">
           <div id="notify{{loop.index}}" class="text-center">
             <a
-              title="Email student and parents about missing work"
-              onclick='email_progress("{{students.email}}", "{{students.name}}","{{students.courseid}}")'
+              title="Email failure alert"
+              onclick='email_failure_alert("{{teacher}}", "{{students.email}}", "{{students.name}}","{{students.courseid}}")'
             >
-              <i style="color: #1e2a5d" class="fa fa-envelope fa-1x"></i>
+              <i style="color: #cc0000" class="fa fa-envelope fa-1x"></i>
             </a>
           </div>
         </td>
+        <!--td class="html_email">
+          <div id="html_notify{{loop.index}}" class="text-center">
+            <a
+              title="Email HTML failure alert"
+              onclick='html_email_failure_alert("{{students.email}}", "{{students.name}}","{{students.courseid}}")'
+            >
+              <i style="color: #fd0679" class="fa fa-envelope fa-1x"></i>
+            </a>
+          </div>
+        </td-->
         <td name="classid" class="text-center">
           <script>
             var classlink = "{{students.classid}}";
             document.write(
-              "<a style='color:#1e2a5d' href='/students_notifications/" + classlink + "'> {{students.class_code.classid2}}</a>"
+              "<a style='color:#1e2a5d' href='/students_failure_notifications/" + classlink + "'> {{students.class_code.classid2}}</a>"
             );
           </script>
         </td>
@@ -67,6 +81,7 @@
     select: true,
     bSort: true,
     //order: [[2, "asc"]],
+    columnDefs: [{ orderable: false, targets: [1, 3, 4, 5] }],
   });
 </script>
 

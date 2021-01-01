@@ -151,6 +151,20 @@
                     target="_blank"
                     >Teacher Zoom IDs</a
                   >
+
+                  <a
+                    class="nav-item nav-link text-nowrap"
+                    href="https://docs.google.com/document/d/1A9iBYRyNsi8ZUv6ZAKeRzZzrYVo_TtHxbzIezURi-UA/edit?usp=sharing"
+                    target="_blank"
+                    >Progress Report Instructions</a
+                  >
+                  
+                  <a
+                  class="nav-item nav-link text-nowrap"
+                  href="https://mdyschool.powerschool.com/teachers/index.html"
+                  target="_blank"
+                  >PowerSchool</a
+                >
                 </div>
               </li>
 
@@ -260,6 +274,8 @@
                 >
                 <div class="dropdown-menu float-right text-right pr-3" aria-labelledby="navbarDropdown" style="background: #5f788a; min-width: 0px !important">
                   <a class="nav-item nav-link " href="/set_custom_progress_msg/{{teacher}}">Missing Work</a>
+                  <a class="nav-item nav-link" href="/set_failure_alert_msg/{{teacher}}">Failure Alert</a>
+
                 </div>
               </li>
               <a class="nav-item nav-link" href="{{ url_for('users.account') }}"> {{ current_user.username }}</a>

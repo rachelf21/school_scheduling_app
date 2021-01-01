@@ -3,16 +3,16 @@
 <div style="width: 500px; margin: auto">
   <div class="content-section">
     <div class="text-right">
-      <img src="/static/img/MISSING WORK.png" style="width: 100px" alt="missing work" />
+      <img src="/static/img/FAILURE ALERT.png" style="width: 100px" alt="missing work" />
     </div>
     <form method="POST" action="">
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Create Your MISSING WORK Email</legend>
+        <legend class="border-bottom mb-4">Create Your FAILURE ALERT Email Message</legend>
 
         <div>
           <p class="text-muted">
-            This is the message that will be sent to a student and their parents when you choose to send them a <b>MISSING WORK</b> email.
+            This is the message that will be sent to a student and their parents when you choose to send them a <b>FAILURE ALERT</b> email.
             You can update the message body below where shown. Make sure to click on "Set Message Body" to save your changes.
           </p>
 
@@ -38,7 +38,7 @@
 
       <div style="display: flex; justify-content: space-between">
         <div class="form-group">{{ form.changeText(class="btn btn-outline-info") }}</div>
-        <div><a href="/students_notifications/all" role="button" class="btn btn-outline-info">Select Students to Email</a></div>
+        <div><a href="/students_failure_notifications/all" role="button" class="btn btn-outline-info">Select Students to Email</a></div>
       </div>
     </form>
   </div>
