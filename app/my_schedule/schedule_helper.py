@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 
 class Full_Schedule:
     week = ''
-    mon_df = [] 
+    mon_dseef = []
     tues_df = []
     wed_df = []
     thurs_df = []

@@ -5,42 +5,44 @@ from app.models import Group, Student, Period, Attendance, Users, Course
 import pandas as pd
 from flask_login import current_user, login_required
 from datetime import date
+
 attendance = Blueprint('attendance', '__name__')
 
-#%% This route takes the teacher to the attendance taking page
+
+# %% This route takes the teacher to the attendance taking page
 @attendance.route('/attendance/<classname>/<courseid>/<dow>/<per>', methods=['GET', 'POST'])
 @login_required
-def take_attendance(classname, courseid, dow, per): 
-    submitted=0
-    
-    teacher=current_user.username
-    
-    result = Attendance.query.filter_by(att_date=date.today(), teacher=teacher, courseid=courseid, classid=classname, scheduleid=dow+per).first()
-    
-    
+def take_attendance(classname, courseid, dow, per):
+    submitted = 0
+
+    teacher = current_user.username
+
+    result = Attendance.query.filter_by(att_date=date.today(), teacher=teacher, courseid=courseid, classid=classname,
+                                        scheduleid=dow + per).first()
+
     amount = Group.query.filter_by(classid=courseid[0:5]).first().amount
-    
+
     User = Users.query.filter_by(username=teacher).first()
-    period = dow[2:]+per
+    period = dow[2:] + per
     att_form = ClassAttendanceForm(request.form)
     att_form.title.data = "Attendance " + classname
     title = "Attendance " + classname
     att_form.start_time.data = Period.query.filter_by(periodid=period).first().start_time
     att_form.end_time.data = Period.query.filter_by(periodid=period).first().end_time
     room = Group.query.filter_by(classid=classname).first().room
-    att_form.room.data=room
+    att_form.room.data = room
     att_form.teacher.data = teacher
-    classid2 = Course.query.filter_by(courseid = courseid).first().classcode.classid2
+    classid2 = Course.query.filter_by(courseid=courseid).first().classcode.classid2
     print("classid2", classid2)
     students = Student.query.filter_by(classid=classname).order_by(Student.name).all()
     count = len(students)
-    
 
-    
     if (teacher == 'rfriedman' and courseid == '7-211-Computers'):
-        students = Student.query.filter_by(classid=classname).filter(~Student.email.in_(["hben-dayan497@stu.mdyschool.org","ialfaks946@stu.mdyschool.org","vhaber778@stu.mdyschool.org"])).order_by(Student.name).all()
+        students = Student.query.filter_by(classid=classname).filter(~Student.email.in_(
+            ["hben-dayan497@stu.mdyschool.org", "ialfaks946@stu.mdyschool.org",
+             "vhaber778@stu.mdyschool.org"])).order_by(Student.name).all()
         count = len(students)
-        amount = amount-3
+        amount = amount - 3
 
     course = courseid[6:]
     for s in students:
@@ -49,50 +51,53 @@ def take_attendance(classname, courseid, dow, per):
         amt_late = len(Attendance.query.filter_by(teacher=teacher, email=s.email).filter(
             Attendance.courseid.like('%' + course)).filter_by(status='L').all())
 
-    # for s in students:
-    #     changed_classes  = ["dkhafif121@stu.mdyschool.org", "jfaks858@stu.mdyschool.org", "abukai326@stu.mdyschool.org"]
-    #     if s.email in changed_classes:
-    #         course = courseid[6:]
-    #         print(course)
-    #         #courses = ['7-202-' + course, '7-203-' + course, '7-211-' + course]
-    #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='A').all())
-    #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='L').all())
-    #     else:
-    #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
-    #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
-    #
+        # for s in students:
+        #     changed_classes  = ["dkhafif121@stu.mdyschool.org", "jfaks858@stu.mdyschool.org", "abukai326@stu.mdyschool.org"]
+        #     if s.email in changed_classes:
+        #         course = courseid[6:]
+        #         print(course)
+        #         #courses = ['7-202-' + course, '7-203-' + course, '7-211-' + course]
+        #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='A').all())
+        #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter(Attendance.courseid.like('%'+course)).filter_by(status='L').all())
+        #     else:
+        #         amt_abs = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='A').all())
+        #         amt_late = len(Attendance.query.filter_by(teacher=teacher, email = s.email).filter_by(courseid=courseid).filter_by(status='L').all())
+        #
         student_form = StudentAttendanceForm()
         student_form.count = amt_abs
-        student_form.count_late = amt_late        
+        student_form.count_late = amt_late
         student_form.email = s.email
         student_form.student_name = s.name
         if result is not None:
-            submitted=1
+            submitted = 1
             print('already submitted attendance')
-            student_attendance = Attendance.query.filter_by(att_date=date.today(),teacher=teacher, courseid=courseid, classid=classname, scheduleid=dow+per, email = s.email).first()
-            #print(s.email)
+            student_attendance = Attendance.query.filter_by(att_date=date.today(), teacher=teacher, courseid=courseid,
+                                                            classid=classname, scheduleid=dow + per,
+                                                            email=s.email).first()
+            # print(s.email)
             try:
                 student_form.status = student_attendance.status
                 student_form.comment = student_attendance.comment
             except:
                 student_form.status = 'P'
                 student_form.comment = ''
-        
+
         else:
             student_form.comment = ""
-            
-    
-        att_form.students.append_entry(student_form)        
-    # if att_form.validate():
+
+        att_form.students.append_entry(student_form)
+        # if att_form.validate():
     #     print("form validated")
 
-    
-    return render_template('attendance_cards.html', att_form=att_form, classid = classname, classid2 = classid2, dow = dow, per = per, courseid = courseid, title=title, amount=amount, room=room,count=count,teacher=teacher, User=User, courseid2=classid2, submitted=submitted)
+    return render_template('attendance_cards.html', att_form=att_form, classid=classname, classid2=classid2, dow=dow,
+                           per=per, courseid=courseid, title=title, amount=amount, room=room, count=count,
+                           teacher=teacher, User=User, courseid2=classid2, submitted=submitted)
 
-#https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
 
-#%%
-@attendance.route('/update_attendance', methods=['GET','POST'])
+# https://stackoverflow.com/questions/17752301/dynamic-form-fields-in-flask-request-form
+
+# %%
+@attendance.route('/update_attendance', methods=['GET', 'POST'])
 @login_required
 def update_attendance():
     print('testing')
@@ -107,12 +112,12 @@ def update_attendance():
     emails = []
     names = []
     statuses = []
-    comments = []    
-    
+    comments = []
+
     f = request.form
     for key in f.keys():
         for value in f.getlist(key):
-            #print(key, value )
+            # print(key, value )
             if "email" in key:
                 email = value
                 emails.append(email)
@@ -125,22 +130,24 @@ def update_attendance():
             if "comment" in key:
                 comment = value
                 comments.append(comment)
-    
+
     i = 0
     for e in emails:
         # result = Attendance.query.filter_by(att_date=att_date, scheduleid=scheduleid, classid=classid,courseid=courseid, email=e.email)
-        result = Attendance.query.filter_by(att_date=date.today(), teacher=teacher, courseid=courseid, classid=classid, scheduleid=scheduleid, email=e).first()
+        result = Attendance.query.filter_by(att_date=date.today(), teacher=teacher, courseid=courseid, classid=classid,
+                                            scheduleid=scheduleid, email=e).first()
         if result.status != statuses[i] or (comments[i] != '' and comments[i] != result.comment):
             edit_attendance(att_date, courseid, e, statuses[i], comments[i])
             print(e, statuses[i], comments[i])
-        #if different from status[i] or comment [i] call edit_attendance(date, courseid, email, status, comment)
-        i=i+1
-    
-    cat = '_x'+att_date+courseid
-    #flash('Your attendance for class ' + courseid + ' has been updated.', 'success')
+        # if different from status[i] or comment [i] call edit_attendance(date, courseid, email, status, comment)
+        i = i + 1
+
+    cat = '_x' + att_date + courseid
+    # flash('Your attendance for class ' + courseid + ' has been updated.', 'success')
     return redirect(url_for('records.track_attendance', category=cat))
-    
-#%%This route enters the attendance in the database after the teacher has taken attendance
+
+
+# %%This route enters the attendance in the database after the teacher has taken attendance
 @attendance.route('/record_attendance', methods=['GET', 'POST'])
 @login_required
 def record_attendance():
@@ -156,15 +163,15 @@ def record_attendance():
     names = []
     statuses = []
     comments = []
-    
-    #print("form has been validated")
-    df = pd.DataFrame(columns = ['teacher', 'att_date','scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
 
+    # print("form has been validated")
+    df = pd.DataFrame(
+        columns=['teacher', 'att_date', 'scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
 
     f = request.form
     for key in f.keys():
         for value in f.getlist(key):
-            #print(key, value )
+            # print(key, value )
             if "email" in key:
                 email = value
                 emails.append(email)
@@ -177,46 +184,49 @@ def record_attendance():
             if "comment" in key:
                 comment = value
                 comments.append(comment)
-    
+
     i = 0
     for x in emails:
-        entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]], index=df.columns)
-        if statuses[i]=='A' or statuses[i]=='L':
+        entry = pd.Series(
+            [teacher, att_date, scheduleid, classid, courseid, emails[i], statuses[i], comments[i], names[i]],
+            index=df.columns)
+        if statuses[i] == 'A' or statuses[i] == 'L':
             df = df.append(entry, ignore_index=True)
-        i+=1
+        i += 1
     df = df.set_index('email')
     df.fillna('', inplace=True)
-    #print(df) 
+    # print(df)
     df.to_sql('attendance', engine, if_exists="append")
     db.session.commit()
-    topic = "attendance for "+ courseid 
+    topic = "attendance for " + courseid
 
-    cat = '_x'+att_date+courseid
+    cat = '_x' + att_date + courseid
     flash('Your attendance for class ' + courseid + ' has been recorded.', 'success')
     return redirect(url_for('records.track_attendance', category=cat))
 
 
-#%%This route edits one specific attendance entry in the database - originates from the Attendance Records page
+# %%This route edits one specific attendance entry in the database - originates from the Attendance Records page
 @attendance.route('/edit_attendance/<date>/<courseid>/<email>/<status>/<comment>')
 def edit_attendance(date, courseid, email, status, comment):
-    name = Student.query.filter_by(email = email).first().name
+    name = Student.query.filter_by(email=email).first().name
     att_date = date
     print(email, att_date, status, comment, courseid)
-    query = "UPDATE attendance set status = '" + status +"', comment = '" + comment + "' where email = '" + email +"' and att_date = '" + att_date +"' and courseid = '" + courseid + "' and teacher ='" + current_user.username  +"';"
+    query = "UPDATE attendance set status = '" + status + "', comment = '" + comment + "' where email = '" + email + "' and att_date = '" + att_date + "' and courseid = '" + courseid + "' and teacher ='" + current_user.username + "';"
     print(query)
-    with engine.begin() as conn:     # TRANSACTION
+    with engine.begin() as conn:  # TRANSACTION
         conn.execute(query)
         conn.execute("COMMIT")
-    #db.session.flush()
-    #db.session.rollback()
-    topic = "attendance staus of " + status + " for " + name 
-    
-    cat = '_x'+att_date+courseid
+    # db.session.flush()
+    # db.session.rollback()
+    topic = "attendance staus of " + status + " for " + name
+
+    cat = '_x' + att_date + courseid
     flash('Your attendance status for ' + name + ' has been updated.', 'success')
     return redirect(url_for('records.track_attendance', category=cat))
     # return render_template("confirmation.html", topic=topic, value = "edit_attendance", date = date, courseid=courseid, teacher = current_user.username)
-    
-#%%
+
+
+# %%
 
 # %%This route edits one specific attendance entry in the database - originates from the Attendance CARDS page
 @attendance.route('/edit_attendance_present/<date>/<scheduleid>/<courseid>/<email>/<status>/<comment>')
@@ -224,20 +234,22 @@ def edit_attendance_present(date, scheduleid, courseid, email, status, comment):
     name = Student.query.filter_by(email=email).first().name
     att_date = date
     classid = courseid[0:5]
-    teacher=current_user.username
+    teacher = current_user.username
     print(email, att_date, scheduleid, status, comment, classid, courseid)
-    student_attendance_record = Attendance.query.filter_by(email=email, att_date=att_date, courseid=courseid, scheduleid=scheduleid, teacher=current_user.username).first()
+    student_attendance_record = Attendance.query.filter_by(email=email, att_date=att_date, courseid=courseid,
+                                                           scheduleid=scheduleid, teacher=current_user.username).first()
     if student_attendance_record is None:
         df = pd.DataFrame(
             columns=['teacher', 'att_date', 'scheduleid', 'classid', 'courseid', 'email', 'status', 'comment', 'name'])
-        entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, email, status, comment, name],index=df.columns)
+        entry = pd.Series([teacher, att_date, scheduleid, classid, courseid, email, status, comment, name],
+                          index=df.columns)
         df = df.append(entry, ignore_index=True)
         df = df.set_index('email')
         df.fillna('', inplace=True)
         # print(df)
         df.to_sql('attendance', engine, if_exists="append")
         db.session.commit()
-        #query = f'INSERT into attendance(att_date, scheduleid, classid, courseid, email, status, comment, name, teacher) VALUES({att_date},{scheduleid},{classid},{courseid},{email},{status},{comment},{name},{teacher})'
+        # query = f'INSERT into attendance(att_date, scheduleid, classid, courseid, email, status, comment, name, teacher) VALUES({att_date},{scheduleid},{classid},{courseid},{email},{status},{comment},{name},{teacher})'
     else:
         query = "UPDATE attendance set status = '" + status + "', comment = '" + comment + "' where email = '" + email + "' and att_date = '" + att_date + "' and courseid = '" + courseid + "' and teacher ='" + current_user.username + "';"
         print(query)
