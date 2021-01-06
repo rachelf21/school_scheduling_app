@@ -39,8 +39,8 @@ function email_failure_alert(teacher, student_email, name, course) {
     $.ajax({
       type: "POST",
       contentType: "application/json",
-      url: teacher == "rfriedman" ? "/html_send_failure_alert_email" : "/send_failure_alert_email",
-      //url: "/send_failure_alert_email",
+      //url: teacher == "rfriedman" ? "/html_send_failure_alert_email" : "/send_failure_alert_email",
+      url: "/send_failure_alert_email",
       //context: document.body,
       dataType: "json",
       data: JSON.stringify(studentObj),

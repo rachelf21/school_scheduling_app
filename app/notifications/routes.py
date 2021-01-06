@@ -176,6 +176,8 @@ def send_failure_alert_email():
         last = child.last
         student_class = child.class2id
         student_subject = Course.query.filter_by(teacher=current_user.username).first().subject
+        if current_user.username == 'rfriedman':
+            student_subject = 'Computers'
         print(student_class, student_subject)
         teacher = current_user.username
         teacher = Users.query.filter_by(username=teacher).first()
@@ -187,25 +189,31 @@ def send_failure_alert_email():
         if parent2 is None or parent2 == 'None':
             parent2 = ''
 
-        msg_subject = 'Failure Alert: ' + first + " " + last + " " + student_class + " " + student_subject
+
+
+        c_user = Messages.query.filter_by(username=teacher.username).filter_by(category='failing').first()
+        custom = ''
+        if c_user is None:
+            custom = 'Please be advised that you are currently not passing this class.'
+            msg_subject = 'Failing Grade Alert: ' + first + " " + last + " " + student_class + " " + student_subject
+
+        else:
+            custom = c_user.message
+            # print(custom)
+            msg_subject = c_user.subject + ": " + first + " " + last + " " + student_class + " " + student_subject
+
         msg = Message(msg_subject, sender=(tname, teacher.email),
                       recipients=[student_email], cc=[parent1, parent2, temail],
                       bcc=['student-progress-app@mdyschool.org'])
         #
         intro = 'Dear ' + first + ',\n'
 
-        c_user = Messages.query.filter_by(username=teacher.username).first()
-        custom = ''
-        if c_user is None:
-            custom = 'Please be advised that you are currently not passing this class.'
-        else:
-            custom = c_user.message
-            # print(custom)
         if current_user.username=='dpiselli':
             teacher_description='\nMathematics Teacher'
         elif current_user.username=='rfriedman':
             teacher_description='\nTechnology Instructor'
         signature = "------------------------\n" + teacher.title + " " + teacher.first + " " + teacher.last + teacher_description +"\nMagen David Yeshivah\n"
+
         msg.body = intro + "\n" + custom + "\n\n" + signature
 
         # print(msg.body)
@@ -293,6 +301,8 @@ def html_send_failure_alert_email():
         last = child.last
         student_class = child.class2id
         student_subject = Course.query.filter_by(teacher=current_user.username).first().subject
+        if current_user.username == 'rfriedman':
+            student_subject = 'Computers'
         print(student_class, student_subject)
         teacher = current_user.username
         teacher = Users.query.filter_by(username=teacher).first()
@@ -303,13 +313,22 @@ def html_send_failure_alert_email():
         if parent2 is None or parent2 == 'None':
             parent2 = ''
 
-        msg_subject = 'Failure Alert: ' + first + " " + last + " " + student_class + " " + student_subject
+        c_user = Messages.query.filter_by(username=teacher.username).filter_by(category='failing').first()
+        custom = ''
+        if c_user is None:
+            custom = 'Please be advised that you are currently not passing this class.'
+            msg_subject = 'Failing Grade Alert: ' + first + " " + last + " " + student_class + " " + student_subject
+
+        else:
+            custom = c_user.message
+            # print(custom)
+            msg_subject = c_user.subject + ": " + first + " " + last + " " + student_class + " " + student_subject
+
         msg = Message(msg_subject, sender=(tname, teacher.email), recipients=[student_email, parent1, parent2],
                       cc=[temail], bcc=[])
         #
-        intro = "Dear " + first + ",\n"
 
-        custom = 'Please be advised that you have not submitted all your required work for your Computers class. Currently, your final average for this class is: Not Passing. \nThere still is an opportunity for you to improve your overall grade if you would kindly submit your missing assignments before Friday, January 8. \nTo determine which assignments you are missing, please go to your Computers class on Google Classroom, click on Classwork, then click on View your work to see a list of assignments for this class. \nGood luck!\n'
+        intro = "Dear " + first + ",\n"
 
         signature = ' Rachel Friedman \n Technology Instructor \n Magen David Yeshivah \n 2130 McDonald Avenue \n Brooklyn, NY 11223'
 
@@ -336,6 +355,7 @@ def set_failure_alert_msg(teacher):
     form = SetMsgBodyForm()
     msg = "This is an automated message. <p> A failure alert has been set for Jane Smith in 7G-104 by Mrs. Susan Johnson. <p> Please do not reply to this email. If you wish to contact the teacher, please contact them at the following email address: sjohnson@mdyschool.org."
     custom = 'Your custom message will appear here.'
+    custom_subject = 'Failing Grade Alert'
 
     user1 = Users.query.filter_by(username=teacher).first()
     title = user1.title
@@ -353,17 +373,20 @@ def set_failure_alert_msg(teacher):
     signature = full_teacher + teacher_description+"<br>Magen David Yeshivah<br>"
 
 
-    user = Messages.query.filter_by(username=teacher).filter_by(category="failure").first()
+    user = Messages.query.filter_by(username=teacher).filter_by(category="failing").first()
 
 
     if user is not None and user.message != '':
         custom = user.message
+        custom_subject = user.subject
         # print("1 " + custom)
     if request.method == "GET":
         form.content.data = custom
+        form.subject.data = custom_subject
 
     if form.validate_on_submit() and request.method=='POST':
         msg = form.content.data
+        custom_subject = form.subject.data
         # if msg=='':
         #     flash('Message is blank. Your custom text was not added.', 'danger')
         #     return redirect(url_for('notifications.set_failure_alert_msg', teacher=teacher))
@@ -371,8 +394,7 @@ def set_failure_alert_msg(teacher):
         if user is None:
             print("User has no default failure message")
             user = Users.query.filter_by(username=teacher).first()
-            subject = "Failure Alert"
-            new_failure_msg = Messages(msgid = teacher+"failure", username=teacher, category="failure", subject = subject, message = msg)
+            new_failure_msg = Messages(msgid = teacher+"failure", username=teacher, category="failing", subject = custom_subject, message = msg)
 
             try:
                 db.session.add(new_failure_msg)
@@ -387,6 +409,7 @@ def set_failure_alert_msg(teacher):
             # print("User has settings") #this changes the message if user already has a message and is adding a new one.
             try:
                 user.message = msg  #changes the message in the Messages table to be the one from the form.
+                user.subject = custom_subject
                 db.session.commit()
                 flash('Your Failure Alert email has been set.', 'success')
                 return redirect(url_for('notifications.set_failure_alert_msg', teacher=teacher)) #change this to notifications page and specify which category
