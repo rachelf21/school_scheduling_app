@@ -18,7 +18,12 @@ class DismissalSelectForm(FlaskForm):
     classes = Group.query.order_by(Group.classid2).all()
     for c in classes:
         if str(c.classid2)[0:1] == '8':
-            classidcode = c.classid2[0:2]+c.classid2[3:6]
+            classidcode = c.classid2
+            # print("classidcode = ", classidcode)
+            if classidcode == '8-203A' or classidcode == '8-203B':
+                classidcode == classidcode
+            else:
+                classidcode = c.classid2[0:2]+c.classid2[3:6]
             options.append([classidcode, c.classid2])
     class_list_8 = SelectField('Select Class',choices=options)
     
@@ -31,7 +36,7 @@ class DismissalSelectForm(FlaskForm):
     options = []
     rooms = Group.query.order_by(Group.room).all()
     for r in rooms:
-        if r.classid != '0-0':
+        if r.classid != '0-0' and [r.room, r.room] not in options:
             options.append([r.room, r.room])
     room_list = SelectField('Select Room',choices=options)
     

@@ -212,15 +212,25 @@ def dismiss(category):
          
     elif category == 'class8':
         classid2 = request.form['class_list_8']
+        # print('classid2=', classid2)
         dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
         count = len(dismissal)
-        classid3 = classid2[0:2] + "-" + classid2[2:5]
+        if classid2 == '8-203A' or classid2 == '8-203B':
+            classid3 = classid2
+        else:
+            classid3 = classid2[0:2] + "-" + classid2[2:5]
+            # print("classid3=", classid3)
         room = Group.query.filter_by(classid2=classid3).first().room
         
     elif category == 'room':
         room = request.form['room_list']
         classid2 = Group.query.filter_by(room=room).first().classid2
-        classid2 = classid2[0:2] + classid2[3:6]
+
+        if classid2 == '8-203A' or classid2 == '8-203B':
+            classid2 = classid2
+        else:
+            classid2 = classid2[0:2] + classid2[3:6]
+
         dismissal = Dismissal.query.filter_by(section=classid2).order_by(Dismissal.name).all()
         count = len(dismissal)
                    
