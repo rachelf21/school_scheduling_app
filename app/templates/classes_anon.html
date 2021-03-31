@@ -14,11 +14,11 @@
   <div id="innerdiv" style="margin-left: auto; margin-right: auto" class="content-section">
     <div style="text-align: center">
       <a href="/full_schedule" class="mt-4 mb-0">View My Schedule </a>
-       | <a id="my_today" href="/today" class="mt-4 mb-0">Today</a>
+      | <a id="my_today" href="/today" class="mt-4 mb-0">Today</a>
 
       <h1 class="mt-2 mb-1 display-4">My Classes</h1>
 
-      <div class="font-weight-normal mt-2 mb-4">
+      <div id="myclasses" class="font-weight-normal mt-2 mb-4">
         <a href="/get_students/d/7">Grade 7 Students</a> | <a href="/get_students/d/8">Grade 8 Students</a>
       </div>
     </div>
@@ -166,7 +166,13 @@
   if ("{{teacher}}" == "rfriedman") {
     $("#my_today").attr("href", "/today");
   } else {
-    $("#my_today").attr("href","/today2");
+    $("#my_today").attr("href", "/today2");
+  }
+
+  if ("{{teacher}}" == "demo") {
+    $("#myclasses").hide();
+  } else {
+    $("#myclasses").show();
   }
 </script>
 {%endblock content%}
