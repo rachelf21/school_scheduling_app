@@ -158,6 +158,9 @@ def send_teacher_email():
         # print(msg.body)
         mail.send(msg)
         # flash('Emails sent to ' + student_name + " and parents. A copy has been sent to your email.", 'success')
+        Student.query.filter_by(email=student_email).first().total += 1
+        db.session.commit()
+        print(student_email)
 
     success = json.dumps("success")
     return (success)

@@ -190,6 +190,7 @@ class Student(db.Model):
     notes = db.Column(db.String(500))
     last = db.Column(db.String(25))
     first = db.Column(db.String(25))
+    total = db.Column(db.Integer)
     
     def __init__(self, first, last, email, classid, class2id, name, parent1, parent2, parent3, notes):
         self.first = first
@@ -319,6 +320,16 @@ class Messages(db.Model):
         self.category = category
         self.subject = subject
         self.message = message
+
+
+# # %%
+# class Missing_Work(db.Model):
+#     __tablename__ = "missing_work"
+#     __table_args__ = {'extend_existing': True}
+#     email = db.Column(db.String(255), primary_key=True)
+#     classid = db.Column(db.String(8), db.ForeignKey(Group.classid), nullable=False)
+#     name = db.Column(db.String(255), nullable=False)
+#     total = db.Column(db.Integer, nullable=False)
 
 
 #%%

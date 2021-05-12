@@ -1,1 +1,1 @@
-test
+this is the proper location to store files. it's in the same folder as run.

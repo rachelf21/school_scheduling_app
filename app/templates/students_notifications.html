@@ -19,6 +19,7 @@
   >
     <thead>
       <th>Name</th>
+      <th class="text-center">Total</th>
       <th class="text-center">Missing Work</th>
       <th id="class" class="text-center">Class</th>
       <th>Email</th>
@@ -29,6 +30,7 @@
       {% for students in students %}
       <tr>
         <td class="text-nowrap"><a href="/student_info/{{students.email}}">{{ students.name}}</a></td>
+        <td class="text-center">{{students.total if students.total != 0}}</td>
         <td>
           <div id="notify{{loop.index}}" class="text-center">
             <a
@@ -67,7 +69,7 @@
     select: true,
     bSort: true,
     //order: [[2, "asc"]],
-    columnDefs: [{ orderable: false, targets: [1, 3, 4, 5] }],
+    columnDefs: [{ orderable: false, targets: [2, 4, 5, 6] }],
   });
 </script>
 

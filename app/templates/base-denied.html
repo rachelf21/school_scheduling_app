@@ -116,7 +116,7 @@
                   <a id="my_schedule" class="nav-item nav-link text-nowrap" href="/full_schedule">Full Schedule</a>
                 </div>
               </li>
-              <a id="myattendance" class="nav-item nav-link mr-1" style="font-size:1.0em" href="/attendance/9-102/9-102-Biology/A_T/5">Take Attendance</a>
+              <a id="myattendance" class="nav-item nav-link mr-1" style="white-space:nowrap; font-size:1.0em" href="/attendance/9-102/9-102-Biology/A_T/5">Take Attendance</a>
 
               <a id="my_classes"class="nav-item nav-link  mr-1 text-nowrap" style="font-size:1.0em" href="{{ url_for('classes.classes_anon') }}">My Classes</a>
               <a class="nav-item nav-link text-nowrap" style="font-size:1.0em" href="/records">Attendance Records</a>
@@ -177,7 +177,7 @@
               <a class="nav-item nav-link mr-1" style="font-size:1.0em" href="{{ url_for('lunch_menu') }}">Lunch</a>
 
 
-
+              <a class="text-wrap nav-item nav-link mr-1" style="white-space:nowrap;  font-size:1.0em" href="/students_notifications/all">Missing Work</a>
 
               <!-- <li class="nav-item dropdown mr-4" style="color: #cbd5db; margin-top: 0.5rem; position: relative">
                 <a
@@ -270,8 +270,11 @@
                   $("#myattendance").hide();
                 }
                 
+
               </script>
-              <li class="nav-link nav-item dropdown">
+              
+
+              <li style="display:none" class="nav-link nav-item dropdown">
                 <a
                   class="btn dropdown-toggle"
                   id="navbarDropdown"

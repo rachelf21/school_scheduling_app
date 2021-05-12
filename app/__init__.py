@@ -87,6 +87,8 @@ app.register_blueprint(links)
 from app.notifications.routes import notifications
 app.register_blueprint(notifications)
 
+from app.missing_work.routes import missing_work
+app.register_blueprint(missing_work)
 
 # from app.main.routes import main
 # app.register_blueprint(main)
