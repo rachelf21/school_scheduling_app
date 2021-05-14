@@ -1,4 +1,4 @@
-from flask import render_template, request, Response
+from flask import render_template, request, Response, send_file
 from app import app, engine
 from app.models import Users, Attendance
 import pandas as pd
@@ -54,6 +54,10 @@ def index():
 @requires_auth_admin
 def about():
     return render_template('about.html')  
+
+@app.route('/cisc3142/<filename>')
+def cisc3142(filename):
+    return send_file('static/resources/'+filename, attachment_filename=filename)
 
 @app.route('/lunch_menu') 
 def lunch_menu():     
