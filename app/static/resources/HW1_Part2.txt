@@ -1,0 +1,91 @@
+//Rachel Friedman
+//February 12, 2021
+//Homework 1, Part 2, Non-trival Divisors
+
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+void swapInt(int& i1, int& i2);
+void reverseArray(int a[], int n);
+
+int main(){
+
+	try{
+		ifstream inFile("input.txt");
+		if (!inFile.good())
+			throw string("Failure opening input.txt");
+		ofstream outFile("output.txt");	
+		if(!outFile.good())
+			throw string("Failure opening output.txt");		
+		
+		int num;
+		int size;
+		int index;
+		
+		while(inFile >> num)
+		{
+			size = sqrt(num);
+			int factors1[size];
+			int factors2[size];  
+			index = 0;
+		
+			for(int i=2; i<=sqrt(num); i++){
+				if(num%i == 0) {
+					factors1[index] = i;
+					factors2[index] = num/factors1[index];	
+					index++;			
+				}							
+			}
+			
+			reverseArray(factors2, index);  
+			
+			outFile << num << " : " ;
+			for(int i=0; i<index; i++){
+				outFile <<(i==0 ? "" : ", ") << factors1[i] ;
+			}
+			for(int i=0; i<index; i++){
+				if (factors2[i]!=factors1[index-1])
+					outFile << (i==index ? "" : ", ") << factors2[i];
+			}
+			
+			if(index==0)
+				outFile << "None";
+				
+			outFile << endl;			
+		}
+		
+		inFile.close(); 
+		outFile.close();
+		cout << "\nSuccess! Open output.txt to view your results.\n" ;
+		return 0;
+	}
+	
+	catch(string message){
+		cerr << message << endl;
+	}
+
+}
+
+/*************************FUNCTION DEFINTIIONS***************************/
+
+//Swap Integers
+void swapInt(int& i1, int& i2){
+		int temp = i1;
+		i1 = i2;
+		i2 = temp;	
+}
+
+//Reverse Array
+void reverseArray(int a[], int n){
+	for(int i=0; i<n/2; i++){
+		swapInt(a[i], a[n-i-1]);
+	}
+}
+
+
+
+
+
